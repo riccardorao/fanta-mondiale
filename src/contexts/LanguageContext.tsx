@@ -24,6 +24,16 @@ const translations = {
     cd_seconds: 'Sec',
     cd_started: 'Il torneo è iniziato!',
 
+    // Error / 404 / loading
+    err_404_title: 'Pagina non trovata',
+    err_404_desc: 'La pagina che cerchi non esiste o è stata spostata.',
+    err_404_cta: 'Torna alla home',
+    err_500_title: 'Qualcosa è andato storto',
+    err_500_desc: 'Si è verificato un errore imprevisto. Riprova tra poco.',
+    err_retry: 'Riprova',
+    err_home: 'Vai alla home',
+    loading_label: 'Caricamento…',
+
     // Home
     home_badge: 'Coppa del Mondo FIFA 2026',
     home_subtitle: 'USA · Canada · Messico',
@@ -69,6 +79,14 @@ const translations = {
     auth_check_email_desc: 'Abbiamo inviato un link di verifica a',
     auth_check_email_sub: 'Clicca il link nella email per verificare il tuo account e iniziare a pronosticare!',
     auth_back_login: '← Torna al login',
+    auth_reset_email_first: 'Inserisci prima la tua email',
+    auth_reset_sent: 'Email di reimpostazione inviata! Controlla la posta.',
+    auth_reset_title: 'Reimposta password',
+    auth_reset_subtitle: 'Scegli una nuova password per il tuo account',
+    auth_reset_new: 'Nuova password',
+    auth_reset_btn: 'Aggiorna password',
+    auth_reset_success: 'Password aggiornata!',
+    auth_reset_invalid: 'Link non valido o scaduto. Richiedi una nuova email.',
 
     // Dashboard
     dash_welcome: 'Bentornato,',
@@ -226,6 +244,16 @@ const translations = {
     cd_seconds: 'Sec',
     cd_started: 'The tournament has started!',
 
+    // Error / 404 / loading
+    err_404_title: 'Page not found',
+    err_404_desc: 'The page you are looking for does not exist or has moved.',
+    err_404_cta: 'Back to home',
+    err_500_title: 'Something went wrong',
+    err_500_desc: 'An unexpected error occurred. Please try again shortly.',
+    err_retry: 'Try again',
+    err_home: 'Go home',
+    loading_label: 'Loading…',
+
     // Home
     home_badge: 'FIFA World Cup 2026',
     home_subtitle: 'USA · Canada · Mexico',
@@ -271,6 +299,14 @@ const translations = {
     auth_check_email_desc: 'We sent a verification link to',
     auth_check_email_sub: 'Click the link in the email to verify your account and start predicting!',
     auth_back_login: '← Back to Login',
+    auth_reset_email_first: 'Enter your email first',
+    auth_reset_sent: 'Reset email sent! Check your inbox.',
+    auth_reset_title: 'Reset password',
+    auth_reset_subtitle: 'Choose a new password for your account',
+    auth_reset_new: 'New password',
+    auth_reset_btn: 'Update password',
+    auth_reset_success: 'Password updated!',
+    auth_reset_invalid: 'Invalid or expired link. Request a new email.',
 
     // Dashboard
     dash_welcome: 'Welcome back,',

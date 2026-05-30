@@ -34,10 +34,14 @@ export async function middleware(request: NextRequest) {
   const isProtected = protectedPaths.some(p => pathname.startsWith(p))
   const isAuthPath = pathname.startsWith('/auth')
 
+  // Recovery (password reset) and the OAuth callback need an authenticated
+  // session to do their job, so they must not be redirected away.
+  const authExempt = pathname === '/auth/callback' || pathname === '/auth/reset'
+
   if (isProtected && !user) {
     return NextResponse.redirect(new URL('/auth/login', request.url))
   }
-  if (isAuthPath && user && pathname !== '/auth/callback') {
+  if (isAuthPath && user && !authExempt) {
     return NextResponse.redirect(new URL('/dashboard', request.url))
   }
   return supabaseResponse

@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Space_Grotesk, Syne } from 'next/font/google'
 import './globals.css'
 import { Toaster } from 'react-hot-toast'
@@ -13,8 +13,36 @@ const spaceGrotesk = Space_Grotesk({
 const syne = Syne({ subsets: ['latin'], variable: '--font-syne', weight: ['700', '800'] })
 
 export const metadata: Metadata = {
-  title: 'Fantaid 2026',
-  description: 'FIFA World Cup 2026 bracket prediction game — predict every match, build your bracket, and compete with friends.',
+  metadataBase: new URL('https://fantaid.vercel.app'),
+  title: {
+    default: 'FANTAID — World Cup 2026 Predictions',
+    template: '%s · FANTAID',
+  },
+  description:
+    'FANTAID — the FIFA World Cup 2026 prediction game. Predict every match, build your knockout bracket, and climb the leaderboard against your friends.',
+  applicationName: 'FANTAID',
+  keywords: ['World Cup 2026', 'predictions', 'bracket', 'fantasy football', 'FANTAID'],
+  openGraph: {
+    title: 'FANTAID — World Cup 2026 Predictions',
+    description:
+      'Predict every match, build your bracket, and compete with friends for the FIFA World Cup 2026.',
+    url: 'https://fantaid.vercel.app',
+    siteName: 'FANTAID',
+    type: 'website',
+    locale: 'it_IT',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'FANTAID — World Cup 2026 Predictions',
+    description: 'Predict every match, build your bracket, and compete with friends.',
+  },
+  robots: { index: true, follow: true },
+}
+
+export const viewport: Viewport = {
+  themeColor: '#16243F',
+  width: 'device-width',
+  initialScale: 1,
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
