@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
@@ -10,13 +10,15 @@ import type { User } from '@supabase/supabase-js'
 export default function Navbar() {
   const pathname = usePathname()
   const router = useRouter()
-  const supabase = createClient()
+  const supabaseRef = useRef<ReturnType<typeof createClient> | null>(null)
   const [user, setUser] = useState<User | null>(null)
   const [userName, setUserName] = useState<string>('')
   const [menuOpen, setMenuOpen] = useState(false)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    const supabase = (supabaseRef.current ??= createClient())
+
     const getSession = async () => {
       const { data: { session } } = await supabase.auth.getSession()
       setUser(session?.user ?? null)
@@ -55,7 +57,8 @@ export default function Navbar() {
   }, [])
 
   const handleLogout = async () => {
-    await supabase.auth.signOut()
+    if (!supabaseRef.current) return
+    await supabaseRef.current.auth.signOut()
     router.push('/')
     setMenuOpen(false)
   }

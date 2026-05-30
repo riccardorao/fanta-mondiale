@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import toast from 'react-hot-toast'
 import { createClient } from '@/lib/supabase/client'
@@ -35,7 +35,7 @@ function getAutoWinner(match: Match, homeScore: number, awayScore: number): stri
 }
 
 export default function AdminResultsPage() {
-  const supabase = createClient()
+  const supabaseRef = useRef<ReturnType<typeof createClient> | null>(null)
   const router = useRouter()
 
   const [matches, setMatches] = useState<Match[]>([])
@@ -47,6 +47,7 @@ export default function AdminResultsPage() {
 
   useEffect(() => {
     const load = async () => {
+      const supabase = (supabaseRef.current ??= createClient())
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) { router.push('/auth/login'); return }
 
@@ -123,7 +124,8 @@ export default function AdminResultsPage() {
 
   const handleSave = async (matchId: string) => {
     const form = forms[matchId]
-    if (!form) return
+    if (!form || !supabaseRef.current) return
+    const supabase = supabaseRef.current
 
     setSavingId(matchId)
     try {

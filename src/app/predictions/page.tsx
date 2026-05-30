@@ -16,7 +16,7 @@ interface GroupData {
 }
 
 export default function PredictionsPage() {
-  const supabase = createClient()
+  const supabaseRef = useRef<ReturnType<typeof createClient> | null>(null)
   const router = useRouter()
 
   const [groups, setGroups] = useState<GroupData[]>([])
@@ -33,6 +33,7 @@ export default function PredictionsPage() {
 
   useEffect(() => {
     const load = async () => {
+      const supabase = (supabaseRef.current ??= createClient())
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) {
         router.push('/auth/login')
@@ -104,8 +105,9 @@ export default function PredictionsPage() {
 
   const flushSaves = useCallback(async () => {
     if (pendingSavesRef.current.size === 0) return
-    if (!userId) return
+    if (!userId || !supabaseRef.current) return
 
+    const supabase = supabaseRef.current
     setSaving(true)
     const toSave = Array.from(pendingSavesRef.current.values())
     pendingSavesRef.current.clear()

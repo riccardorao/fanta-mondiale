@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'
+
 import { createClient } from '@/lib/supabase/server'
 import { cn } from '@/lib/utils'
 import type { LeaderboardEntry, Profile } from '@/types/database'
