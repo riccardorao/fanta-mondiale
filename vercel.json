@@ -1,0 +1,8 @@
+{
+  "framework": "nextjs",
+  "regions": ["lhr1"],
+  "github": {
+    "silent": false,
+    "autoAlias": true
+  }
+}
