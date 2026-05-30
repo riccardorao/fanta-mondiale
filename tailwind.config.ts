@@ -10,11 +10,11 @@ const config: Config = {
     extend: {
       colors: {
         night: {
-          DEFAULT: '#030C1A',
-          1: '#071422',
-          2: '#0D1E30',
-          3: '#15263C',
-          4: '#1C3050',
+          DEFAULT: '#16243F',
+          1: '#1E2F4D',
+          2: '#263A5B',
+          3: '#324867',
+          4: '#3F5478',
         },
         blue: {
           primary: '#2563EB',
