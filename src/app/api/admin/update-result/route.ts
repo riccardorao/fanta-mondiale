@@ -1,4 +1,5 @@
 import { createClient, createAdminClient } from '@/lib/supabase/server'
+import { computeUserScore } from '@/lib/scoring'
 import { NextResponse } from 'next/server'
 
 export async function POST(request: Request) {
@@ -51,12 +52,13 @@ export async function POST(request: Request) {
   // Recompute all user scores
   try {
     await recomputeAllScores(supabase)
-  } catch (e: any) {
+  } catch (e: unknown) {
     console.error('Score recomputation error:', e)
     // Still return success for the match update, but note the error
+    const message = e instanceof Error ? e.message : 'unknown error'
     return NextResponse.json({
       success: true,
-      warning: 'Match updated but score recomputation failed: ' + (e?.message ?? 'unknown error'),
+      warning: 'Match updated but score recomputation failed: ' + message,
     })
   }
 
@@ -73,135 +75,43 @@ async function recomputeAllScores(supabase: ReturnType<typeof createAdminClient>
     throw new Error('Failed to fetch profiles: ' + profilesErr?.message)
   }
 
-  // Get all completed matches
+  // Get all matches (computeUserScore filters by status internally)
   const { data: matches, error: matchesErr } = await supabase
     .from('matches')
     .select('*')
-    .eq('status', 'completed')
 
   if (matchesErr || !matches) {
-    throw new Error('Failed to fetch completed matches: ' + matchesErr?.message)
+    throw new Error('Failed to fetch matches: ' + matchesErr?.message)
   }
 
-  if (matches.length === 0) {
-    // No completed matches, reset everyone to 0
-    for (const profile of profiles) {
-      await supabase.from('leaderboard').upsert(
-        {
-          user_id: profile.id,
-          total_points: 0,
-          group_stage_points: 0,
-          r32_points: 0,
-          r16_points: 0,
-          qf_points: 0,
-          sf_points: 0,
-          final_points: 0,
-          exact_score_bonus: 0,
-          updated_at: new Date().toISOString(),
-        },
-        { onConflict: 'user_id' }
-      )
-    }
-    return
-  }
-
-  const matchMap = new Map(matches.map((m: any) => [m.id, m]))
-
-  const stagePoints: Record<string, number> = {
-    r32: 5,
-    r16: 7,
-    qf: 10,
-    sf: 12,
-    third_place: 8,
-    final: 20,
-  }
-
-  for (const profile of profiles) {
+  for (const prof of profiles) {
     const { data: groupPreds } = await supabase
       .from('group_predictions')
       .select('*')
-      .eq('user_id', profile.id)
+      .eq('user_id', prof.id)
 
     const { data: bracketPreds } = await supabase
       .from('bracket_predictions')
       .select('*')
-      .eq('user_id', profile.id)
+      .eq('user_id', prof.id)
 
-    let group_stage = 0
-    let exact_bonus = 0
-    let r32 = 0
-    let r16 = 0
-    let qf = 0
-    let sf = 0
-    let final_pts = 0
-
-    // Group stage predictions
-    for (const pred of groupPreds ?? []) {
-      const match: any = matchMap.get(pred.match_id)
-      if (!match || match.stage !== 'group') continue
-      if (match.home_score === null || match.away_score === null) continue
-
-      const actualOutcome =
-        match.home_score > match.away_score
-          ? '1'
-          : match.home_score === match.away_score
-          ? 'X'
-          : '2'
-
-      if (pred.predicted_outcome === actualOutcome) {
-        group_stage += 3
-        if (
-          pred.predicted_home_score === match.home_score &&
-          pred.predicted_away_score === match.away_score
-        ) {
-          exact_bonus += 2
-        }
-      }
-    }
-
-    // Bracket (knockout) predictions
-    for (const pred of bracketPreds ?? []) {
-      const match: any = matchMap.get(pred.match_id)
-      if (!match || !match.winner_id) continue
-      if (pred.predicted_winner_id !== match.winner_id) continue
-
-      const pts = stagePoints[match.stage] ?? 0
-      switch (match.stage) {
-        case 'r32':
-          r32 += pts
-          break
-        case 'r16':
-          r16 += pts
-          break
-        case 'qf':
-          qf += pts
-          break
-        case 'sf':
-          sf += pts
-          break
-        case 'third_place':
-          // third place points go into sf bucket for simplicity
-          sf += pts
-          break
-        case 'final':
-          final_pts += pts
-          break
-      }
-    }
-
-    const total = group_stage + exact_bonus + r32 + r16 + qf + sf + final_pts
+    const score = computeUserScore(
+      groupPreds ?? [],
+      bracketPreds ?? [],
+      matches
+    )
 
     await supabase.from('leaderboard').upsert(
       {
-        user_id: profile.id,
-        total_points: total,
-        group_stage_points: group_stage,
-        r32_points: r32,
-        r16_points: r16,
-        qf_points: qf,
-        sf_points: sf,
-        final_points: final_pts,
-        exact_score_bonus: exact_bonus,
+        user_id: prof.id,
+        total_points: score.total,
+        group_stage_points: score.group_stage,
+        r32_points: score.r32_points,
+        r16_points: score.r16_points,
+        qf_points: score.qf_points,
+        sf_points: score.sf_points,
+        final_points: score.final_points,
+        exact_score_bonus: score.exact_score_bonus,
         updated_at: new Date().toISOString(),
       },
       { onConflict: 'user_id' }
