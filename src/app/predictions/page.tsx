@@ -102,7 +102,7 @@ export default function PredictionsPage() {
     }
 
     load()
-  }, [])
+  }, [router])
 
   const flushSaves = useCallback(async () => {
     if (pendingSavesRef.current.size === 0) return

@@ -81,7 +81,7 @@ export default function BracketPredictionsPage() {
       setLoading(false)
     }
     load()
-  }, [])
+  }, [router])
 
   const handlePredict = useCallback(
     async (matchId: string, winnerId: string) => {
