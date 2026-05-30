@@ -3,10 +3,10 @@
 import { useState, FormEvent } from 'react'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
-import Button from '@/components/ui/Button'
-import Input from '@/components/ui/Input'
+import { useLang } from '@/contexts/LanguageContext'
 
 export default function RegisterPage() {
+  const { t } = useLang()
   const [name, setName] = useState('')
   const [surname, setSurname] = useState('')
   const [email, setEmail] = useState('')
@@ -19,13 +19,13 @@ export default function RegisterPage() {
 
   const validate = (): boolean => {
     const errs: Record<string, string> = {}
-    if (!name.trim()) errs.name = 'First name is required'
-    if (!surname.trim()) errs.surname = 'Last name is required'
-    if (!email.trim()) errs.email = 'Email is required'
-    else if (!/\S+@\S+\.\S+/.test(email)) errs.email = 'Enter a valid email address'
-    if (!password) errs.password = 'Password is required'
-    else if (password.length < 8) errs.password = 'Password must be at least 8 characters'
-    if (password !== confirmPassword) errs.confirmPassword = 'Passwords do not match'
+    if (!name.trim()) errs.name = 'Obbligatorio'
+    if (!surname.trim()) errs.surname = 'Obbligatorio'
+    if (!email.trim()) errs.email = 'Obbligatorio'
+    else if (!/\S+@\S+\.\S+/.test(email)) errs.email = 'Email non valida'
+    if (!password) errs.password = 'Obbligatorio'
+    else if (password.length < 8) errs.password = 'Min. 8 caratteri'
+    if (password !== confirmPassword) errs.confirmPassword = 'Le password non coincidono'
     setFieldErrors(errs)
     return Object.keys(errs).length === 0
   }
@@ -34,28 +34,18 @@ export default function RegisterPage() {
     e.preventDefault()
     setError(null)
     if (!validate()) return
-
     setLoading(true)
     const supabase = createClient()
     try {
       const { error: signUpError } = await supabase.auth.signUp({
         email: email.trim(),
         password,
-        options: {
-          data: {
-            name: name.trim(),
-            surname: surname.trim(),
-          },
-        },
+        options: { data: { name: name.trim(), surname: surname.trim() } },
       })
-
-      if (signUpError) {
-        setError(signUpError.message)
-      } else {
-        setSuccess(true)
-      }
-    } catch (err) {
-      setError('An unexpected error occurred. Please try again.')
+      if (signUpError) setError(signUpError.message)
+      else setSuccess(true)
+    } catch {
+      setError('Errore imprevisto. Riprova.')
     } finally {
       setLoading(false)
     }
@@ -63,123 +53,89 @@ export default function RegisterPage() {
 
   if (success) {
     return (
-      <div className="min-h-[calc(100vh-64px)] bg-[#0f2318] flex items-center justify-center px-4">
-        <div className="bg-[#1a3d2b]/50 border border-[#d4af37]/40 rounded-2xl p-8 max-w-md w-full text-center">
+      <div className="min-h-[calc(100vh-64px)] bg-night flex items-center justify-center px-4">
+        <div className="glass rounded-3xl p-8 max-w-sm w-full text-center">
           <div className="text-5xl mb-4">✉️</div>
-          <h2 className="text-2xl font-bold text-white mb-3">Check Your Email</h2>
-          <p className="text-gray-400 mb-2">
-            We sent a verification link to{' '}
-            <span className="text-[#d4af37] font-semibold">{email}</span>
+          <h2 className="text-2xl font-syne font-black text-white mb-3">{t.auth_check_email_title}</h2>
+          <p className="text-slate-400 mb-1 text-sm">
+            {t.auth_check_email_desc}{' '}
+            <span className="text-blue-light font-semibold">{email}</span>
           </p>
-          <p className="text-gray-500 text-sm mb-6">
-            Click the link in the email to verify your account and start predicting!
-          </p>
-          <Link
-            href="/auth/login"
-            className="inline-flex items-center gap-2 text-[#d4af37] hover:text-[#f0d060] font-semibold transition-colors"
-          >
-            ← Back to Login
+          <p className="text-slate-500 text-sm mb-6">{t.auth_check_email_sub}</p>
+          <Link href="/auth/login" className="text-blue-light hover:text-white font-semibold transition-colors text-sm">
+            {t.auth_back_login}
           </Link>
         </div>
       </div>
     )
   }
 
+  const field = (
+    label: string,
+    value: string,
+    onChange: (v: string) => void,
+    err?: string,
+    opts?: { type?: string; placeholder?: string; autoComplete?: string }
+  ) => (
+    <div className="flex flex-col gap-1.5">
+      <label className="text-sm font-medium text-slate-300">{label}</label>
+      <input
+        type={opts?.type ?? 'text'}
+        placeholder={opts?.placeholder}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        autoComplete={opts?.autoComplete}
+        className="bg-night-1 rounded-xl px-4 py-3 text-white placeholder-slate-600 text-sm transition-all focus:bg-night-2"
+      />
+      {err && <p className="text-xs text-red-400">{err}</p>}
+    </div>
+  )
+
   return (
-    <div className="min-h-[calc(100vh-64px)] bg-[#0f2318] flex items-center justify-center px-4 py-10">
-      <div className="w-full max-w-md">
-        {/* Header */}
+    <div className="min-h-[calc(100vh-64px)] bg-night flex items-center justify-center px-4 py-12">
+      <div aria-hidden className="fixed inset-0 pointer-events-none"
+        style={{ background: 'radial-gradient(ellipse 60% 50% at 50% 0%, rgba(37,99,235,0.12) 0%, transparent 60%)' }} />
+
+      <div className="w-full max-w-sm relative z-10">
         <div className="text-center mb-8">
-          <div className="text-5xl mb-4">🏆</div>
-          <h1 className="text-3xl font-bold text-white mb-2">Create Account</h1>
-          <p className="text-gray-400 text-sm">
-            Join Fanta Mondiale 2026 and start predicting
-          </p>
+          <Link href="/" className="inline-block mb-6">
+            <span className="font-syne font-black text-3xl text-white">FANT</span>
+            <span className="font-syne font-black text-3xl gradient-text-ai">AI</span>
+            <span className="font-syne font-black text-3xl text-white">D</span>
+          </Link>
+          <h1 className="text-2xl font-syne font-black text-white mb-1">{t.auth_register_title}</h1>
+          <p className="text-slate-400 text-sm">{t.auth_register_subtitle}</p>
         </div>
 
-        {/* Card */}
-        <div className="bg-[#1a3d2b]/50 border border-[#2d5a3d] rounded-2xl p-6 sm:p-8">
+        <div className="glass rounded-3xl p-6 sm:p-8">
           {error && (
-            <div className="bg-red-900/30 border border-red-700/50 rounded-xl px-4 py-3 mb-5 text-red-400 text-sm">
-              {error}
-            </div>
+            <div className="bg-red-500/10 rounded-2xl px-4 py-3 mb-5 text-red-400 text-sm">{error}</div>
           )}
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-4" noValidate>
-            <div className="grid grid-cols-2 gap-4">
-              <Input
-                label="First Name"
-                placeholder="Luca"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                error={fieldErrors.name}
-                required
-                autoComplete="given-name"
-              />
-              <Input
-                label="Last Name"
-                placeholder="Rossi"
-                value={surname}
-                onChange={(e) => setSurname(e.target.value)}
-                error={fieldErrors.surname}
-                required
-                autoComplete="family-name"
-              />
+            <div className="grid grid-cols-2 gap-3">
+              {field(t.auth_first_name, name, setName, fieldErrors.name, { placeholder: 'Luca', autoComplete: 'given-name' })}
+              {field(t.auth_last_name, surname, setSurname, fieldErrors.surname, { placeholder: 'Rossi', autoComplete: 'family-name' })}
             </div>
+            {field(t.auth_email, email, setEmail, fieldErrors.email, { type: 'email', placeholder: 'luca@esempio.com', autoComplete: 'email' })}
+            {field(t.auth_password, password, setPassword, fieldErrors.password, { type: 'password', placeholder: 'Min. 8 caratteri', autoComplete: 'new-password' })}
+            {field(t.auth_confirm_password, confirmPassword, setConfirmPassword, fieldErrors.confirmPassword, { type: 'password', placeholder: 'Ripeti la password', autoComplete: 'new-password' })}
 
-            <Input
-              label="Email Address"
-              type="email"
-              placeholder="luca@example.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              error={fieldErrors.email}
-              required
-              autoComplete="email"
-            />
-
-            <Input
-              label="Password"
-              type="password"
-              placeholder="Min. 8 characters"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              error={fieldErrors.password}
-              required
-              autoComplete="new-password"
-              helperText="At least 8 characters"
-            />
-
-            <Input
-              label="Confirm Password"
-              type="password"
-              placeholder="Repeat your password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              error={fieldErrors.confirmPassword}
-              required
-              autoComplete="new-password"
-            />
-
-            <Button
+            <button
               type="submit"
-              variant="primary"
-              size="lg"
-              loading={loading}
-              className="w-full mt-2"
+              disabled={loading}
+              className="mt-2 bg-blue-primary text-white font-bold py-4 rounded-2xl hover:bg-blue-hover transition-all shadow-blue-sm disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 active:scale-[0.98]"
             >
-              Create Account
-            </Button>
+              {loading && <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />}
+              {t.auth_register_btn}
+            </button>
           </form>
 
-          <div className="mt-6 text-center border-t border-[#2d5a3d] pt-5">
-            <p className="text-gray-400 text-sm">
-              Already have an account?{' '}
-              <Link
-                href="/auth/login"
-                className="text-[#d4af37] font-semibold hover:text-[#f0d060] transition-colors"
-              >
-                Sign in
+          <div className="mt-6 text-center pt-5 border-t border-white/[0.06]">
+            <p className="text-slate-500 text-sm">
+              {t.auth_has_account}{' '}
+              <Link href="/auth/login" className="text-blue-light font-semibold hover:text-white transition-colors">
+                {t.auth_login_link}
               </Link>
             </p>
           </div>

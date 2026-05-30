@@ -174,10 +174,10 @@ export default function AdminResultsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#0f2318] flex items-center justify-center">
-        <div className="flex flex-col items-center gap-4">
-          <div className="w-10 h-10 border-2 border-[#d4af37] border-t-transparent rounded-full animate-spin" />
-          <p className="text-gray-400 text-sm">Loading matches...</p>
+      <div className="min-h-screen bg-night flex items-center justify-center">
+        <div className="flex flex-col items-center gap-3">
+          <div className="w-10 h-10 border-2 border-blue-primary border-t-transparent rounded-full animate-spin" />
+          <p className="text-slate-400 text-sm">Caricamento partite...</p>
         </div>
       </div>
     )
@@ -185,8 +185,8 @@ export default function AdminResultsPage() {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-[#0f2318] flex items-center justify-center px-4">
-        <div className="bg-red-900/30 border border-red-700/50 rounded-xl p-6 max-w-md text-center">
+      <div className="min-h-screen bg-night flex items-center justify-center px-4">
+        <div className="glass rounded-2xl p-6 max-w-md text-center">
           <p className="text-red-400 font-semibold">{error}</p>
         </div>
       </div>
@@ -194,23 +194,20 @@ export default function AdminResultsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#0f2318]">
+    <div className="min-h-screen bg-night">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="flex items-center gap-3 mb-2">
-          <a
-            href="/admin"
-            className="text-sm text-gray-400 hover:text-[#d4af37] transition-colors"
-          >
+          <a href="/admin" className="text-sm text-slate-500 hover:text-blue-light transition-colors">
             ← Admin
           </a>
         </div>
         <div className="mb-6">
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-white">
-            Enter <span className="text-[#d4af37]">Match Results</span>
+          <h1 className="text-2xl sm:text-3xl font-syne font-black text-white">
+            Risultati <span className="gradient-text-ai">Partite</span>
           </h1>
-          <p className="text-gray-400 text-sm mt-1">
-            Save a result to automatically recompute all user scores.
+          <p className="text-slate-500 text-sm mt-1">
+            Salva un risultato per ricalcolare automaticamente i punteggi.
           </p>
         </div>
 
@@ -225,8 +222,8 @@ export default function AdminResultsPage() {
                   onClick={() => setActiveStage(stage)}
                   className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-150 ${
                     isActive
-                      ? 'bg-[#d4af37] text-[#0f2318]'
-                      : 'bg-[#1a3d2b]/50 border border-[#2d5a3d] text-gray-300 hover:border-[#d4af37]/50'
+                      ? 'bg-blue-primary text-white shadow-blue-sm'
+                      : 'bg-night-2 text-slate-400 hover:bg-night-3 hover:text-white'
                   }`}
                 >
                   {label}
@@ -245,22 +242,19 @@ export default function AdminResultsPage() {
             const isKnockout = match.stage !== 'group'
 
             return (
-              <div
-                key={match.id}
-                className="bg-[#1a3d2b]/50 border border-[#2d5a3d] rounded-xl p-4"
-              >
+              <div key={match.id} className="glass rounded-2xl p-4">
                 {/* Match header */}
                 <div className="flex flex-wrap items-center gap-2 mb-4">
-                  <span className="text-xs text-gray-500 font-medium">#{match.match_number}</span>
-                  <span className="text-xs bg-[#0f2318]/60 border border-[#2d5a3d] rounded-full px-2 py-0.5 text-gray-400">
+                  <span className="text-xs text-slate-600 font-medium tabular-nums">#{match.match_number}</span>
+                  <span className="text-xs bg-blue-dim text-blue-light rounded-full px-2 py-0.5 font-semibold">
                     {match.stage.toUpperCase()}
                   </span>
                   {match.group && (
-                    <span className="text-xs text-[#d4af37]">Group {match.group.name}</span>
+                    <span className="text-xs text-amber-accent font-medium">Gruppo {match.group.name}</span>
                   )}
                   {match.scheduled_at && (
-                    <span className="text-xs text-gray-600 ml-auto">
-                      {new Date(match.scheduled_at).toLocaleDateString('en-GB', {
+                    <span className="text-xs text-slate-600 ml-auto">
+                      {new Date(match.scheduled_at).toLocaleDateString('it-IT', {
                         day: 'numeric',
                         month: 'short',
                         year: 'numeric',
@@ -274,11 +268,10 @@ export default function AdminResultsPage() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 items-end">
                   {/* Home team + score */}
                   <div>
-                    <label className="block text-xs text-gray-400 mb-1.5 font-medium">
+                    <label className="block text-xs text-slate-500 mb-1.5 font-medium">
                       {match.home_team
                         ? `${match.home_team.flag_emoji} ${match.home_team.name}`
-                        : 'Home Team'}{' '}
-                      (Home)
+                        : 'Casa'}
                     </label>
                     <input
                       type="number"
@@ -287,17 +280,16 @@ export default function AdminResultsPage() {
                       value={form.homeScore}
                       onChange={(e) => updateForm(match.id, 'homeScore', e.target.value)}
                       placeholder="—"
-                      className="w-full bg-[#0f2318] border border-[#2d5a3d] rounded-lg px-3 py-2 text-white text-center text-lg font-bold focus:border-[#d4af37] focus:outline-none"
+                      className="w-full bg-night-1 rounded-xl px-3 py-2 text-white text-center text-lg font-bold focus:outline-none focus:ring-2 focus:ring-blue-primary/50 tabular-nums"
                     />
                   </div>
 
                   {/* Away team + score */}
                   <div>
-                    <label className="block text-xs text-gray-400 mb-1.5 font-medium">
+                    <label className="block text-xs text-slate-500 mb-1.5 font-medium">
                       {match.away_team
                         ? `${match.away_team.flag_emoji} ${match.away_team.name}`
-                        : 'Away Team'}{' '}
-                      (Away)
+                        : 'Ospite'}
                     </label>
                     <input
                       type="number"
@@ -306,16 +298,14 @@ export default function AdminResultsPage() {
                       value={form.awayScore}
                       onChange={(e) => updateForm(match.id, 'awayScore', e.target.value)}
                       placeholder="—"
-                      className="w-full bg-[#0f2318] border border-[#2d5a3d] rounded-lg px-3 py-2 text-white text-center text-lg font-bold focus:border-[#d4af37] focus:outline-none"
+                      className="w-full bg-night-1 rounded-xl px-3 py-2 text-white text-center text-lg font-bold focus:outline-none focus:ring-2 focus:ring-blue-primary/50 tabular-nums"
                     />
                   </div>
 
                   {/* Knockout: penalties + winner */}
                   {isKnockout ? (
                     <div className="flex flex-col gap-2">
-                      <label className="text-xs text-gray-400 font-medium">
-                        Penalties (if drawn)
-                      </label>
+                      <label className="text-xs text-slate-500 font-medium">Rigori (se pari)</label>
                       <div className="flex gap-2 items-center">
                         <input
                           type="number"
@@ -323,31 +313,28 @@ export default function AdminResultsPage() {
                           max={99}
                           value={form.homePenalties}
                           onChange={(e) => updateForm(match.id, 'homePenalties', e.target.value)}
-                          placeholder="H"
-                          className="flex-1 bg-[#0f2318] border border-[#2d5a3d] rounded-lg px-2 py-1.5 text-white text-center text-sm focus:border-[#d4af37] focus:outline-none"
+                          placeholder="C"
+                          className="flex-1 bg-night-1 rounded-xl px-2 py-1.5 text-white text-center text-sm focus:outline-none focus:ring-2 focus:ring-blue-primary/50 tabular-nums"
                         />
-                        <span className="text-gray-600 text-sm">–</span>
+                        <span className="text-slate-700 text-sm">–</span>
                         <input
                           type="number"
                           min={0}
                           max={99}
                           value={form.awayPenalties}
                           onChange={(e) => updateForm(match.id, 'awayPenalties', e.target.value)}
-                          placeholder="A"
-                          className="flex-1 bg-[#0f2318] border border-[#2d5a3d] rounded-lg px-2 py-1.5 text-white text-center text-sm focus:border-[#d4af37] focus:outline-none"
+                          placeholder="O"
+                          className="flex-1 bg-night-1 rounded-xl px-2 py-1.5 text-white text-center text-sm focus:outline-none focus:ring-2 focus:ring-blue-primary/50 tabular-nums"
                         />
                       </div>
-                      {/* Winner selector */}
                       <div>
-                        <label className="text-xs text-gray-400 font-medium block mb-1">
-                          Winner
-                        </label>
+                        <label className="text-xs text-slate-500 font-medium block mb-1">Vincitore</label>
                         <select
                           value={form.winnerId}
                           onChange={(e) => updateForm(match.id, 'winnerId', e.target.value)}
-                          className="w-full bg-[#0f2318] border border-[#2d5a3d] rounded-lg px-3 py-1.5 text-white text-sm focus:border-[#d4af37] focus:outline-none"
+                          className="w-full bg-night-1 rounded-xl px-3 py-1.5 text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-primary/50"
                         >
-                          <option value="">— Select winner —</option>
+                          <option value="">— Seleziona vincitore —</option>
                           {match.home_team && (
                             <option value={match.home_team_id ?? ''}>
                               {match.home_team.flag_emoji} {match.home_team.name}
@@ -367,31 +354,29 @@ export default function AdminResultsPage() {
 
                   {/* Status + save */}
                   <div className="flex flex-col gap-2">
-                    <label className="text-xs text-gray-400 font-medium">Status</label>
+                    <label className="text-xs text-slate-500 font-medium">Stato</label>
                     <select
                       value={form.status}
-                      onChange={(e) =>
-                        updateForm(match.id, 'status', e.target.value as MatchStatus)
-                      }
-                      className="w-full bg-[#0f2318] border border-[#2d5a3d] rounded-lg px-3 py-1.5 text-white text-sm focus:border-[#d4af37] focus:outline-none"
+                      onChange={(e) => updateForm(match.id, 'status', e.target.value as MatchStatus)}
+                      className="w-full bg-night-1 rounded-xl px-3 py-1.5 text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-primary/50"
                     >
-                      <option value="upcoming">Upcoming</option>
-                      <option value="live">Live</option>
-                      <option value="completed">Completed</option>
+                      <option value="upcoming">In programma</option>
+                      <option value="live">In corso</option>
+                      <option value="completed">Terminata</option>
                     </select>
 
                     <button
                       onClick={() => handleSave(match.id)}
                       disabled={isSaving}
-                      className="w-full flex items-center justify-center gap-2 bg-[#d4af37] text-[#0f2318] font-bold py-2 px-4 rounded-lg hover:bg-[#f0d060] transition-colors duration-150 disabled:opacity-60 disabled:cursor-not-allowed text-sm"
+                      className="w-full flex items-center justify-center gap-2 bg-blue-primary text-white font-bold py-2 px-4 rounded-xl hover:bg-blue-hover shadow-blue-sm transition-all duration-150 disabled:opacity-60 disabled:cursor-not-allowed text-sm active:scale-95"
                     >
                       {isSaving ? (
                         <>
-                          <span className="w-4 h-4 border-2 border-[#0f2318] border-t-transparent rounded-full animate-spin" />
-                          Saving...
+                          <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                          Salvataggio...
                         </>
                       ) : (
-                        'Save Result'
+                        'Salva Risultato'
                       )}
                     </button>
                   </div>
@@ -399,23 +384,23 @@ export default function AdminResultsPage() {
 
                 {/* Current stored result */}
                 {match.status === 'completed' && (
-                  <div className="mt-3 pt-3 border-t border-[#2d5a3d] flex items-center gap-2 text-xs">
-                    <span className="text-gray-500">Saved:</span>
-                    <span className="text-white font-semibold">
-                      {match.home_team?.code ?? 'Home'} {match.home_score} – {match.away_score}{' '}
-                      {match.away_team?.code ?? 'Away'}
+                  <div className="mt-3 pt-3 border-t border-white/[0.06] flex flex-wrap items-center gap-2 text-xs">
+                    <span className="text-slate-600">Salvato:</span>
+                    <span className="text-white font-semibold tabular-nums">
+                      {match.home_team?.code ?? 'Casa'} {match.home_score} – {match.away_score}{' '}
+                      {match.away_team?.code ?? 'Ospite'}
                     </span>
                     {match.winner && (
                       <>
-                        <span className="text-gray-600">·</span>
-                        <span className="text-green-400">
-                          Winner: {match.winner.flag_emoji} {match.winner.name}
+                        <span className="text-slate-700">·</span>
+                        <span className="text-emerald-400">
+                          Vincitore: {match.winner.flag_emoji} {match.winner.name}
                         </span>
                       </>
                     )}
                     {match.home_penalties !== null && (
-                      <span className="text-gray-500">
-                        (pens {match.home_penalties}–{match.away_penalties})
+                      <span className="text-slate-600">
+                        (rig. {match.home_penalties}–{match.away_penalties})
                       </span>
                     )}
                   </div>
@@ -427,7 +412,7 @@ export default function AdminResultsPage() {
 
         {filteredMatches.length === 0 && (
           <div className="text-center py-12">
-            <p className="text-gray-500">No matches found for this stage.</p>
+            <p className="text-slate-600">Nessuna partita trovata per questa fase.</p>
           </div>
         )}
       </div>

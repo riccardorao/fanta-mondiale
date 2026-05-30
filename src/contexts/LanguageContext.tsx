@@ -1,0 +1,374 @@
+'use client'
+
+import { createContext, useContext, useState, useEffect, ReactNode } from 'react'
+
+export type Lang = 'it' | 'en'
+
+const translations = {
+  it: {
+    // Nav
+    nav_dashboard: 'Dashboard',
+    nav_predictions: 'I miei pronostici',
+    nav_bracket: 'Bracket',
+    nav_leaderboard: 'Classifica',
+    nav_login: 'Accedi',
+    nav_register: 'Registrati',
+    nav_logout: 'Esci',
+
+    // Home
+    home_badge: 'Coppa del Mondo FIFA 2026',
+    home_subtitle: 'USA · Canada · Messico',
+    home_title1: 'Coppa del Mondo',
+    home_title2: '2026',
+    home_tagline: 'Gioco di pronostici',
+    home_desc: 'Pronostica ogni partita della fase a gironi, costruisci il tuo bracket completo. Sfida gli amici — il pronosticatore più preciso vince.',
+    home_cta_join: '🏆 Partecipa — È gratis',
+    home_cta_bracket: '📊 Vedi il Bracket',
+    home_countdown_label: 'Il torneo inizia tra',
+    home_countdown_start: '11 Giugno 2026 — Partita inaugurale',
+    home_how_works: 'Come funziona',
+    home_scoring_title: 'Punteggio',
+    home_scoring_subtitle: 'I punti vengono assegnati automaticamente con i risultati ufficiali',
+    home_cta_start: 'Inizia a pronosticare',
+    home_footer: 'Fantaid 2026 — Un gioco di pronostici. Non affiliato con la FIFA.',
+    home_feat1_title: 'Pronostica le partite',
+    home_feat1_desc: 'Scegli il risultato (1/X/2) per tutte le partite della fase a gironi. Indovina anche il risultato esatto per punti bonus.',
+    home_feat2_title: 'Costruisci il bracket',
+    home_feat2_desc: 'Completa il bracket knockout dagli Ottavi fino alla Finale. Scegli i vincitori di ogni match.',
+    home_feat3_title: 'Competi e vinci',
+    home_feat3_desc: 'Segui il tuo ranking in tempo reale. I punti vengono calcolati automaticamente con i risultati.',
+    home_ready: 'Pronto a mettere alla prova le tue conoscenze?',
+
+    // Auth
+    auth_login_title: 'Bentornato',
+    auth_login_subtitle: 'Accedi per gestire i tuoi pronostici',
+    auth_login_btn: 'Accedi',
+    auth_no_account: 'Non hai un account?',
+    auth_register_link: 'Registrati gratis',
+    auth_email: 'Indirizzo email',
+    auth_password: 'Password',
+    auth_forgot: 'Password dimenticata?',
+    auth_register_title: 'Crea account',
+    auth_register_subtitle: 'Unisciti a Fantaid 2026 e inizia a pronosticare',
+    auth_register_btn: 'Crea account',
+    auth_first_name: 'Nome',
+    auth_last_name: 'Cognome',
+    auth_confirm_password: 'Conferma password',
+    auth_has_account: 'Hai già un account?',
+    auth_login_link: 'Accedi',
+    auth_check_email_title: 'Controlla la tua email',
+    auth_check_email_desc: 'Abbiamo inviato un link di verifica a',
+    auth_check_email_sub: 'Clicca il link nella email per verificare il tuo account e iniziare a pronosticare!',
+    auth_back_login: '← Torna al login',
+
+    // Dashboard
+    dash_welcome: 'Bentornato,',
+    dash_overview: 'Ecco il riepilogo di Fantaid 2026.',
+    dash_locked: 'I pronostici sono bloccati',
+    dash_locked_sub: 'Il termine per i pronostici è passato. Puoi ancora vedere i risultati.',
+    dash_total_pts: 'Punti Totali',
+    dash_rank: 'Posizione',
+    dash_group_picks: 'Gironi',
+    dash_bracket_picks: 'Bracket',
+    dash_pts_breakdown: 'Dettaglio Punti',
+    dash_group: 'Gironi',
+    dash_exact: 'Esatti',
+    dash_r32: 'R32',
+    dash_r16: 'Ottavi',
+    dash_qf: 'Quarti',
+    dash_sf: 'Semifinali',
+    dash_final: 'Finale',
+    dash_quick_actions: 'Accesso rapido',
+    dash_predict_groups: 'Pronostica i gironi',
+    dash_predict_groups_sub: 'pronostici fatti',
+    dash_build_bracket: 'Costruisci il Bracket',
+    dash_build_bracket_sub: 'scelte bracket',
+    dash_view_leaderboard: 'Classifica',
+    dash_view_leaderboard_sub: 'Vedi dove sei',
+    dash_ranked: 'Sei al posto',
+    dash_continue: 'Continua →',
+    dash_review: 'Rivedi →',
+    dash_view: 'Vedi →',
+    dash_upcoming: 'Prossime partite',
+    dash_admin_title: 'Pannello Admin',
+    dash_admin_sub: 'Gestisci i risultati e i dati',
+    dash_go_admin: 'Vai all\'admin →',
+
+    // Predictions
+    pred_group_title: 'Pronostici Gironi',
+    pred_group_subtitle: 'Pronostica il risultato di tutte le 72 partite',
+    pred_bracket_title: 'Bracket Knockout',
+    pred_bracket_subtitle: 'Scegli il vincitore di ogni match knockout',
+    pred_saving: 'Salvataggio...',
+    pred_locked: '🔒 Pronostici bloccati',
+    pred_locked_msg: 'Il termine è passato. I tuoi pronostici sono mostrati qui sotto.',
+    pred_bracket_pts: 'Punti Bracket',
+    pred_picks_made: 'Scelte',
+    pred_goalscorer_title: 'Capocannoniere',
+    pred_goalscorer_subtitle: 'Chi segnerà di più nel torneo? (+50 punti)',
+    pred_goalscorer_placeholder: 'Es. Erling Haaland',
+    pred_goalscorer_save: 'Salva pronostico',
+    pred_standings_title: 'Classifica finale',
+    pred_standings_subtitle: 'Pronostica le prime 4 squadre (+100/85/65/50 punti)',
+
+    // Leaderboard
+    lb_title: 'Classifica',
+    lb_subtitle: 'Gioco di pronostici Coppa del Mondo 2026',
+    lb_participants: 'partecipanti',
+    lb_your_pos: 'La tua posizione',
+    lb_no_results: 'Nessun risultato ancora.',
+    lb_no_results_sub: 'La classifica si aggiornerà con i risultati delle partite.',
+    lb_rank: 'Pos.',
+    lb_player: 'Giocatore',
+    lb_total: 'Totale',
+    lb_group: 'Gironi',
+    lb_exact: 'Esatti',
+    lb_r16: 'Ottavi',
+    lb_qf: 'Quarti',
+    lb_sf: 'Semifinali',
+    lb_final: 'Finale',
+    lb_prev: '← Precedente',
+    lb_next: 'Successivo →',
+    lb_page: 'Pagina',
+    lb_of: 'di',
+
+    // Scoring labels
+    pts: 'pts',
+    score_group_result: 'Risultato indovinato (gironi)',
+    score_group_position: 'Posizione nel girone indovinata',
+    score_exact: 'Risultato esatto (bonus)',
+    score_r16_correct: 'Ottavi — posizione indovinata',
+    score_r16_wrong: 'Ottavi — posizione sbagliata',
+    score_qf_correct: 'Quarti — posizione indovinata',
+    score_qf_wrong: 'Quarti — posizione sbagliata',
+    score_sf_correct: 'Semifinale — posizione indovinata',
+    score_sf_wrong: 'Semifinale — posizione sbagliata',
+    score_final_correct: 'Finalista vincente indovinato',
+    score_final_wrong: 'Finalista sbagliato',
+    score_1st: '1° Classificato indovinato',
+    score_2nd: '2° Classificato indovinato',
+    score_3rd: '3° Classificato indovinato',
+    score_4th: '4° Classificato indovinato',
+    score_goalscorer: 'Capocannoniere',
+
+    // Admin
+    admin_title: 'Admin',
+    admin_subtitle: 'Gestisci il torneo Fantaid 2026.',
+    admin_enter_results: 'Inserisci Risultati',
+    admin_enter_results_desc: 'Aggiorna punteggi e risultati. I punti vengono ricalcolati automaticamente.',
+    admin_public_bracket: 'Bracket Pubblico',
+    admin_public_bracket_desc: 'Vedi il bracket come appare a tutti gli utenti.',
+    admin_view_lb: 'Classifica',
+    admin_view_lb_desc: 'Controlla la classifica attuale.',
+    admin_progress: 'Avanzamento Torneo',
+    admin_matches_completed: 'partite completate',
+    admin_total: 'Totali',
+    admin_completed: 'Completate',
+    admin_live: 'In corso',
+    admin_users: 'Utenti',
+    admin_group_picks: 'Scelte Gironi',
+    admin_bracket_picks: 'Scelte Bracket',
+  },
+  en: {
+    // Nav
+    nav_dashboard: 'Dashboard',
+    nav_predictions: 'My Predictions',
+    nav_bracket: 'Bracket',
+    nav_leaderboard: 'Leaderboard',
+    nav_login: 'Login',
+    nav_register: 'Register',
+    nav_logout: 'Logout',
+
+    // Home
+    home_badge: 'FIFA World Cup 2026',
+    home_subtitle: 'USA · Canada · Mexico',
+    home_title1: 'World Cup',
+    home_title2: '2026',
+    home_tagline: 'Bracket Prediction Game',
+    home_desc: 'Predict every group stage result, build your complete knockout bracket. Compete with friends — the most accurate predictor wins.',
+    home_cta_join: '🏆 Join Now — It\'s Free',
+    home_cta_bracket: '📊 View Bracket',
+    home_countdown_label: 'Tournament Starts In',
+    home_countdown_start: 'June 11, 2026 — Opening Match',
+    home_how_works: 'How It Works',
+    home_scoring_title: 'Scoring',
+    home_scoring_subtitle: 'Points are awarded automatically as official results come in',
+    home_cta_start: 'Start Predicting',
+    home_footer: 'Fantaid 2026 — A fan prediction game. Not affiliated with FIFA.',
+    home_feat1_title: 'Predict Matches',
+    home_feat1_desc: 'Pick the outcome (1/X/2) for all group stage games. Guess the exact score for bonus points.',
+    home_feat2_title: 'Build your Bracket',
+    home_feat2_desc: 'Complete the full knockout bracket from the Round of 16 to the Final. Select winners of every match.',
+    home_feat3_title: 'Compete & Win',
+    home_feat3_desc: 'Track your rank in real-time on the leaderboard. Points calculated automatically as results come in.',
+    home_ready: 'Ready to test your football knowledge?',
+
+    // Auth
+    auth_login_title: 'Welcome Back',
+    auth_login_subtitle: 'Sign in to manage your predictions',
+    auth_login_btn: 'Sign In',
+    auth_no_account: "Don't have an account?",
+    auth_register_link: 'Register free',
+    auth_email: 'Email Address',
+    auth_password: 'Password',
+    auth_forgot: 'Forgot password?',
+    auth_register_title: 'Create Account',
+    auth_register_subtitle: 'Join Fantaid 2026 and start predicting',
+    auth_register_btn: 'Create Account',
+    auth_first_name: 'First Name',
+    auth_last_name: 'Last Name',
+    auth_confirm_password: 'Confirm Password',
+    auth_has_account: 'Already have an account?',
+    auth_login_link: 'Sign in',
+    auth_check_email_title: 'Check Your Email',
+    auth_check_email_desc: 'We sent a verification link to',
+    auth_check_email_sub: 'Click the link in the email to verify your account and start predicting!',
+    auth_back_login: '← Back to Login',
+
+    // Dashboard
+    dash_welcome: 'Welcome back,',
+    dash_overview: "Here's your Fantaid 2026 overview.",
+    dash_locked: 'Predictions are now locked',
+    dash_locked_sub: 'The prediction deadline has passed. You can still view results.',
+    dash_total_pts: 'Total Points',
+    dash_rank: 'Rank',
+    dash_group_picks: 'Group Picks',
+    dash_bracket_picks: 'Bracket Picks',
+    dash_pts_breakdown: 'Points Breakdown',
+    dash_group: 'Group',
+    dash_exact: 'Exact',
+    dash_r32: 'R32',
+    dash_r16: 'R16',
+    dash_qf: 'QF',
+    dash_sf: 'SF',
+    dash_final: 'Final',
+    dash_quick_actions: 'Quick Actions',
+    dash_predict_groups: 'Predict Group Games',
+    dash_predict_groups_sub: 'predictions made',
+    dash_build_bracket: 'Build Bracket',
+    dash_build_bracket_sub: 'bracket picks made',
+    dash_view_leaderboard: 'Leaderboard',
+    dash_view_leaderboard_sub: 'See where you stand',
+    dash_ranked: "You're ranked",
+    dash_continue: 'Continue →',
+    dash_review: 'Review →',
+    dash_view: 'View →',
+    dash_upcoming: 'Upcoming Matches',
+    dash_admin_title: 'Admin Panel',
+    dash_admin_sub: 'Manage match results and user data',
+    dash_go_admin: 'Go to Admin →',
+
+    // Predictions
+    pred_group_title: 'Group Stage Predictions',
+    pred_group_subtitle: 'Predict the outcome of all 72 group stage matches',
+    pred_bracket_title: 'Knockout Bracket',
+    pred_bracket_subtitle: 'Pick the winner of every knockout match',
+    pred_saving: 'Saving...',
+    pred_locked: '🔒 Predictions Locked',
+    pred_locked_msg: 'The deadline has passed. Your saved predictions are shown below.',
+    pred_bracket_pts: 'Bracket Points',
+    pred_picks_made: 'Picks Made',
+    pred_goalscorer_title: 'Top Goalscorer',
+    pred_goalscorer_subtitle: 'Who will score the most in the tournament? (+50 points)',
+    pred_goalscorer_placeholder: 'e.g. Erling Haaland',
+    pred_goalscorer_save: 'Save prediction',
+    pred_standings_title: 'Final Standings',
+    pred_standings_subtitle: 'Predict the top 4 teams (+100/85/65/50 points)',
+
+    // Leaderboard
+    lb_title: 'Leaderboard',
+    lb_subtitle: 'FIFA World Cup 2026 Prediction Game',
+    lb_participants: 'participants',
+    lb_your_pos: 'Your position',
+    lb_no_results: 'No results yet.',
+    lb_no_results_sub: 'The leaderboard will populate once matches are played.',
+    lb_rank: 'Rank',
+    lb_player: 'Player',
+    lb_total: 'Total',
+    lb_group: 'Group',
+    lb_exact: 'Exact',
+    lb_r16: 'R16',
+    lb_qf: 'QF',
+    lb_sf: 'SF',
+    lb_final: 'Final',
+    lb_prev: '← Previous',
+    lb_next: 'Next →',
+    lb_page: 'Page',
+    lb_of: 'of',
+
+    // Scoring labels
+    pts: 'pts',
+    score_group_result: 'Correct result (group stage)',
+    score_group_position: 'Correct group finish position',
+    score_exact: 'Exact score (bonus)',
+    score_r16_correct: 'Round of 16 — correct position',
+    score_r16_wrong: 'Round of 16 — wrong position',
+    score_qf_correct: 'Quarter-final — correct position',
+    score_qf_wrong: 'Quarter-final — wrong position',
+    score_sf_correct: 'Semi-final — correct position',
+    score_sf_wrong: 'Semi-final — wrong position',
+    score_final_correct: 'Correct finalist wins',
+    score_final_wrong: 'Wrong finalist',
+    score_1st: '1st place correct',
+    score_2nd: '2nd place correct',
+    score_3rd: '3rd place correct',
+    score_4th: '4th place correct',
+    score_goalscorer: 'Top goalscorer',
+
+    // Admin
+    admin_title: 'Admin',
+    admin_subtitle: 'Manage the Fantaid 2026 tournament.',
+    admin_enter_results: 'Enter Match Results',
+    admin_enter_results_desc: 'Update scores and results. Points are recomputed automatically.',
+    admin_public_bracket: 'Public Bracket',
+    admin_public_bracket_desc: 'See the current bracket as it appears to all users.',
+    admin_view_lb: 'Leaderboard',
+    admin_view_lb_desc: 'Check the current rankings.',
+    admin_progress: 'Tournament Progress',
+    admin_matches_completed: 'matches completed',
+    admin_total: 'Total',
+    admin_completed: 'Completed',
+    admin_live: 'Live',
+    admin_users: 'Users',
+    admin_group_picks: 'Group Picks',
+    admin_bracket_picks: 'Bracket Picks',
+  },
+}
+
+export type Translations = typeof translations.it
+
+interface LangContextType {
+  lang: Lang
+  setLang: (l: Lang) => void
+  t: Translations
+}
+
+const LangContext = createContext<LangContextType>({
+  lang: 'it',
+  setLang: () => {},
+  t: translations.it,
+})
+
+export function LanguageProvider({ children }: { children: ReactNode }) {
+  const [lang, setLangState] = useState<Lang>('it')
+
+  useEffect(() => {
+    const stored = localStorage.getItem('fantaid_lang') as Lang
+    if (stored === 'it' || stored === 'en') setLangState(stored)
+  }, [])
+
+  const setLang = (l: Lang) => {
+    setLangState(l)
+    localStorage.setItem('fantaid_lang', l)
+  }
+
+  return (
+    <LangContext.Provider value={{ lang, setLang, t: translations[lang] }}>
+      {children}
+    </LangContext.Provider>
+  )
+}
+
+export function useLang() {
+  return useContext(LangContext)
+}

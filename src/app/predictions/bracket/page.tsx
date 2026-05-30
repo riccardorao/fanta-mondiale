@@ -136,10 +136,10 @@ export default function BracketPredictionsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#0f2318] flex items-center justify-center">
-        <div className="flex flex-col items-center gap-4">
-          <div className="w-10 h-10 border-2 border-[#d4af37] border-t-transparent rounded-full animate-spin" />
-          <p className="text-gray-400 text-sm">Loading bracket...</p>
+      <div className="min-h-screen bg-night flex items-center justify-center">
+        <div className="flex flex-col items-center gap-3">
+          <div className="w-10 h-10 border-2 border-blue-primary border-t-transparent rounded-full animate-spin" />
+          <p className="text-slate-400 text-sm">Caricamento bracket...</p>
         </div>
       </div>
     )
@@ -147,8 +147,8 @@ export default function BracketPredictionsPage() {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-[#0f2318] flex items-center justify-center px-4">
-        <div className="bg-red-900/30 border border-red-700/50 rounded-xl p-6 max-w-md text-center">
+      <div className="min-h-screen bg-night flex items-center justify-center px-4">
+        <div className="glass rounded-2xl p-6 max-w-md text-center">
           <p className="text-red-400 font-semibold">{error}</p>
         </div>
       </div>
@@ -156,75 +156,59 @@ export default function BracketPredictionsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#0f2318]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="min-h-screen bg-night">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-6">
           <div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-white">
-              Knockout <span className="text-[#d4af37]">Bracket</span>
+            <h1 className="text-2xl sm:text-3xl font-syne font-black text-white">
+              Bracket <span className="gradient-text-ai">Knockout</span>
             </h1>
-            <p className="text-gray-400 text-sm mt-1">
-              Pick the winner of every knockout match
-            </p>
+            <p className="text-slate-500 text-sm mt-1">Scegli il vincitore di ogni match</p>
           </div>
           <div className="flex flex-wrap items-center gap-3">
-            {locked && (
-              <span className="text-xs text-amber-400 font-semibold flex items-center gap-1">
-                🔒 Predictions Locked
-              </span>
-            )}
-            <div className="bg-[#1a3d2b]/50 border border-[#2d5a3d] rounded-xl px-4 py-2 text-center">
-              <p className="text-xs text-gray-500 uppercase tracking-wide">Bracket Points</p>
-              <p className="text-2xl font-bold text-[#d4af37]">{computedPoints}</p>
+            {locked && <span className="text-xs text-amber-accent font-semibold">🔒 Bloccato</span>}
+            <div className="bg-night-2 rounded-2xl px-4 py-2 text-center">
+              <p className="text-xs text-slate-500 uppercase tracking-wide">Punti Bracket</p>
+              <p className="text-2xl tabular-nums font-bold gradient-text-gold">{computedPoints}</p>
             </div>
-            <div className="bg-[#1a3d2b]/50 border border-[#2d5a3d] rounded-xl px-4 py-2 text-center">
-              <p className="text-xs text-gray-500 uppercase tracking-wide">Picks Made</p>
-              <p className="text-2xl font-bold text-white">{predictions.length}/32</p>
+            <div className="bg-night-2 rounded-2xl px-4 py-2 text-center">
+              <p className="text-xs text-slate-500 uppercase tracking-wide">Scelte</p>
+              <p className="text-2xl tabular-nums font-bold text-white">{predictions.length}<span className="text-slate-600 text-base">/32</span></p>
             </div>
           </div>
         </div>
 
         {locked && (
-          <div className="bg-amber-900/20 border border-amber-700/40 rounded-xl px-4 py-3 mb-5 text-amber-400 text-sm flex items-center gap-2">
-            🔒 The prediction deadline has passed. Your locked-in bracket predictions are shown below.
+          <div className="bg-amber-accent/10 rounded-2xl px-4 py-3 mb-5 text-amber-accent text-sm flex items-center gap-2">
+            🔒 La scadenza è passata. Il tuo bracket è mostrato qui sotto.
           </div>
         )}
 
         {/* Stage points legend */}
         <div className="flex flex-wrap gap-2 mb-6">
           {STAGE_CONFIG.map(({ stage, label }) => (
-            <div
-              key={stage}
-              className="bg-[#1a3d2b]/40 border border-[#2d5a3d] rounded-lg px-3 py-1.5 text-xs flex items-center gap-1.5"
-            >
-              <span className="text-gray-400">{label}</span>
-              <span className="text-[#d4af37] font-bold">{STAGE_POINTS[stage]} pts</span>
+            <div key={stage} className="bg-night-2 rounded-xl px-3 py-1.5 text-xs flex items-center gap-1.5">
+              <span className="text-slate-500">{label}</span>
+              <span className="text-blue-light font-bold">{STAGE_POINTS[stage]}</span>
             </div>
           ))}
         </div>
 
         {/* Bracket rounds */}
         <div className="overflow-x-auto pb-4">
-          <div className="flex gap-6 min-w-max">
+          <div className="flex gap-4 min-w-max">
             {STAGE_CONFIG.map(({ stage, label }) => {
               const stageMatches = matches.filter((m) => m.stage === stage)
               if (stageMatches.length === 0) return null
-
               return (
                 <div key={stage} className="flex flex-col gap-2">
                   <div className="text-center mb-3">
-                    <span className="text-xs font-bold text-[#d4af37] uppercase tracking-wider">
-                      {label}
-                    </span>
-                    <div className="text-xs text-gray-600">{STAGE_POINTS[stage]} pts each</div>
+                    <span className="text-xs font-bold text-blue-light uppercase tracking-wider">{label}</span>
+                    <div className="text-xs text-slate-600">{STAGE_POINTS[stage]} pt</div>
                   </div>
-                  <div
-                    className="flex flex-col gap-4"
-                    style={{
-                      justifyContent: 'space-around',
-                      height: `${stageMatches.length * 160}px`,
-                    }}
+                  <div className="flex flex-col gap-3"
+                    style={{ justifyContent: 'space-around', height: `${stageMatches.length * 160}px` }}
                   >
                     {stageMatches.map((match) => {
                       const pred = predictions.find((p) => p.match_id === match.id)
@@ -249,12 +233,10 @@ export default function BracketPredictionsPage() {
 
         {/* Third place match */}
         {thirdPlaceMatch && (
-          <div className="mt-8 border-t border-[#2d5a3d] pt-6">
-            <h2 className="text-lg font-bold text-white mb-4">
-              🥉 Third Place Match{' '}
-              <span className="text-[#d4af37] text-sm font-normal ml-2">
-                {STAGE_POINTS['third_place']} pts
-              </span>
+          <div className="mt-8 pt-6 border-t border-white/[0.06]">
+            <h2 className="text-base font-syne font-black text-white mb-4">
+              🥉 Terzo Posto
+              <span className="text-blue-light text-sm font-normal ml-2">{STAGE_POINTS['third_place']} pt</span>
             </h2>
             <div className="max-w-xs">
               <BracketMatchCard

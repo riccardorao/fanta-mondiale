@@ -9,19 +9,48 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        pitch: {
-          DEFAULT: '#0f2318',
-          light: '#1a3d2b',
-          dark: '#07140e',
+        night: {
+          DEFAULT: '#030C1A',
+          1: '#071422',
+          2: '#0D1E30',
+          3: '#15263C',
+          4: '#1C3050',
         },
-        gold: {
-          DEFAULT: '#d4af37',
-          light: '#f0d060',
-          dark: '#a88a20',
+        blue: {
+          primary: '#2563EB',
+          hover: '#1D4ED8',
+          light: '#60A5FA',
+          dim: 'rgba(37,99,235,0.15)',
+          glow: 'rgba(96,165,250,0.3)',
         },
-        navy: {
-          DEFAULT: '#0d1b2a',
-          light: '#1e3a5f',
+        amber: {
+          accent: '#F59E0B',
+          dim: 'rgba(245,158,11,0.15)',
+        },
+      },
+      fontFamily: {
+        syne: ['var(--font-syne)', 'sans-serif'],
+        inter: ['var(--font-inter)', 'sans-serif'],
+      },
+      backgroundImage: {
+        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+        'gradient-ai': 'linear-gradient(135deg, #60A5FA 0%, #818CF8 50%, #A78BFA 100%)',
+      },
+      boxShadow: {
+        'blue-sm': '0 0 12px rgba(37,99,235,0.25)',
+        'blue-md': '0 0 24px rgba(37,99,235,0.35)',
+        'blue-lg': '0 0 48px rgba(37,99,235,0.45)',
+        'glow': '0 0 20px rgba(96,165,250,0.4)',
+        'card': '0 4px 24px rgba(0,0,0,0.4)',
+      },
+      animation: {
+        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        'float': 'float 6s ease-in-out infinite',
+      },
+      keyframes: {
+        float: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-8px)' },
         },
       },
     },

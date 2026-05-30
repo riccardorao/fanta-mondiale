@@ -175,10 +175,10 @@ export default function PredictionsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#0f2318] flex items-center justify-center">
-        <div className="flex flex-col items-center gap-4">
-          <div className="w-10 h-10 border-2 border-[#d4af37] border-t-transparent rounded-full animate-spin" />
-          <p className="text-gray-400 text-sm">Loading predictions...</p>
+      <div className="min-h-screen bg-night flex items-center justify-center">
+        <div className="flex flex-col items-center gap-3">
+          <div className="w-10 h-10 border-2 border-blue-primary border-t-transparent rounded-full animate-spin" />
+          <p className="text-slate-400 text-sm">Caricamento pronostici...</p>
         </div>
       </div>
     )
@@ -186,8 +186,8 @@ export default function PredictionsPage() {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-[#0f2318] flex items-center justify-center px-4">
-        <div className="bg-red-900/30 border border-red-700/50 rounded-xl p-6 max-w-md text-center">
+      <div className="min-h-screen bg-night flex items-center justify-center px-4">
+        <div className="glass rounded-2xl p-6 max-w-md text-center">
           <p className="text-red-400 font-semibold">{error}</p>
         </div>
       </div>
@@ -195,44 +195,36 @@ export default function PredictionsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#0f2318]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="min-h-screen bg-night">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6">
           <div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-white">
-              Group Stage <span className="text-[#d4af37]">Predictions</span>
+            <h1 className="text-2xl sm:text-3xl font-syne font-black text-white">
+              Pronostici <span className="gradient-text-ai">Gironi</span>
             </h1>
-            <p className="text-gray-400 text-sm mt-1">
-              Predict the outcome of all 72 group stage matches
-            </p>
+            <p className="text-slate-500 text-sm mt-1">Pronostica tutte le 72 partite</p>
           </div>
           <div className="flex items-center gap-3">
             {saving && (
-              <div className="flex items-center gap-2 text-xs text-gray-400">
-                <div className="w-3 h-3 border border-[#d4af37] border-t-transparent rounded-full animate-spin" />
-                Saving...
+              <div className="flex items-center gap-2 text-xs text-slate-500">
+                <div className="w-3 h-3 border border-blue-light border-t-transparent rounded-full animate-spin" />
+                Salvataggio...
               </div>
             )}
-            <div className="text-sm text-gray-500">
-              {predictions.length}/72 predictions
-            </div>
-            {locked && (
-              <span className="flex items-center gap-1 text-xs text-amber-400 font-semibold">
-                🔒 Locked
-              </span>
-            )}
+            <span className="text-sm text-slate-500 tabular-nums">{predictions.length}/72</span>
+            {locked && <span className="text-xs text-amber-accent font-semibold">🔒 Bloccato</span>}
           </div>
         </div>
 
         {locked && (
-          <div className="bg-amber-900/20 border border-amber-700/40 rounded-xl px-4 py-3 mb-5 text-amber-400 text-sm flex items-center gap-2">
-            🔒 The prediction deadline has passed. Your saved predictions are shown below.
+          <div className="bg-amber-accent/10 rounded-2xl px-4 py-3 mb-5 text-amber-accent text-sm flex items-center gap-2">
+            🔒 La scadenza è passata. I tuoi pronostici salvati sono mostrati qui sotto.
           </div>
         )}
 
         {/* Group tabs */}
-        <div className="overflow-x-auto mb-6 -mx-4 px-4">
+        <div className="overflow-x-auto mb-5 -mx-4 px-4">
           <div className="flex gap-2 min-w-max pb-1">
             {groups.map((g) => {
               const myPreds = predictions.filter((p) =>
@@ -243,19 +235,15 @@ export default function PredictionsPage() {
                 <button
                   key={g.group.id}
                   onClick={() => setActiveGroupId(g.group.id)}
-                  className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-150 relative ${
+                  className={`px-4 py-2.5 rounded-xl text-sm font-semibold transition-all duration-150 ${
                     isActive
-                      ? 'bg-[#d4af37] text-[#0f2318]'
-                      : 'bg-[#1a3d2b]/50 border border-[#2d5a3d] text-gray-300 hover:border-[#d4af37]/50 hover:text-white'
+                      ? 'bg-blue-primary text-white shadow-blue-sm'
+                      : 'bg-night-2 text-slate-400 hover:bg-night-3 hover:text-white'
                   }`}
                 >
-                  Group {g.group.name}
+                  Gruppo {g.group.name}
                   {myPreds > 0 && (
-                    <span
-                      className={`ml-1.5 text-xs font-bold ${
-                        isActive ? 'text-[#0f2318]/70' : 'text-[#d4af37]'
-                      }`}
-                    >
+                    <span className={`ml-1.5 text-xs tabular-nums ${isActive ? 'text-white/70' : 'text-blue-light'}`}>
                       {myPreds}/{g.matches.length}
                     </span>
                   )}
@@ -267,10 +255,10 @@ export default function PredictionsPage() {
 
         {/* Active group content */}
         {activeGroup && (
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Standings */}
-            <div className="lg:col-span-1">
-              <div className="bg-[#1a3d2b]/50 border border-[#2d5a3d] rounded-xl p-4 sticky top-20">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            {/* Standings - sticky on desktop */}
+            <div className="lg:col-span-1 order-2 lg:order-1">
+              <div className="glass rounded-2xl p-4 lg:sticky lg:top-20">
                 <GroupStandings
                   teams={activeGroup.teams}
                   matches={activeGroup.matches}
@@ -283,7 +271,7 @@ export default function PredictionsPage() {
             </div>
 
             {/* Matches */}
-            <div className="lg:col-span-2 flex flex-col gap-4">
+            <div className="lg:col-span-2 order-1 lg:order-2 flex flex-col gap-3">
               {activeGroup.matches.map((match) => {
                 const pred = predictions.find((p) => p.match_id === match.id)
                 return (
@@ -291,9 +279,7 @@ export default function PredictionsPage() {
                     key={match.id}
                     match={match}
                     prediction={pred}
-                    onPredict={(outcome, hs, as_) =>
-                      handlePredict(match.id, outcome, hs, as_)
-                    }
+                    onPredict={(outcome, hs, as_) => handlePredict(match.id, outcome, hs, as_)}
                     locked={locked}
                     showPrediction
                     isLoggedIn
