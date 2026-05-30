@@ -14,12 +14,6 @@ const KNOCKOUT_STAGES: { stage: Stage; label: string }[] = [
   { stage: 'final', label: 'Final' },
 ]
 
-const STATUS_LABELS: Record<string, string> = {
-  upcoming: 'Upcoming',
-  live: '● LIVE',
-  completed: 'FT',
-}
-
 export default async function BracketPage() {
   const supabase = createClient()
 
@@ -47,78 +41,70 @@ export default async function BracketPage() {
   const thirdPlaceMatch = knockoutMatches.find((m) => m.stage === 'third_place')
 
   return (
-    <div className="min-h-screen bg-[#0f2318]">
+    <div className="min-h-screen bg-night">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="mb-8 text-center">
-          <h1 className="text-3xl sm:text-4xl font-extrabold text-white mb-2">
-            World Cup <span className="text-[#d4af37]">2026</span> Bracket
+          <h1 className="text-3xl sm:text-4xl font-syne font-black text-white mb-2">
+            World Cup <span className="gradient-text-gold">2026</span>
           </h1>
-          <p className="text-gray-400 text-sm">
-            Live results — updated as the tournament progresses
+          <p className="text-slate-500 text-sm">
+            Risultati in tempo reale — aggiornati durante il torneo
           </p>
         </div>
 
         {/* Group Stage */}
         <section className="mb-12">
-          <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
-            <span className="text-[#d4af37]">⚽</span> Group Stage
+          <h2 className="text-lg font-syne font-black text-white mb-5 flex items-center gap-2">
+            <span className="text-blue-light">⚽</span> Fase a Gironi
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {groups.map((group) => {
               const groupTeams = teams.filter((t) => t.group_id === group.id)
               const gMatches = groupMatches.filter((m) => m.group_id === group.id)
               return (
-                <div
-                  key={group.id}
-                  className="bg-[#1a3d2b]/50 border border-[#2d5a3d] rounded-xl p-4"
-                >
+                <div key={group.id} className="glass rounded-2xl p-4">
                   <GroupStandings
                     teams={groupTeams}
                     matches={gMatches}
                     groupName={group.name}
                     className="mb-4"
                   />
-                  <div className="border-t border-[#2d5a3d] pt-3 flex flex-col gap-2">
+                  <div className="border-t border-white/[0.06] pt-3 flex flex-col gap-2">
                     {gMatches.map((match) => (
-                      <div
-                        key={match.id}
-                        className="text-xs bg-[#0f2318]/50 rounded-lg px-3 py-2"
-                      >
+                      <div key={match.id} className="text-xs bg-night-1/50 rounded-xl px-3 py-2">
                         <div className="flex items-center justify-between mb-1">
-                          <span className="text-gray-600">{formatMatchDate(match.scheduled_at)}</span>
-                          <span
-                            className={`font-semibold ${
-                              match.status === 'live'
-                                ? 'text-red-400'
-                                : match.status === 'completed'
-                                ? 'text-green-400'
-                                : 'text-gray-600'
-                            }`}
-                          >
-                            {STATUS_LABELS[match.status]}
+                          <span className="text-slate-600">{formatMatchDate(match.scheduled_at)}</span>
+                          <span className={
+                            match.status === 'live'
+                              ? 'text-red-400 font-bold animate-pulse'
+                              : match.status === 'completed'
+                              ? 'text-emerald-400 font-semibold'
+                              : 'text-slate-600'
+                          }>
+                            {match.status === 'live' ? '● LIVE' : match.status === 'completed' ? 'FT' : 'vs'}
                           </span>
                         </div>
                         <div className="flex items-center justify-between">
-                          <span className="flex items-center gap-1 font-medium text-gray-300">
+                          <span className="flex items-center gap-1 font-medium text-slate-300">
                             <span>{match.home_team?.flag_emoji}</span>
                             <span>{match.home_team?.code ?? 'TBD'}</span>
                           </span>
                           {match.status === 'completed' ? (
-                            <span className="font-bold text-white px-2">
+                            <span className="font-bold text-white tabular-nums px-2">
                               {match.home_score} – {match.away_score}
                             </span>
                           ) : (
-                            <span className="text-gray-600 px-2">vs</span>
+                            <span className="text-slate-700 px-2 text-xs">—</span>
                           )}
-                          <span className="flex items-center gap-1 font-medium text-gray-300">
+                          <span className="flex items-center gap-1 font-medium text-slate-300">
                             <span>{match.away_team?.code ?? 'TBD'}</span>
                             <span>{match.away_team?.flag_emoji}</span>
                           </span>
                         </div>
                         {match.home_penalties !== null && match.away_penalties !== null && (
-                          <div className="text-center text-gray-600 mt-0.5">
-                            ({match.home_penalties}–{match.away_penalties} pens)
+                          <div className="text-center text-slate-600 mt-0.5">
+                            (rig. {match.home_penalties}–{match.away_penalties})
                           </div>
                         )}
                       </div>
@@ -132,8 +118,8 @@ export default async function BracketPage() {
 
         {/* Knockout Bracket */}
         <section>
-          <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
-            <span className="text-[#d4af37]">🏆</span> Knockout Bracket
+          <h2 className="text-lg font-syne font-black text-white mb-5 flex items-center gap-2">
+            <span className="text-amber-accent">🏆</span> Knockout Bracket
           </h2>
 
           <div className="overflow-x-auto pb-4">
@@ -144,16 +130,13 @@ export default async function BracketPage() {
                 return (
                   <div key={stage} className="flex flex-col">
                     <div className="text-center mb-3">
-                      <span className="text-xs font-bold text-[#d4af37] uppercase tracking-wider">
+                      <span className="text-xs font-bold text-blue-light uppercase tracking-wider">
                         {label}
                       </span>
                     </div>
                     <div
                       className="flex flex-col gap-4"
-                      style={{
-                        justifyContent: 'space-around',
-                        height: `${stageMatches.length * 160}px`,
-                      }}
+                      style={{ justifyContent: 'space-around', height: `${stageMatches.length * 160}px` }}
                     >
                       {stageMatches.map((match) => (
                         <BracketMatchCard
@@ -172,8 +155,8 @@ export default async function BracketPage() {
 
           {/* Third place */}
           {thirdPlaceMatch && (
-            <div className="mt-8 border-t border-[#2d5a3d] pt-6">
-              <h3 className="text-base font-bold text-white mb-4">🥉 Third Place Match</h3>
+            <div className="mt-8 pt-6 border-t border-white/[0.06]">
+              <h3 className="text-base font-syne font-black text-white mb-4">🥉 Terzo Posto</h3>
               <div className="max-w-xs">
                 <BracketMatchCard match={thirdPlaceMatch} locked compact={false} />
               </div>

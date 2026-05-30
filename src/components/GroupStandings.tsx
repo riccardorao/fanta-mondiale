@@ -120,77 +120,62 @@ export default function GroupStandings({
 
   return (
     <div className={cn('', className)}>
-      <div className="flex items-center justify-between mb-2">
-        <h3 className="text-sm font-bold text-[#d4af37] uppercase tracking-wide">
-          Group {groupName}
+      <div className="flex items-center justify-between mb-3">
+        <h3 className="text-sm font-syne font-bold text-blue-light uppercase tracking-wide">
+          Gruppo {groupName}
         </h3>
         {isPredicted && (
-          <span className="text-xs text-gray-500 italic">Predicted standings</span>
+          <span className="text-xs text-slate-500 italic">Stima</span>
         )}
       </div>
       <div className="overflow-x-auto">
         <table className="w-full text-xs">
           <thead>
-            <tr className="text-gray-500 uppercase border-b border-[#2d5a3d]">
-              <th className="text-left py-1.5 pr-2 font-medium w-6">#</th>
-              <th className="text-left py-1.5 font-medium">Team</th>
-              <th className="text-center py-1.5 w-8 font-medium">P</th>
-              <th className="text-center py-1.5 w-8 font-medium">W</th>
-              <th className="text-center py-1.5 w-8 font-medium">D</th>
-              <th className="text-center py-1.5 w-8 font-medium">L</th>
-              <th className="text-center py-1.5 w-10 font-medium hidden sm:table-cell">GF</th>
-              <th className="text-center py-1.5 w-10 font-medium hidden sm:table-cell">GA</th>
-              <th className="text-center py-1.5 w-10 font-medium">GD</th>
-              <th className="text-center py-1.5 w-10 font-bold">Pts</th>
+            <tr className="text-slate-600 uppercase">
+              <th className="text-left pb-2 pr-2 font-medium w-6">#</th>
+              <th className="text-left pb-2 font-medium">Squadra</th>
+              <th className="text-center pb-2 w-7 font-medium">G</th>
+              <th className="text-center pb-2 w-7 font-medium">V</th>
+              <th className="text-center pb-2 w-7 font-medium">P</th>
+              <th className="text-center pb-2 w-7 font-medium">S</th>
+              <th className="text-center pb-2 w-8 font-medium">DR</th>
+              <th className="text-center pb-2 w-8 font-bold text-slate-400">Pt</th>
             </tr>
           </thead>
           <tbody>
             {displayStandings.map((row, idx) => (
-              <tr
-                key={row.team.id}
-                className={cn(
-                  'border-b border-[#2d5a3d]/50 transition-colors',
-                  idx < 2 && 'bg-[#d4af37]/5',
-                  idx === 0 && 'bg-[#d4af37]/10'
-                )}
-              >
+              <tr key={row.team.id} className={cn(
+                'transition-colors',
+                idx < 2 && 'bg-blue-dim/30',
+              )}>
                 <td className="py-1.5 pr-2">
-                  <span
-                    className={cn(
-                      'inline-flex w-5 h-5 items-center justify-center rounded-full text-xs font-bold',
-                      idx === 0
-                        ? 'bg-[#d4af37] text-[#0f2318]'
-                        : idx === 1
-                        ? 'bg-[#1a3d2b] border border-[#d4af37]/40 text-[#d4af37]'
-                        : 'text-gray-500'
-                    )}
-                  >
+                  <span className={cn(
+                    'inline-flex w-5 h-5 items-center justify-center rounded-full text-xs font-bold tabular-nums',
+                    idx === 0 ? 'bg-blue-primary text-white' :
+                    idx === 1 ? 'bg-blue-dim text-blue-light' :
+                    'text-slate-600'
+                  )}>
                     {idx + 1}
                   </span>
                 </td>
                 <td className="py-1.5">
                   <span className="flex items-center gap-1.5">
-                    <span className="text-base leading-none">{row.team.flag_emoji}</span>
-                    <span className={cn('font-medium', idx < 2 ? 'text-white' : 'text-gray-300')}>
+                    <span className="text-sm leading-none">{row.team.flag_emoji}</span>
+                    <span className={cn('font-medium', idx < 2 ? 'text-white' : 'text-slate-400')}>
                       {row.team.code}
                     </span>
                   </span>
                 </td>
-                <td className="text-center py-1.5 text-gray-400">{row.played}</td>
-                <td className="text-center py-1.5 text-gray-300">{row.won}</td>
-                <td className="text-center py-1.5 text-gray-400">{row.drawn}</td>
-                <td className="text-center py-1.5 text-gray-400">{row.lost}</td>
-                <td className="text-center py-1.5 text-gray-400 hidden sm:table-cell">{row.gf}</td>
-                <td className="text-center py-1.5 text-gray-400 hidden sm:table-cell">{row.ga}</td>
-                <td
-                  className={cn(
-                    'text-center py-1.5',
-                    row.gd > 0 ? 'text-green-400' : row.gd < 0 ? 'text-red-400' : 'text-gray-400'
-                  )}
-                >
+                <td className="text-center py-1.5 text-slate-500 tabular-nums">{row.played}</td>
+                <td className="text-center py-1.5 text-slate-300 tabular-nums">{row.won}</td>
+                <td className="text-center py-1.5 text-slate-500 tabular-nums">{row.drawn}</td>
+                <td className="text-center py-1.5 text-slate-500 tabular-nums">{row.lost}</td>
+                <td className={cn('text-center py-1.5 tabular-nums',
+                  row.gd > 0 ? 'text-emerald-400' : row.gd < 0 ? 'text-red-400' : 'text-slate-500'
+                )}>
                   {row.gd > 0 ? '+' : ''}{row.gd}
                 </td>
-                <td className="text-center py-1.5 font-bold text-white">{row.points}</td>
+                <td className="text-center py-1.5 tabular-nums font-bold text-white">{row.points}</td>
               </tr>
             ))}
           </tbody>

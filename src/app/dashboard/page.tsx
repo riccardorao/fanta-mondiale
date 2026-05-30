@@ -82,92 +82,92 @@ export default async function DashboardPage() {
   const locked = isPredictionsLocked()
 
   return (
-    <div className="min-h-screen bg-[#0f2318]">
+    <div className="min-h-screen bg-night">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
         {/* Locked banner */}
         {locked && (
-          <div className="bg-amber-900/30 border border-amber-700/50 rounded-xl px-5 py-3 mb-6 flex items-center gap-3">
+          <div className="bg-amber-dim rounded-xl px-5 py-3 mb-6 flex items-center gap-3">
             <span className="text-xl">🔒</span>
             <div>
-              <p className="text-amber-400 font-semibold text-sm">Predictions are now locked</p>
-              <p className="text-amber-600 text-xs">The prediction deadline has passed. You can still view results and the leaderboard.</p>
+              <p className="text-amber-accent font-semibold text-sm">Pronostici bloccati</p>
+              <p className="text-amber-accent/60 text-xs">La scadenza è passata. Puoi ancora vedere i risultati e la classifica.</p>
             </div>
           </div>
         )}
 
         {/* Welcome header */}
         <div className="mb-8">
-          <h1 className="text-3xl sm:text-4xl font-extrabold text-white">
-            Welcome back,{' '}
-            <span className="text-[#d4af37]">{profile.name}!</span>
+          <h1 className="text-3xl sm:text-4xl font-syne font-black text-white">
+            Bentornato,{' '}
+            <span className="gradient-text-ai">{profile.name}!</span>
           </h1>
-          <p className="text-gray-400 mt-1">
-            Here&apos;s your Fanta Mondiale 2026 overview.
+          <p className="text-slate-400 mt-1">
+            La tua panoramica Fanta Mondiale 2026.
           </p>
         </div>
 
         {/* Stats row */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
           {/* Total Points */}
-          <div className="bg-[#1a3d2b]/50 border border-[#2d5a3d] rounded-xl p-4 text-center">
-            <p className="text-xs text-gray-500 uppercase tracking-wider font-semibold mb-1">Total Points</p>
-            <p className="text-3xl font-extrabold text-[#d4af37]">
+          <div className="glass rounded-2xl p-5 text-center shadow-card">
+            <p className="text-xs text-slate-500 uppercase tracking-wider font-semibold mb-2">Punti Totali</p>
+            <p className="text-4xl tabular-nums font-bold gradient-text-gold num-glow">
               {leaderboardEntry?.total_points ?? 0}
             </p>
           </div>
 
           {/* Rank */}
-          <div className="bg-[#1a3d2b]/50 border border-[#2d5a3d] rounded-xl p-4 text-center">
-            <p className="text-xs text-gray-500 uppercase tracking-wider font-semibold mb-1">Rank</p>
-            <p className="text-3xl font-extrabold text-white">
+          <div className="glass rounded-2xl p-5 text-center shadow-card">
+            <p className="text-xs text-slate-500 uppercase tracking-wider font-semibold mb-2">Posizione</p>
+            <p className="text-4xl tabular-nums font-bold text-white num-glow">
               {userRank !== null ? (
                 <>
                   {userRank}
-                  <sup className="text-lg text-gray-400">{getRankSuffix(userRank)}</sup>
+                  <sup className="text-lg text-slate-400">{getRankSuffix(userRank)}</sup>
                 </>
               ) : (
-                <span className="text-gray-600 text-xl">—</span>
+                <span className="text-slate-600 text-2xl">—</span>
               )}
             </p>
           </div>
 
           {/* Group Predictions */}
-          <div className="bg-[#1a3d2b]/50 border border-[#2d5a3d] rounded-xl p-4 text-center">
-            <p className="text-xs text-gray-500 uppercase tracking-wider font-semibold mb-1">Group Picks</p>
-            <p className="text-3xl font-extrabold text-white">
+          <div className="glass rounded-2xl p-5 text-center shadow-card">
+            <p className="text-xs text-slate-500 uppercase tracking-wider font-semibold mb-2">Gironi</p>
+            <p className="text-4xl tabular-nums font-bold text-white num-glow">
               {groupPredCount ?? 0}
-              <span className="text-gray-500 text-lg font-medium">/72</span>
+              <span className="text-slate-500 text-lg font-medium">/72</span>
             </p>
           </div>
 
           {/* Bracket Predictions */}
-          <div className="bg-[#1a3d2b]/50 border border-[#2d5a3d] rounded-xl p-4 text-center">
-            <p className="text-xs text-gray-500 uppercase tracking-wider font-semibold mb-1">Bracket Picks</p>
-            <p className="text-3xl font-extrabold text-white">
+          <div className="glass rounded-2xl p-5 text-center shadow-card">
+            <p className="text-xs text-slate-500 uppercase tracking-wider font-semibold mb-2">Bracket</p>
+            <p className="text-4xl tabular-nums font-bold text-white num-glow">
               {bracketPredCount ?? 0}
-              <span className="text-gray-500 text-lg font-medium">/32</span>
+              <span className="text-slate-500 text-lg font-medium">/32</span>
             </p>
           </div>
         </div>
 
         {/* Points breakdown (if any) */}
         {leaderboardEntry && leaderboardEntry.total_points > 0 && (
-          <div className="bg-[#1a3d2b]/50 border border-[#2d5a3d] rounded-xl p-5 mb-8">
-            <h2 className="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4">Points Breakdown</h2>
-            <div className="grid grid-cols-3 sm:grid-cols-6 gap-3">
+          <div className="glass rounded-2xl p-5 mb-8 shadow-card">
+            <h2 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4">Dettaglio Punti</h2>
+            <div className="grid grid-cols-3 sm:grid-cols-7 gap-3">
               {[
-                { label: 'Group', value: leaderboardEntry.group_stage_points },
-                { label: 'Exact', value: leaderboardEntry.exact_score_bonus },
+                { label: 'Gironi', value: leaderboardEntry.group_stage_points },
+                { label: 'Esatti', value: leaderboardEntry.exact_score_bonus },
                 { label: 'R32', value: leaderboardEntry.r32_points },
                 { label: 'R16', value: leaderboardEntry.r16_points },
                 { label: 'QF', value: leaderboardEntry.qf_points },
                 { label: 'SF', value: leaderboardEntry.sf_points },
-                { label: 'Final', value: leaderboardEntry.final_points },
+                { label: 'Finale', value: leaderboardEntry.final_points },
               ].map((item) => (
-                <div key={item.label} className="text-center">
-                  <p className="text-xs text-gray-500 mb-0.5">{item.label}</p>
-                  <p className={`text-xl font-bold ${item.value > 0 ? 'text-[#d4af37]' : 'text-gray-600'}`}>
+                <div key={item.label} className="bg-night-1 rounded-xl p-3 text-center">
+                  <p className="text-xs text-slate-500 mb-1">{item.label}</p>
+                  <p className={`text-xl tabular-nums font-bold ${item.value > 0 ? 'text-blue-light' : 'text-slate-600'}`}>
                     {item.value}
                   </p>
                 </div>
@@ -177,57 +177,57 @@ export default async function DashboardPage() {
         )}
 
         {/* Quick Actions */}
-        <h2 className="text-xl font-bold text-white mb-4">Quick Actions</h2>
+        <h2 className="text-xl font-syne font-black text-white mb-4">Azioni Rapide</h2>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
           <Link
             href="/predictions"
-            className="bg-[#1a3d2b]/50 border border-[#2d5a3d] rounded-xl p-5 hover:border-[#d4af37]/60 hover:bg-[#d4af37]/5 transition-all duration-150 group"
+            className="glass glass-hover rounded-2xl p-5 group shadow-card"
           >
             <div className="text-3xl mb-3">⚽</div>
-            <h3 className="font-bold text-white mb-1 group-hover:text-[#d4af37] transition-colors">
-              Predict Group Games
+            <h3 className="font-bold text-white mb-1 group-hover:text-blue-light transition-colors">
+              Pronostica i Gironi
             </h3>
-            <p className="text-sm text-gray-500">
-              {groupPredCount ?? 0}/72 predictions made
+            <p className="text-sm text-slate-500">
+              {groupPredCount ?? 0}/72 pronostici fatti
             </p>
             {!locked && (
-              <span className="mt-3 inline-block text-xs text-[#d4af37] font-semibold">
-                {(groupPredCount ?? 0) < 72 ? 'Continue →' : 'Review →'}
+              <span className="mt-3 inline-block text-xs text-blue-light font-semibold">
+                {(groupPredCount ?? 0) < 72 ? 'Continua →' : 'Rivedi →'}
               </span>
             )}
           </Link>
 
           <Link
             href="/predictions/bracket"
-            className="bg-[#1a3d2b]/50 border border-[#2d5a3d] rounded-xl p-5 hover:border-[#d4af37]/60 hover:bg-[#d4af37]/5 transition-all duration-150 group"
+            className="glass glass-hover rounded-2xl p-5 group shadow-card"
           >
             <div className="text-3xl mb-3">🏆</div>
-            <h3 className="font-bold text-white mb-1 group-hover:text-[#d4af37] transition-colors">
-              Build Bracket
+            <h3 className="font-bold text-white mb-1 group-hover:text-blue-light transition-colors">
+              Costruisci il Bracket
             </h3>
-            <p className="text-sm text-gray-500">
-              {bracketPredCount ?? 0}/32 bracket picks made
+            <p className="text-sm text-slate-500">
+              {bracketPredCount ?? 0}/32 pick bracket fatti
             </p>
             {!locked && (
-              <span className="mt-3 inline-block text-xs text-[#d4af37] font-semibold">
-                {(bracketPredCount ?? 0) < 32 ? 'Continue →' : 'Review →'}
+              <span className="mt-3 inline-block text-xs text-blue-light font-semibold">
+                {(bracketPredCount ?? 0) < 32 ? 'Continua →' : 'Rivedi →'}
               </span>
             )}
           </Link>
 
           <Link
             href="/leaderboard"
-            className="bg-[#1a3d2b]/50 border border-[#2d5a3d] rounded-xl p-5 hover:border-[#d4af37]/60 hover:bg-[#d4af37]/5 transition-all duration-150 group"
+            className="glass glass-hover rounded-2xl p-5 group shadow-card"
           >
             <div className="text-3xl mb-3">📊</div>
-            <h3 className="font-bold text-white mb-1 group-hover:text-[#d4af37] transition-colors">
-              View Leaderboard
+            <h3 className="font-bold text-white mb-1 group-hover:text-blue-light transition-colors">
+              Classifica
             </h3>
-            <p className="text-sm text-gray-500">
-              {userRank !== null ? `You're ranked ${userRank}${getRankSuffix(userRank)}` : 'See where you stand'}
+            <p className="text-sm text-slate-500">
+              {userRank !== null ? `Sei in posizione ${userRank}${getRankSuffix(userRank)}` : 'Scopri dove sei'}
             </p>
-            <span className="mt-3 inline-block text-xs text-[#d4af37] font-semibold">
-              View →
+            <span className="mt-3 inline-block text-xs text-blue-light font-semibold">
+              Vedi →
             </span>
           </Link>
         </div>
@@ -235,15 +235,15 @@ export default async function DashboardPage() {
         {/* Upcoming matches */}
         {upcomingMatches && upcomingMatches.length > 0 && (
           <div>
-            <h2 className="text-xl font-bold text-white mb-4">Upcoming Matches</h2>
+            <h2 className="text-xl font-syne font-black text-white mb-4">Prossime Partite</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
               {upcomingMatches.map((match: any) => (
                 <div
                   key={match.id}
-                  className="bg-[#1a3d2b]/50 border border-[#2d5a3d] rounded-xl p-4"
+                  className="glass rounded-2xl p-4 shadow-card"
                 >
-                  <p className="text-xs text-gray-500 mb-2">
-                    Match #{match.match_number} · {match.stage.toUpperCase()}
+                  <p className="text-xs text-slate-500 mb-2">
+                    Partita #{match.match_number} · {match.stage.toUpperCase()}
                   </p>
                   <div className="flex items-center justify-between gap-2">
                     <div className="flex items-center gap-2 flex-1">
@@ -252,7 +252,7 @@ export default async function DashboardPage() {
                         {(match.home_team as any)?.code ?? 'TBD'}
                       </span>
                     </div>
-                    <span className="text-gray-500 text-xs font-medium px-2">vs</span>
+                    <span className="text-slate-500 text-xs font-medium px-2">vs</span>
                     <div className="flex items-center gap-2 flex-1 justify-end">
                       <span className="text-sm font-semibold text-white truncate">
                         {(match.away_team as any)?.code ?? 'TBD'}
@@ -261,8 +261,8 @@ export default async function DashboardPage() {
                     </div>
                   </div>
                   {match.scheduled_at && (
-                    <p className="text-xs text-gray-600 mt-2 text-center">
-                      {new Date(match.scheduled_at).toLocaleDateString('en-GB', {
+                    <p className="text-xs text-slate-600 mt-2 text-center">
+                      {new Date(match.scheduled_at).toLocaleDateString('it-IT', {
                         day: 'numeric',
                         month: 'short',
                         hour: '2-digit',
@@ -278,16 +278,16 @@ export default async function DashboardPage() {
 
         {/* Admin link */}
         {profile.is_admin && (
-          <div className="mt-8 bg-[#1a3d2b]/30 border border-[#2d5a3d] rounded-xl p-4 flex items-center justify-between">
+          <div className="mt-8 glass rounded-2xl p-4 flex items-center justify-between shadow-blue-sm">
             <div>
-              <p className="text-sm font-semibold text-[#d4af37]">Admin Panel</p>
-              <p className="text-xs text-gray-500">Manage match results and user data</p>
+              <p className="text-sm font-semibold text-blue-light">Pannello Admin</p>
+              <p className="text-xs text-slate-500">Gestisci risultati e dati utenti</p>
             </div>
             <Link
               href="/admin"
-              className="text-sm bg-[#d4af37] text-[#0f2318] font-bold px-4 py-2 rounded-lg hover:bg-[#f0d060] transition-colors"
+              className="text-sm bg-blue-primary hover:bg-blue-hover text-white font-bold px-4 py-2 rounded-xl transition-colors"
             >
-              Go to Admin →
+              Vai all&apos;Admin →
             </Link>
           </div>
         )}

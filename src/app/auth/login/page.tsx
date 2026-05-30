@@ -4,11 +4,11 @@ import { useState, FormEvent } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
-import Button from '@/components/ui/Button'
-import Input from '@/components/ui/Input'
+import { useLang } from '@/contexts/LanguageContext'
 
 export default function LoginPage() {
   const router = useRouter()
+  const { t } = useLang()
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -18,9 +18,9 @@ export default function LoginPage() {
 
   const validate = (): boolean => {
     const errs: Record<string, string> = {}
-    if (!email.trim()) errs.email = 'Email is required'
-    else if (!/\S+@\S+\.\S+/.test(email)) errs.email = 'Enter a valid email address'
-    if (!password) errs.password = 'Password is required'
+    if (!email.trim()) errs.email = 'Campo obbligatorio'
+    else if (!/\S+@\S+\.\S+/.test(email)) errs.email = 'Email non valida'
+    if (!password) errs.password = 'Campo obbligatorio'
     setFieldErrors(errs)
     return Object.keys(errs).length === 0
   }
@@ -29,108 +29,94 @@ export default function LoginPage() {
     e.preventDefault()
     setError(null)
     if (!validate()) return
-
     setLoading(true)
     const supabase = createClient()
     try {
-      const { error: signInError } = await supabase.auth.signInWithPassword({
-        email: email.trim(),
-        password,
-      })
-
+      const { error: signInError } = await supabase.auth.signInWithPassword({ email: email.trim(), password })
       if (signInError) {
-        if (signInError.message.toLowerCase().includes('invalid')) {
-          setError('Invalid email or password. Please try again.')
-        } else if (signInError.message.toLowerCase().includes('confirm')) {
-          setError('Please verify your email address before logging in.')
-        } else {
-          setError(signInError.message)
-        }
+        setError('Credenziali non valide. Riprova.')
       } else {
         router.push('/dashboard')
         router.refresh()
       }
-    } catch (err) {
-      setError('An unexpected error occurred. Please try again.')
+    } catch {
+      setError('Errore imprevisto. Riprova.')
     } finally {
       setLoading(false)
     }
   }
 
   return (
-    <div className="min-h-[calc(100vh-64px)] bg-[#0f2318] flex items-center justify-center px-4 py-10">
-      <div className="w-full max-w-md">
-        {/* Header */}
+    <div className="min-h-[calc(100vh-64px)] bg-night flex items-center justify-center px-4 py-12">
+      {/* Background glow */}
+      <div aria-hidden className="fixed inset-0 pointer-events-none"
+        style={{ background: 'radial-gradient(ellipse 60% 50% at 50% 0%, rgba(37,99,235,0.12) 0%, transparent 60%)' }} />
+
+      <div className="w-full max-w-sm relative z-10">
         <div className="text-center mb-8">
-          <div className="text-5xl mb-4">⚽</div>
-          <h1 className="text-3xl font-bold text-white mb-2">Welcome Back</h1>
-          <p className="text-gray-400 text-sm">Sign in to manage your predictions</p>
+          <Link href="/" className="inline-block mb-6">
+            <span className="font-syne font-black text-3xl text-white">FANT</span>
+            <span className="font-syne font-black text-3xl gradient-text-ai">AI</span>
+            <span className="font-syne font-black text-3xl text-white">D</span>
+          </Link>
+          <h1 className="text-2xl font-syne font-black text-white mb-1">{t.auth_login_title}</h1>
+          <p className="text-slate-400 text-sm">{t.auth_login_subtitle}</p>
         </div>
 
-        {/* Card */}
-        <div className="bg-[#1a3d2b]/50 border border-[#2d5a3d] rounded-2xl p-6 sm:p-8">
+        <div className="glass rounded-3xl p-6 sm:p-8">
           {error && (
-            <div className="bg-red-900/30 border border-red-700/50 rounded-xl px-4 py-3 mb-5 text-red-400 text-sm">
+            <div className="bg-red-500/10 rounded-2xl px-4 py-3 mb-5 text-red-400 text-sm">
               {error}
             </div>
           )}
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-4" noValidate>
-            <Input
-              label="Email Address"
-              type="email"
-              placeholder="luca@example.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              error={fieldErrors.email}
-              required
-              autoComplete="email"
-            />
+            <div className="flex flex-col gap-1.5">
+              <label className="text-sm font-medium text-slate-300">{t.auth_email}</label>
+              <input
+                type="email"
+                placeholder="nome@esempio.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                autoComplete="email"
+                className="bg-night-1 rounded-xl px-4 py-3 text-white placeholder-slate-600 text-sm transition-all focus:bg-night-2"
+              />
+              {fieldErrors.email && <p className="text-xs text-red-400">{fieldErrors.email}</p>}
+            </div>
 
             <div className="flex flex-col gap-1.5">
               <div className="flex items-center justify-between">
-                <label className="text-sm font-medium text-gray-300">
-                  Password <span className="text-[#d4af37]">*</span>
-                </label>
-                <span className="text-xs text-gray-600 hover:text-gray-400 cursor-pointer transition-colors">
-                  Forgot password?
+                <label className="text-sm font-medium text-slate-300">{t.auth_password}</label>
+                <span className="text-xs text-slate-600 cursor-pointer hover:text-slate-400 transition-colors">
+                  {t.auth_forgot}
                 </span>
               </div>
               <input
                 type="password"
-                placeholder="Your password"
+                placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 autoComplete="current-password"
-                required
-                className={`bg-[#0f2318] border rounded-lg px-3 py-2 text-white placeholder-gray-500 focus:border-[#d4af37] focus:outline-none focus:ring-1 focus:ring-[#d4af37]/30 transition-colors duration-150 ${
-                  fieldErrors.password ? 'border-red-500' : 'border-[#2d5a3d]'
-                }`}
+                className="bg-night-1 rounded-xl px-4 py-3 text-white placeholder-slate-600 text-sm transition-all focus:bg-night-2"
               />
-              {fieldErrors.password && (
-                <p className="text-sm text-red-400">{fieldErrors.password}</p>
-              )}
+              {fieldErrors.password && <p className="text-xs text-red-400">{fieldErrors.password}</p>}
             </div>
 
-            <Button
+            <button
               type="submit"
-              variant="primary"
-              size="lg"
-              loading={loading}
-              className="w-full mt-2"
+              disabled={loading}
+              className="mt-2 bg-blue-primary text-white font-bold py-4 rounded-2xl hover:bg-blue-hover transition-all shadow-blue-sm disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 active:scale-[0.98]"
             >
-              Sign In
-            </Button>
+              {loading && <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />}
+              {t.auth_login_btn}
+            </button>
           </form>
 
-          <div className="mt-6 text-center border-t border-[#2d5a3d] pt-5">
-            <p className="text-gray-400 text-sm">
-              Don&apos;t have an account?{' '}
-              <Link
-                href="/auth/register"
-                className="text-[#d4af37] font-semibold hover:text-[#f0d060] transition-colors"
-              >
-                Register free
+          <div className="mt-6 text-center pt-5 border-t border-white/[0.06]">
+            <p className="text-slate-500 text-sm">
+              {t.auth_no_account}{' '}
+              <Link href="/auth/register" className="text-blue-light font-semibold hover:text-white transition-colors">
+                {t.auth_register_link}
               </Link>
             </p>
           </div>
