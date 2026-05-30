@@ -20,7 +20,11 @@
 body {
   background-color: var(--night);
   color: var(--foreground);
+  font-family: var(--font-space), system-ui, sans-serif;
 }
+
+/* Tabular figures everywhere numbers carry meaning */
+.tabular-nums { font-variant-numeric: tabular-nums; }
 
 /* Custom scrollbar */
 ::-webkit-scrollbar { width: 4px; height: 4px; }

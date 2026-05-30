@@ -1,11 +1,15 @@
 import type { Metadata } from 'next'
-import { Inter, Syne } from 'next/font/google'
+import { Space_Grotesk, Syne } from 'next/font/google'
 import './globals.css'
 import { Toaster } from 'react-hot-toast'
 import Navbar from '@/components/Navbar'
 import { LanguageProvider } from '@/contexts/LanguageContext'
 
-const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
+const spaceGrotesk = Space_Grotesk({
+  subsets: ['latin'],
+  variable: '--font-space',
+  weight: ['400', '500', '600', '700'],
+})
 const syne = Syne({ subsets: ['latin'], variable: '--font-syne', weight: ['700', '800'] })
 
 export const metadata: Metadata = {
@@ -16,7 +20,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="it">
-      <body className={`${inter.variable} ${syne.variable} font-inter bg-night text-slate-100 min-h-screen`}>
+      <body className={`${spaceGrotesk.variable} ${syne.variable} font-space bg-night text-slate-100 min-h-screen`}>
         <LanguageProvider>
           <Navbar />
           <main className="min-h-[calc(100vh-64px)]">{children}</main>

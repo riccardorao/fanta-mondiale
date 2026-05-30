@@ -30,7 +30,8 @@ const config: Config = {
       },
       fontFamily: {
         syne: ['var(--font-syne)', 'sans-serif'],
-        inter: ['var(--font-inter)', 'sans-serif'],
+        space: ['var(--font-space)', 'sans-serif'],
+        inter: ['var(--font-space)', 'sans-serif'],
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',

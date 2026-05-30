@@ -6,6 +6,7 @@ import { usePathname, useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { cn } from '@/lib/utils'
 import { useLang, type Lang } from '@/contexts/LanguageContext'
+import { hasCompetitionStarted } from '@/lib/competition'
 import type { User } from '@supabase/supabase-js'
 
 export default function Navbar() {
@@ -98,6 +99,31 @@ export default function Navbar() {
     </div>
   )
 
+  // Before kick-off only the prediction surfaces matter; once live, the hub,
+  // public bracket, results/stats and leaderboard come into play.
+  const started = hasCompetitionStarted()
+  const links: { href: string; label: string }[] = user
+    ? started
+      ? [
+          { href: '/', label: t.nav_home },
+          { href: '/bracket', label: t.nav_bracket },
+          { href: '/results', label: t.nav_results },
+          { href: '/leaderboard', label: t.nav_leaderboard },
+          { href: '/predictions', label: t.nav_predictions },
+        ]
+      : [
+          { href: '/predictions', label: t.nav_predictions },
+          { href: '/predictions/bracket', label: t.nav_bracket },
+        ]
+    : started
+    ? [
+        { href: '/', label: t.nav_home },
+        { href: '/bracket', label: t.nav_bracket },
+        { href: '/results', label: t.nav_results },
+        { href: '/leaderboard', label: t.nav_leaderboard },
+      ]
+    : []
+
   return (
     <nav className="bg-night-1/80 backdrop-blur-xl border-b border-white/[0.06] h-16 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center justify-between gap-4">
@@ -113,26 +139,19 @@ export default function Navbar() {
         <div className="hidden md:flex items-center gap-5 flex-1 justify-end">
           {!loading && (
             <>
+              {links.map((l) => navLink(l.href, l.label))}
               {user ? (
-                <>
-                  {navLink('/dashboard', t.nav_dashboard)}
-                  {navLink('/predictions', t.nav_predictions)}
-                  {navLink('/predictions/bracket', t.nav_bracket)}
-                  {navLink('/leaderboard', t.nav_leaderboard)}
-                  <div className="flex items-center gap-3 ml-1 pl-4 border-l border-white/10">
-                    <span className="text-sm text-slate-400 max-w-[120px] truncate">{userName}</span>
-                    <button
-                      onClick={handleLogout}
-                      className="text-sm font-medium text-slate-400 hover:text-red-400 transition-colors duration-150"
-                    >
-                      {t.nav_logout}
-                    </button>
-                  </div>
-                </>
+                <div className="flex items-center gap-3 ml-1 pl-4 border-l border-white/10">
+                  <span className="text-sm text-slate-400 max-w-[120px] truncate">{userName}</span>
+                  <button
+                    onClick={handleLogout}
+                    className="text-sm font-medium text-slate-400 hover:text-red-400 transition-colors duration-150"
+                  >
+                    {t.nav_logout}
+                  </button>
+                </div>
               ) : (
                 <>
-                  {navLink('/bracket', t.nav_bracket)}
-                  {navLink('/leaderboard', t.nav_leaderboard)}
                   <Link
                     href="/auth/login"
                     className="text-sm font-medium text-slate-400 hover:text-white transition-colors"
@@ -174,23 +193,16 @@ export default function Navbar() {
         <div className="md:hidden bg-night-1/95 backdrop-blur-xl border-b border-white/[0.06] px-4 pb-4 pt-2 flex flex-col gap-3">
           {!loading && (
             <>
+              {links.map((l) => navLink(l.href, l.label))}
               {user ? (
-                <>
-                  {navLink('/dashboard', t.nav_dashboard)}
-                  {navLink('/predictions', t.nav_predictions)}
-                  {navLink('/predictions/bracket', t.nav_bracket)}
-                  {navLink('/leaderboard', t.nav_leaderboard)}
-                  <div className="pt-3 border-t border-white/[0.06] flex items-center justify-between">
-                    <span className="text-sm text-slate-400 truncate max-w-[200px]">{userName}</span>
-                    <button onClick={handleLogout} className="text-sm font-medium text-red-400 hover:text-red-300">
-                      {t.nav_logout}
-                    </button>
-                  </div>
-                </>
+                <div className="pt-3 border-t border-white/[0.06] flex items-center justify-between">
+                  <span className="text-sm text-slate-400 truncate max-w-[200px]">{userName}</span>
+                  <button onClick={handleLogout} className="text-sm font-medium text-red-400 hover:text-red-300">
+                    {t.nav_logout}
+                  </button>
+                </div>
               ) : (
                 <>
-                  {navLink('/bracket', t.nav_bracket)}
-                  {navLink('/leaderboard', t.nav_leaderboard)}
                   {navLink('/auth/login', t.nav_login)}
                   <Link
                     href="/auth/register"
