@@ -1,0 +1,208 @@
+name: "Bootstrap — Supabase + Vercel (one-shot)"
+
+on:
+  push:
+    paths:
+      - '.github/workflows/bootstrap.yml'
+    branches:
+      - 'claude/eloquent-lamport-eWGQf'
+
+permissions:
+  contents: write
+
+jobs:
+  bootstrap:
+    name: "Provision Supabase + Vercel"
+    runs-on: ubuntu-latest
+    env:
+      SB_TOKEN: sbp_9e66ca7126c9ab36c43c37100f7b3435529291f5
+      VC_TOKEN: vcp_1qgTS7HDlVbem9HaCOext0hD2I0bGHZ6Nym4wbFwd1cmfmMe4v1MRAc9
+      DB_PASS: FantaidWC2026Secure
+      PROJ_NAME: fantaid
+      REGION: eu-west-1
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Mask sensitive values
+        run: |
+          echo "::add-mask::$SB_TOKEN"
+          echo "::add-mask::$VC_TOKEN"
+          echo "::add-mask::$DB_PASS"
+
+      # ─── SUPABASE ──────────────────────────────────────────────────────
+
+      - name: "[Supabase] Get org"
+        id: org
+        run: |
+          RESP=$(curl -sf "https://api.supabase.com/v1/organizations" \
+            -H "Authorization: Bearer $SB_TOKEN")
+          ORG_ID=$(echo "$RESP" | jq -r '.[0].id')
+          [[ -z "$ORG_ID" || "$ORG_ID" == "null" ]] && { echo "No org found: $RESP"; exit 1; }
+          echo "id=$ORG_ID" >> "$GITHUB_OUTPUT"
+          echo "Org: $ORG_ID"
+
+      - name: "[Supabase] Create project"
+        id: sb
+        run: |
+          PAYLOAD=$(jq -n \
+            --arg name "$PROJ_NAME" \
+            --arg org  "${{ steps.org.outputs.id }}" \
+            --arg pass "$DB_PASS" \
+            --arg reg  "$REGION" \
+            '{"name":$name,"organization_id":$org,"db_pass":$pass,"region":$reg,"plan":"free"}')
+
+          RESP=$(curl -sf -X POST "https://api.supabase.com/v1/projects" \
+            -H "Authorization: Bearer $SB_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d "$PAYLOAD")
+
+          REF=$(echo "$RESP" | jq -r '.id')
+          [[ -z "$REF" || "$REF" == "null" ]] && { echo "Create failed: $RESP"; exit 1; }
+          echo "ref=$REF" >> "$GITHUB_OUTPUT"
+          echo "Project ref: $REF"
+
+          echo "Polling for ACTIVE_HEALTHY (up to 10 min)..."
+          for i in $(seq 1 40); do
+            STATUS=$(curl -sf "https://api.supabase.com/v1/projects/$REF" \
+              -H "Authorization: Bearer $SB_TOKEN" | jq -r '.status')
+            printf "  [%02d/40] %s\n" "$i" "$STATUS"
+            [[ "$STATUS" == "ACTIVE_HEALTHY" ]] && { echo "Ready"; break; }
+            [[ $i -eq 40 ]] && { echo "Timed out waiting for project"; exit 1; }
+            sleep 15
+          done
+          sleep 10
+
+      - name: "[Supabase] Install psql"
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends postgresql-client
+
+      - name: "[Supabase] Run migrations"
+        run: |
+          REF="${{ steps.sb.outputs.ref }}"
+          PGPASSWORD="$DB_PASS" psql \
+            "postgresql://postgres@db.${REF}.supabase.co:5432/postgres?sslmode=require" \
+            -v ON_ERROR_STOP=1 \
+            -f supabase/migrations/001_schema.sql
+          echo "Migrations complete"
+
+      - name: "[Supabase] Run seed"
+        run: |
+          REF="${{ steps.sb.outputs.ref }}"
+          PGPASSWORD="$DB_PASS" psql \
+            "postgresql://postgres@db.${REF}.supabase.co:5432/postgres?sslmode=require" \
+            -v ON_ERROR_STOP=1 \
+            -f supabase/seed.sql
+          echo "Seed complete (48 teams, 104 matches)"
+
+      - name: "[Supabase] Get API keys"
+        id: keys
+        run: |
+          REF="${{ steps.sb.outputs.ref }}"
+          KEYS=$(curl -sf "https://api.supabase.com/v1/projects/$REF/api-keys" \
+            -H "Authorization: Bearer $SB_TOKEN")
+          ANON=$(echo "$KEYS"    | jq -r '.[] | select(.name=="anon")         | .api_key')
+          SERVICE=$(echo "$KEYS" | jq -r '.[] | select(.name=="service_role") | .api_key')
+          echo "::add-mask::$ANON"
+          echo "::add-mask::$SERVICE"
+          echo "url=https://${REF}.supabase.co" >> "$GITHUB_OUTPUT"
+          echo "anon=$ANON"                     >> "$GITHUB_OUTPUT"
+          echo "service=$SERVICE"               >> "$GITHUB_OUTPUT"
+          echo "Supabase URL: https://${REF}.supabase.co"
+
+      # ─── VERCEL ────────────────────────────────────────────────────────
+
+      - name: "[Vercel] Resolve team"
+        id: vteam
+        run: |
+          TEAMS=$(curl -sf "https://api.vercel.com/v2/teams" \
+            -H "Authorization: Bearer $VC_TOKEN")
+          TID=$(echo "$TEAMS" | jq -r '.teams[]? | select(.slug=="fantaid") | .id // empty')
+          echo "team_id=${TID}" >> "$GITHUB_OUTPUT"
+          echo "Team: ${TID:-(personal account)}"
+
+      - name: "[Vercel] Create project"
+        id: vproj
+        run: |
+          TID="${{ steps.vteam.outputs.team_id }}"
+          QP=$([ -n "$TID" ] && echo "?teamId=$TID" || echo "")
+
+          RESP=$(curl -s -X POST "https://api.vercel.com/v10/projects${QP}" \
+            -H "Authorization: Bearer $VC_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d "$(jq -n '{"name":"fantaid","framework":"nextjs","gitRepository":{"type":"github","repo":"riccardorao/fanta-mondiale"}}')")
+
+          PID=$(echo "$RESP" | jq -r '.id // empty')
+          echo "project_id=${PID}" >> "$GITHUB_OUTPUT"
+          if [ -n "$PID" ]; then
+            echo "Vercel project created: $PID"
+          else
+            echo "WARNING: $RESP"
+          fi
+
+      - name: "[Vercel] Set env vars"
+        if: steps.vproj.outputs.project_id != ''
+        run: |
+          PID="${{ steps.vproj.outputs.project_id }}"
+          TID="${{ steps.vteam.outputs.team_id }}"
+          QP=$([ -n "$TID" ] && echo "?teamId=$TID" || echo "")
+
+          BODY=$(jq -n \
+            --arg url     "${{ steps.keys.outputs.url }}" \
+            --arg anon    "${{ steps.keys.outputs.anon }}" \
+            --arg service "${{ steps.keys.outputs.service }}" \
+            '[{"key":"NEXT_PUBLIC_SUPABASE_URL","value":$url,"type":"plain","target":["production","preview","development"]},{"key":"NEXT_PUBLIC_SUPABASE_ANON_KEY","value":$anon,"type":"encrypted","target":["production","preview","development"]},{"key":"SUPABASE_SERVICE_ROLE_KEY","value":$service,"type":"encrypted","target":["production","preview","development"]},{"key":"NEXT_PUBLIC_PREDICTIONS_DEADLINE","value":"2026-06-11T18:00:00Z","type":"plain","target":["production","preview","development"]}]')
+
+          curl -sf -X POST "https://api.vercel.com/v10/projects/$PID/env${QP}" \
+            -H "Authorization: Bearer $VC_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d "$BODY"
+          echo "Env vars set"
+
+      - name: "[Vercel] Trigger deployment"
+        if: steps.vproj.outputs.project_id != ''
+        run: |
+          TID="${{ steps.vteam.outputs.team_id }}"
+          QP=$([ -n "$TID" ] && echo "?teamId=$TID" || echo "")
+
+          RESP=$(curl -sf -X POST "https://api.vercel.com/v13/deployments${QP}" \
+            -H "Authorization: Bearer $VC_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d "$(jq -n '{"name":"fantaid","gitSource":{"type":"github","org":"riccardorao","repo":"fanta-mondiale","ref":"claude/eloquent-lamport-eWGQf"}}')")
+
+          DURL=$(echo "$RESP" | jq -r '.url // empty')
+          echo "Deploy URL: https://${DURL:-(see Vercel dashboard)}"
+
+      # ─── SUMMARY ───────────────────────────────────────────────────────
+
+      - name: Job summary
+        if: always()
+        run: |
+          REF="${{ steps.sb.outputs.ref }}"
+          {
+            echo "## Fantaid infrastructure provisioned"
+            echo ""
+            echo "### Supabase"
+            echo "- Project URL: \`${{ steps.keys.outputs.url }}\`"
+            echo "- Dashboard: https://supabase.com/dashboard/project/${REF}"
+            echo ""
+            echo "### Vercel"
+            echo "- Dashboard: https://vercel.com/fantaid/fantaid"
+            echo ""
+            echo "### Rotate these tokens now"
+            echo "- https://supabase.com/dashboard/account/tokens"
+            echo "- https://vercel.com/account/tokens"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      # ─── SELF-DESTRUCT ─────────────────────────────────────────────────
+
+      - name: Remove this workflow file
+        if: success()
+        run: |
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config user.name  "github-actions[bot]"
+          git pull --rebase origin claude/eloquent-lamport-eWGQf
+          git rm .github/workflows/bootstrap.yml
+          git commit -m "chore: remove bootstrap workflow (infrastructure provisioned)"
+          git push origin claude/eloquent-lamport-eWGQf
