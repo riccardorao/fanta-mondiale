@@ -9,7 +9,7 @@ export function Card({ className, children, noPadding = false, ...props }: CardP
   return (
     <div
       className={cn(
-        'bg-[#1a3d2b]/50 border border-[#2d5a3d] rounded-xl backdrop-blur-sm',
+        'glass rounded-2xl',
         !noPadding && 'p-6',
         className
       )}

@@ -7,13 +7,22 @@ export type Lang = 'it' | 'en'
 const translations = {
   it: {
     // Nav
+    nav_home: 'Home',
     nav_dashboard: 'Dashboard',
     nav_predictions: 'I miei pronostici',
     nav_bracket: 'Bracket',
     nav_leaderboard: 'Classifica',
+    nav_results: 'Risultati',
     nav_login: 'Accedi',
     nav_register: 'Registrati',
     nav_logout: 'Esci',
+
+    // Countdown
+    cd_days: 'Giorni',
+    cd_hours: 'Ore',
+    cd_minutes: 'Min',
+    cd_seconds: 'Sec',
+    cd_started: 'Il torneo è iniziato!',
 
     // Home
     home_badge: 'Coppa del Mondo FIFA 2026',
@@ -132,6 +141,35 @@ const translations = {
     lb_page: 'Pagina',
     lb_of: 'di',
 
+    // Home hub (post kick-off)
+    hub_live_badge: 'Il torneo è iniziato',
+    hub_bracket_title: 'Il Tabellone',
+    hub_bracket_sub: 'Come sta evolvendo il torneo',
+    hub_leaderboard_title: 'Classifica',
+    hub_leaderboard_sub: 'I migliori pronosticatori',
+    hub_view_full_bracket: 'Tabellone completo →',
+    hub_view_full_lb: 'Classifica completa →',
+    hub_your_rank: 'La tua posizione',
+    hub_results_cta: 'Vedi risultati e statistiche →',
+    hub_no_lb: 'Ancora nessun punteggio.',
+
+    // Results & stats
+    results_title: 'Risultati & Statistiche',
+    results_subtitle: 'Risultati ufficiali e come hanno pronosticato i giocatori',
+    results_no_results: 'Nessuna partita giocata.',
+    results_no_results_sub: 'Le statistiche appariranno appena verranno inseriti i primi risultati.',
+    results_correct_outcome: 'hanno indovinato l\'esito',
+    results_correct_winner: 'hanno indovinato il vincitore',
+    results_exact_hits: 'risultato esatto',
+    results_distribution: 'Come hanno pronosticato',
+    results_no_preds: 'Nessun pronostico per questa partita.',
+    results_home: 'Casa',
+    results_draw: 'Pareggio',
+    results_away: 'Ospite',
+    results_live: '● In corso',
+    results_ft: 'Finale',
+    results_players: 'giocatori',
+
     // Scoring labels
     pts: 'pts',
     score_group_result: 'Risultato indovinato (gironi)',
@@ -171,13 +209,22 @@ const translations = {
   },
   en: {
     // Nav
+    nav_home: 'Home',
     nav_dashboard: 'Dashboard',
     nav_predictions: 'My Predictions',
     nav_bracket: 'Bracket',
     nav_leaderboard: 'Leaderboard',
+    nav_results: 'Results',
     nav_login: 'Login',
     nav_register: 'Register',
     nav_logout: 'Logout',
+
+    // Countdown
+    cd_days: 'Days',
+    cd_hours: 'Hours',
+    cd_minutes: 'Min',
+    cd_seconds: 'Sec',
+    cd_started: 'The tournament has started!',
 
     // Home
     home_badge: 'FIFA World Cup 2026',
@@ -295,6 +342,35 @@ const translations = {
     lb_next: 'Next →',
     lb_page: 'Page',
     lb_of: 'of',
+
+    // Home hub (post kick-off)
+    hub_live_badge: 'The tournament is live',
+    hub_bracket_title: 'The Bracket',
+    hub_bracket_sub: 'How the tournament is unfolding',
+    hub_leaderboard_title: 'Leaderboard',
+    hub_leaderboard_sub: 'Top predictors',
+    hub_view_full_bracket: 'Full bracket →',
+    hub_view_full_lb: 'Full leaderboard →',
+    hub_your_rank: 'Your rank',
+    hub_results_cta: 'See results & stats →',
+    hub_no_lb: 'No scores yet.',
+
+    // Results & stats
+    results_title: 'Results & Stats',
+    results_subtitle: 'Official results and how players predicted them',
+    results_no_results: 'No matches played yet.',
+    results_no_results_sub: 'Stats will appear as soon as the first results are entered.',
+    results_correct_outcome: 'called the outcome',
+    results_correct_winner: 'called the winner',
+    results_exact_hits: 'exact score',
+    results_distribution: 'How players predicted',
+    results_no_preds: 'No predictions for this match.',
+    results_home: 'Home',
+    results_draw: 'Draw',
+    results_away: 'Away',
+    results_live: '● Live',
+    results_ft: 'Full time',
+    results_players: 'players',
 
     // Scoring labels
     pts: 'pts',

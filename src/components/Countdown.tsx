@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { useLang } from '@/contexts/LanguageContext'
 
 interface CountdownProps {
   targetDate: string
@@ -29,6 +30,7 @@ function calculateTimeLeft(targetDate: string): TimeLeft {
 }
 
 export default function Countdown({ targetDate }: CountdownProps) {
+  const { t } = useLang()
   const [timeLeft, setTimeLeft] = useState<TimeLeft>(() => calculateTimeLeft(targetDate))
   const [mounted, setMounted] = useState(false)
 
@@ -47,12 +49,10 @@ export default function Countdown({ targetDate }: CountdownProps) {
 
   if (!mounted) {
     return (
-      <div className="flex items-center justify-center gap-4 py-4">
+      <div className="flex items-center justify-center gap-3 py-4">
         {['--', '--', '--', '--'].map((_, i) => (
-          <div key={i} className="flex flex-col items-center">
-            <div className="bg-[#1a3d2b]/80 border border-[#2d5a3d] rounded-xl px-5 py-3 min-w-[70px] text-center">
-              <span className="text-3xl font-bold text-[#d4af37]">--</span>
-            </div>
+          <div key={i} className="bg-night-1 rounded-2xl px-4 sm:px-5 py-3 min-w-[64px] sm:min-w-[72px] text-center">
+            <span className="text-2xl sm:text-3xl font-syne font-black text-blue-light tabular-nums">--</span>
           </div>
         ))}
       </div>
@@ -62,34 +62,34 @@ export default function Countdown({ targetDate }: CountdownProps) {
   if (timeLeft.expired) {
     return (
       <div className="text-center py-4">
-        <p className="text-2xl font-bold text-[#d4af37]">🏆 The tournament has started!</p>
+        <p className="text-2xl font-syne font-black gradient-text-ai">🏆 {t.cd_started}</p>
       </div>
     )
   }
 
   const units = [
-    { label: 'Days', value: timeLeft.days },
-    { label: 'Hours', value: timeLeft.hours },
-    { label: 'Minutes', value: timeLeft.minutes },
-    { label: 'Seconds', value: timeLeft.seconds },
+    { label: t.cd_days, value: timeLeft.days },
+    { label: t.cd_hours, value: timeLeft.hours },
+    { label: t.cd_minutes, value: timeLeft.minutes },
+    { label: t.cd_seconds, value: timeLeft.seconds },
   ]
 
   return (
-    <div className="flex items-center justify-center gap-3 sm:gap-4 py-4">
+    <div className="flex items-center justify-center gap-2 sm:gap-3 py-4">
       {units.map((unit, idx) => (
-        <div key={unit.label} className="flex items-center gap-3 sm:gap-4">
+        <div key={unit.label} className="flex items-center gap-2 sm:gap-3">
           <div className="flex flex-col items-center">
-            <div className="bg-[#1a3d2b]/80 border border-[#2d5a3d] rounded-xl px-4 sm:px-5 py-3 min-w-[64px] sm:min-w-[70px] text-center">
-              <span className="text-2xl sm:text-3xl font-bold text-[#d4af37] tabular-nums">
+            <div className="bg-night-1 rounded-2xl px-4 sm:px-5 py-3 min-w-[64px] sm:min-w-[72px] text-center">
+              <span className="text-2xl sm:text-3xl font-syne font-black text-blue-light tabular-nums num-glow">
                 {String(unit.value).padStart(2, '0')}
               </span>
             </div>
-            <span className="text-xs text-gray-500 mt-1.5 uppercase tracking-wider font-medium">
+            <span className="text-[10px] sm:text-xs text-slate-500 mt-1.5 uppercase tracking-widest font-semibold">
               {unit.label}
             </span>
           </div>
           {idx < units.length - 1 && (
-            <span className="text-2xl text-[#d4af37]/60 font-bold mb-4">:</span>
+            <span className="text-2xl text-blue-light/30 font-bold mb-4">:</span>
           )}
         </div>
       ))}

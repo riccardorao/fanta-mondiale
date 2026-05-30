@@ -6,6 +6,7 @@ import toast from 'react-hot-toast'
 import { createClient } from '@/lib/supabase/client'
 import { isPredictionLocked } from '@/lib/utils'
 import BracketMatchCard from '@/components/BracketMatchCard'
+import BonusPredictions from '@/components/BonusPredictions'
 import type { Match, BracketPrediction, Stage } from '@/types/database'
 
 const STAGE_CONFIG: { stage: Stage; label: string; cols: number }[] = [
@@ -184,6 +185,9 @@ export default function BracketPredictionsPage() {
             🔒 La scadenza è passata. Il tuo bracket è mostrato qui sotto.
           </div>
         )}
+
+        {/* Bonus predictions: top goalscorer + final standings */}
+        <BonusPredictions locked={locked} />
 
         {/* Stage points legend */}
         <div className="flex flex-wrap gap-2 mb-6">
