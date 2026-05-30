@@ -1,42 +1,55 @@
 'use client'
 
-import { useEffect, useState, useCallback, useRef } from 'react'
+import { useEffect, useState, useCallback, useRef, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
 import toast from 'react-hot-toast'
 import { createClient } from '@/lib/supabase/client'
 import { isPredictionLocked } from '@/lib/utils'
+import { useLang } from '@/contexts/LanguageContext'
 import BracketMatchCard from '@/components/BracketMatchCard'
 import BonusPredictions from '@/components/BonusPredictions'
-import type { Match, BracketPrediction, Stage } from '@/types/database'
+import {
+  buildBracketFromPredictions,
+  type GroupInput,
+} from '@/lib/bracket'
+import type { Match, Team, Group, GroupPrediction, BracketPrediction, Stage } from '@/types/database'
 
-const STAGE_CONFIG: { stage: Stage; label: string; cols: number }[] = [
-  { stage: 'r32', label: 'Round of 32', cols: 16 },
-  { stage: 'r16', label: 'Round of 16', cols: 8 },
-  { stage: 'qf', label: 'Quarter-Finals', cols: 4 },
-  { stage: 'sf', label: 'Semi-Finals', cols: 2 },
-  { stage: 'final', label: 'Final', cols: 1 },
+const STAGE_CONFIG: { stage: Stage; label: string }[] = [
+  { stage: 'r32', label: 'Round of 32' },
+  { stage: 'r16', label: 'Ottavi' },
+  { stage: 'qf', label: 'Quarti' },
+  { stage: 'sf', label: 'Semifinali' },
+  { stage: 'final', label: 'Finale' },
 ]
 
+// Points awarded for a correctly-placed pick at each stage (see lib/scoring.ts).
 const STAGE_POINTS: Record<Stage, number> = {
-  group: 0,
-  r32: 5,
-  r16: 7,
-  qf: 10,
-  sf: 12,
-  third_place: 8,
-  final: 20,
+  group: 0, r32: 10, r16: 15, qf: 25, sf: 40, third_place: 40, final: 70,
 }
+
+const TOTAL_KO_MATCHES = 32
 
 export default function BracketPredictionsPage() {
   const supabaseRef = useRef<ReturnType<typeof createClient> | null>(null)
   const router = useRouter()
+  const { t } = useLang()
 
-  const [matches, setMatches] = useState<Match[]>([])
-  const [predictions, setPredictions] = useState<BracketPrediction[]>([])
+  const [koMatches, setKoMatches] = useState<Match[]>([])
+  const [groups, setGroups] = useState<GroupInput[]>([])
+  const [teamMap, setTeamMap] = useState<Map<string, Team>>(new Map())
+  const [groupPredictions, setGroupPredictions] = useState<GroupPrediction[]>([])
+  const [winnersByMatch, setWinnersByMatch] = useState<Record<number, string>>({})
   const [userId, setUserId] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [locked, setLocked] = useState(false)
+
+  // match_number <-> match_id maps for the knockout shells
+  const idByNumber = useMemo(() => {
+    const m = new Map<number, string>()
+    koMatches.forEach((k) => m.set(k.match_number, k.id))
+    return m
+  }, [koMatches])
 
   useEffect(() => {
     const load = async () => {
@@ -48,99 +61,151 @@ export default function BracketPredictionsPage() {
       }
       setUserId(user.id)
 
-      const { data: matchesData, error: matchErr } = await supabase
-        .from('matches')
-        .select(`
-          *,
-          home_team:home_team_id(*),
-          away_team:away_team_id(*),
-          winner:winner_id(*)
-        `)
-        .in('stage', ['r32', 'r16', 'qf', 'sf', 'third_place', 'final'])
-        .order('match_number')
+      const [groupsRes, teamsRes, matchesRes, groupPredsRes, bracketPredsRes] = await Promise.all([
+        supabase.from('groups').select('*').order('name'),
+        supabase.from('teams').select('*'),
+        supabase
+          .from('matches')
+          .select('*, home_team:home_team_id(*), away_team:away_team_id(*)')
+          .order('match_number'),
+        supabase.from('group_predictions').select('*').eq('user_id', user.id),
+        supabase.from('bracket_predictions').select('*').eq('user_id', user.id),
+      ])
 
-      if (matchErr) {
-        setError('Failed to load bracket matches.')
+      if (matchesRes.error || groupsRes.error) {
+        setError('Failed to load bracket.')
         setLoading(false)
         return
       }
 
-      const { data: predsData } = await supabase
-        .from('bracket_predictions')
-        .select('*, predicted_winner:predicted_winner_id(*)')
-        .eq('user_id', user.id)
+      const allMatches = (matchesRes.data as Match[]) ?? []
+      const teams = (teamsRes.data as Team[]) ?? []
+      const tMap = new Map(teams.map((t) => [t.id, t]))
 
-      setMatches(matchesData as Match[] || [])
-      setPredictions(predsData as BracketPrediction[] || [])
+      const groupList: GroupInput[] = ((groupsRes.data as Group[]) ?? []).map((g) => ({
+        name: g.name,
+        teams: teams.filter((tm) => tm.group_id === g.id),
+        matches: allMatches.filter((m) => m.stage === 'group' && m.group_id === g.id),
+      }))
 
-      const firstMatch = matchesData?.[0]
-      if (firstMatch) {
-        setLocked(isPredictionLocked(firstMatch.scheduled_at))
+      const ko = allMatches.filter((m) => m.stage !== 'group')
+
+      // Seed chosen winners from any existing knockout predictions
+      const numberById = new Map(ko.map((k) => [k.id, k.match_number]))
+      const winners: Record<number, string> = {}
+      for (const p of (bracketPredsRes.data as BracketPrediction[]) ?? []) {
+        const num = numberById.get(p.match_id)
+        if (num != null) winners[num] = p.predicted_winner_id
       }
+
+      setTeamMap(tMap)
+      setGroups(groupList)
+      setKoMatches(ko)
+      setGroupPredictions((groupPredsRes.data as GroupPrediction[]) ?? [])
+      setWinnersByMatch(winners)
+
+      const firstGroupMatch = allMatches.find((m) => m.stage === 'group')
+      if (firstGroupMatch) setLocked(isPredictionLocked(firstGroupMatch.scheduled_at))
 
       setLoading(false)
     }
     load()
   }, [router])
 
+  // Derive every knockout match's participants from group predictions + picks.
+  const { participants } = useMemo(
+    () => buildBracketFromPredictions(groups, groupPredictions, winnersByMatch),
+    [groups, groupPredictions, winnersByMatch]
+  )
+
+  // Drop any pick whose team is no longer a participant of its match (because an
+  // upstream group prediction or earlier pick changed). Keeps the bracket valid.
+  useEffect(() => {
+    const stale = Object.entries(winnersByMatch).filter(([num, teamId]) => {
+      const p = participants[Number(num)]
+      return !p || (teamId !== p.home && teamId !== p.away)
+    })
+    if (stale.length === 0) return
+
+    setWinnersByMatch((prev) => {
+      const next = { ...prev }
+      stale.forEach(([num]) => delete next[Number(num)])
+      return next
+    })
+    const supabase = supabaseRef.current
+    if (supabase && userId) {
+      const ids = stale.map(([num]) => idByNumber.get(Number(num))).filter(Boolean) as string[]
+      if (ids.length > 0) {
+        supabase.from('bracket_predictions').delete().eq('user_id', userId).in('match_id', ids).then(() => {})
+      }
+    }
+  }, [participants, winnersByMatch, idByNumber, userId])
+
   const handlePredict = useCallback(
-    async (matchId: string, winnerId: string) => {
+    async (match: Match, winnerId: string) => {
       if (!userId || locked || !supabaseRef.current) return
       const supabase = supabaseRef.current
+      const num = match.match_number
 
-      const predObj: BracketPrediction = {
-        id: crypto.randomUUID(),
-        user_id: userId,
-        match_id: matchId,
-        predicted_winner_id: winnerId,
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-      }
+      setWinnersByMatch((prev) => ({ ...prev, [num]: winnerId }))
 
-      // Optimistic update
-      setPredictions((prev) => {
-        const existing = prev.findIndex((p) => p.match_id === matchId)
-        if (existing >= 0) {
-          const next = [...prev]
-          next[existing] = predObj
-          return next
-        }
-        return [...prev, predObj]
-      })
-
-      const { error } = await supabase
+      const { error: upErr } = await supabase
         .from('bracket_predictions')
-        .upsert(predObj, { onConflict: 'user_id,match_id' })
-
-      if (error) {
-        toast.error('Failed to save prediction')
-        // Revert optimistic update
-        setPredictions((prev) => prev.filter((p) => p.match_id !== matchId))
+        .upsert(
+          {
+            user_id: userId,
+            match_id: match.id,
+            predicted_winner_id: winnerId,
+            updated_at: new Date().toISOString(),
+          },
+          { onConflict: 'user_id,match_id' }
+        )
+      if (upErr) {
+        toast.error('Errore nel salvataggio')
+        setWinnersByMatch((prev) => {
+          const next = { ...prev }
+          delete next[num]
+          return next
+        })
       } else {
-        toast.success('Prediction saved!', { id: `bp-${matchId}` })
+        toast.success('Salvato!', { id: `bp-${match.id}` })
       }
     },
     [userId, locked]
   )
 
-  // Calculate current score from completed bracket predictions
-  const computedPoints = predictions.reduce((total, pred) => {
-    const match = matches.find((m) => m.id === pred.match_id)
-    if (!match || match.status !== 'completed' || !match.winner_id) return total
-    if (pred.predicted_winner_id === match.winner_id) {
-      return total + (STAGE_POINTS[match.stage] ?? 0)
-    }
-    return total
-  }, 0)
+  // Synthesize a Match with resolved participants for the card to render.
+  const synthMatch = useCallback(
+    (shell: Match): Match => {
+      const p = participants[shell.match_number] ?? { home: null, away: null }
+      return {
+        ...shell,
+        home_team_id: p.home,
+        away_team_id: p.away,
+        home_team: p.home ? teamMap.get(p.home) : undefined,
+        away_team: p.away ? teamMap.get(p.away) : undefined,
+      }
+    },
+    [participants, teamMap]
+  )
 
-  const thirdPlaceMatch = matches.find((m) => m.stage === 'third_place')
+  const picksMade = useMemo(
+    () =>
+      Object.entries(winnersByMatch).filter(([num, teamId]) => {
+        const p = participants[Number(num)]
+        return p && (teamId === p.home || teamId === p.away)
+      }).length,
+    [winnersByMatch, participants]
+  )
+
+  const thirdPlaceShell = koMatches.find((m) => m.stage === 'third_place')
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-night flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center">
         <div className="flex flex-col items-center gap-3">
           <div className="w-10 h-10 border-2 border-blue-primary border-t-transparent rounded-full animate-spin" />
-          <p className="text-slate-400 text-sm">Caricamento bracket...</p>
+          <p className="text-slate-400 text-sm">{t.loading_label}</p>
         </div>
       </div>
     )
@@ -148,7 +213,7 @@ export default function BracketPredictionsPage() {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-night flex items-center justify-center px-4">
+      <div className="min-h-screen flex items-center justify-center px-4">
         <div className="glass rounded-2xl p-6 max-w-md text-center">
           <p className="text-red-400 font-semibold">{error}</p>
         </div>
@@ -156,33 +221,56 @@ export default function BracketPredictionsPage() {
     )
   }
 
+  const renderCard = (shell: Match, compact: boolean) => {
+    const synth = synthMatch(shell)
+    return (
+      <BracketMatchCard
+        key={`${shell.id}:${synth.home_team_id ?? '_'}:${synth.away_team_id ?? '_'}`}
+        match={synth}
+        prediction={
+          winnersByMatch[shell.match_number]
+            ? ({ predicted_winner_id: winnersByMatch[shell.match_number] } as BracketPrediction)
+            : undefined
+        }
+        onPredict={(winnerId) => handlePredict(shell, winnerId)}
+        locked={locked}
+        isLoggedIn
+        compact={compact}
+      />
+    )
+  }
+
   return (
-    <div className="min-h-screen bg-night">
+    <div className="min-h-screen">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-6">
+        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-4">
           <div>
             <h1 className="text-2xl sm:text-3xl font-syne font-black text-white">
               Bracket <span className="gradient-text-ai">Knockout</span>
             </h1>
-            <p className="text-slate-500 text-sm mt-1">Scegli il vincitore di ogni match</p>
+            <p className="text-slate-500 text-sm mt-1">{t.pred_bracket_subtitle}</p>
           </div>
           <div className="flex flex-wrap items-center gap-3">
-            {locked && <span className="text-xs text-amber-accent font-semibold">🔒 Bloccato</span>}
-            <div className="bg-night-2 rounded-2xl px-4 py-2 text-center">
-              <p className="text-xs text-slate-500 uppercase tracking-wide">Punti Bracket</p>
-              <p className="text-2xl tabular-nums font-bold gradient-text-gold">{computedPoints}</p>
-            </div>
-            <div className="bg-night-2 rounded-2xl px-4 py-2 text-center">
-              <p className="text-xs text-slate-500 uppercase tracking-wide">Scelte</p>
-              <p className="text-2xl tabular-nums font-bold text-white">{predictions.length}<span className="text-slate-600 text-base">/32</span></p>
+            {locked && <span className="text-xs text-amber-accent font-semibold">{t.pred_locked}</span>}
+            <div className="glass rounded-2xl px-4 py-2 text-center">
+              <p className="text-xs text-slate-500 uppercase tracking-wide">{t.pred_picks_made}</p>
+              <p className="text-2xl tabular-nums font-bold text-white">
+                {picksMade}<span className="text-slate-600 text-base">/{TOTAL_KO_MATCHES}</span>
+              </p>
             </div>
           </div>
         </div>
 
+        {/* Auto-build hint */}
+        <div className="bg-blue-dim rounded-2xl px-4 py-3 mb-5 text-blue-light text-sm flex items-start gap-2">
+          <span className="flex-shrink-0">✨</span>
+          <span>{t.pred_bracket_hint}</span>
+        </div>
+
         {locked && (
           <div className="bg-amber-accent/10 rounded-2xl px-4 py-3 mb-5 text-amber-accent text-sm flex items-center gap-2">
-            🔒 La scadenza è passata. Il tuo bracket è mostrato qui sotto.
+            {t.pred_locked_msg}
           </div>
         )}
 
@@ -192,9 +280,9 @@ export default function BracketPredictionsPage() {
         {/* Stage points legend */}
         <div className="flex flex-wrap gap-2 mb-6">
           {STAGE_CONFIG.map(({ stage, label }) => (
-            <div key={stage} className="bg-night-2 rounded-xl px-3 py-1.5 text-xs flex items-center gap-1.5">
-              <span className="text-slate-500">{label}</span>
-              <span className="text-blue-light font-bold">{STAGE_POINTS[stage]}</span>
+            <div key={stage} className="glass rounded-xl px-3 py-1.5 text-xs flex items-center gap-1.5">
+              <span className="text-slate-400">{label}</span>
+              <span className="text-blue-light font-bold tabular-nums">{STAGE_POINTS[stage]}</span>
             </div>
           ))}
         </div>
@@ -203,31 +291,19 @@ export default function BracketPredictionsPage() {
         <div className="overflow-x-auto pb-4">
           <div className="flex gap-4 min-w-max">
             {STAGE_CONFIG.map(({ stage, label }) => {
-              const stageMatches = matches.filter((m) => m.stage === stage)
+              const stageMatches = koMatches.filter((m) => m.stage === stage)
               if (stageMatches.length === 0) return null
               return (
                 <div key={stage} className="flex flex-col gap-2">
                   <div className="text-center mb-3">
                     <span className="text-xs font-bold text-blue-light uppercase tracking-wider">{label}</span>
-                    <div className="text-xs text-slate-600">{STAGE_POINTS[stage]} pt</div>
+                    <div className="text-xs text-slate-600 tabular-nums">{STAGE_POINTS[stage]} pt</div>
                   </div>
-                  <div className="flex flex-col gap-3"
+                  <div
+                    className="flex flex-col gap-3"
                     style={{ justifyContent: 'space-around', height: `${stageMatches.length * 160}px` }}
                   >
-                    {stageMatches.map((match) => {
-                      const pred = predictions.find((p) => p.match_id === match.id)
-                      return (
-                        <BracketMatchCard
-                          key={match.id}
-                          match={match}
-                          prediction={pred}
-                          onPredict={(winnerId) => handlePredict(match.id, winnerId)}
-                          locked={locked}
-                          isLoggedIn
-                          compact
-                        />
-                      )
-                    })}
+                    {stageMatches.map((shell) => renderCard(shell, true))}
                   </div>
                 </div>
               )
@@ -236,21 +312,13 @@ export default function BracketPredictionsPage() {
         </div>
 
         {/* Third place match */}
-        {thirdPlaceMatch && (
+        {thirdPlaceShell && (
           <div className="mt-8 pt-6 border-t border-white/[0.06]">
             <h2 className="text-base font-syne font-black text-white mb-4">
               🥉 Terzo Posto
-              <span className="text-blue-light text-sm font-normal ml-2">{STAGE_POINTS['third_place']} pt</span>
+              <span className="text-blue-light text-sm font-normal ml-2 tabular-nums">{STAGE_POINTS['third_place']} pt</span>
             </h2>
-            <div className="max-w-xs">
-              <BracketMatchCard
-                match={thirdPlaceMatch}
-                prediction={predictions.find((p) => p.match_id === thirdPlaceMatch.id)}
-                onPredict={(winnerId) => handlePredict(thirdPlaceMatch.id, winnerId)}
-                locked={locked}
-                isLoggedIn
-              />
-            </div>
+            <div className="max-w-xs">{renderCard(thirdPlaceShell, false)}</div>
           </div>
         )}
       </div>

@@ -137,6 +137,8 @@ const translations = {
     pred_goalscorer_save: 'Salva pronostico',
     pred_standings_title: 'Classifica finale',
     pred_standings_subtitle: 'Pronostica le prime 4 squadre (+100/85/65/50 punti)',
+    pred_bracket_hint: 'Il tabellone si costruisce automaticamente dai tuoi pronostici dei gironi. Aggiornali per cambiare chi avanza, poi scegli i vincitori.',
+    pred_bracket_tbd: 'Completa i gironi per sbloccare questo match',
 
     // Leaderboard
     lb_title: 'Classifica',
@@ -357,6 +359,8 @@ const translations = {
     pred_goalscorer_save: 'Save prediction',
     pred_standings_title: 'Final Standings',
     pred_standings_subtitle: 'Predict the top 4 teams (+100/85/65/50 points)',
+    pred_bracket_hint: 'Your bracket is built automatically from your group-stage predictions. Update those to change who advances, then pick the winners.',
+    pred_bracket_tbd: 'Complete the groups to unlock this match',
 
     // Leaderboard
     lb_title: 'Leaderboard',

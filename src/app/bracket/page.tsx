@@ -2,6 +2,7 @@ export const dynamic = 'force-dynamic'
 
 import { createClient } from '@/lib/supabase/server'
 import { formatMatchDate } from '@/lib/utils'
+import { buildBracketFromResults, isGroupStageComplete, type GroupInput } from '@/lib/bracket'
 import GroupStandings from '@/components/GroupStandings'
 import BracketMatchCard from '@/components/BracketMatchCard'
 import type { Match, Team, Group, Stage } from '@/types/database'
@@ -38,6 +39,33 @@ export default async function BracketPage() {
 
   const groupMatches = allMatches.filter((m) => m.stage === 'group')
   const knockoutMatches = allMatches.filter((m) => m.stage !== 'group')
+
+  // Auto-derive knockout participants from real group standings + real winners.
+  const groupInputs: GroupInput[] = groups.map((g) => ({
+    name: g.name,
+    teams: teams.filter((t) => t.group_id === g.id),
+    matches: groupMatches.filter((m) => m.group_id === g.id),
+  }))
+  const teamMap = new Map(teams.map((t) => [t.id, t]))
+  const winnersByMatch: Record<number, string> = {}
+  for (const m of knockoutMatches) if (m.winner_id) winnersByMatch[m.match_number] = m.winner_id
+  // Seed the real bracket only once every group match is played (locks ~Jun 27).
+  const participants = isGroupStageComplete(groupInputs)
+    ? buildBracketFromResults(groupInputs, winnersByMatch).participants
+    : ({} as Record<number, { home: string | null; away: string | null }>)
+
+  // Merge resolved participants onto each knockout shell (DB values win if set).
+  const resolveKo = (m: Match): Match => {
+    const p = participants[m.match_number] ?? { home: null, away: null }
+    return {
+      ...m,
+      home_team_id: m.home_team_id ?? p.home,
+      away_team_id: m.away_team_id ?? p.away,
+      home_team: m.home_team ?? (p.home ? teamMap.get(p.home) : undefined),
+      away_team: m.away_team ?? (p.away ? teamMap.get(p.away) : undefined),
+    }
+  }
+
   const thirdPlaceMatch = knockoutMatches.find((m) => m.stage === 'third_place')
 
   return (
@@ -141,7 +169,7 @@ export default async function BracketPage() {
                       {stageMatches.map((match) => (
                         <BracketMatchCard
                           key={match.id}
-                          match={match}
+                          match={resolveKo(match)}
                           locked
                           compact
                         />
@@ -158,7 +186,7 @@ export default async function BracketPage() {
             <div className="mt-8 pt-6 border-t border-white/[0.06]">
               <h3 className="text-base font-syne font-black text-white mb-4">🥉 Terzo Posto</h3>
               <div className="max-w-xs">
-                <BracketMatchCard match={thirdPlaceMatch} locked compact={false} />
+                <BracketMatchCard match={resolveKo(thirdPlaceMatch)} locked compact={false} />
               </div>
             </div>
           )}
