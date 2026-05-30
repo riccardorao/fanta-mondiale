@@ -87,8 +87,9 @@ export default function PredictionsPage() {
       setGroups(groupDataList)
       setPredictions(predsData as GroupPrediction[] || [])
 
-      if (groupDataList.length > 0) {
-        setActiveGroupId(groupDataList[0].group.id)
+      const firstGroup = groupDataList[0]
+      if (firstGroup) {
+        setActiveGroupId(firstGroup.group.id)
       }
 
       // Check if predictions are locked (use first match as reference)
