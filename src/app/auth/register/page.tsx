@@ -7,8 +7,6 @@ import Button from '@/components/ui/Button'
 import Input from '@/components/ui/Input'
 
 export default function RegisterPage() {
-  const supabase = createClient()
-
   const [name, setName] = useState('')
   const [surname, setSurname] = useState('')
   const [email, setEmail] = useState('')
@@ -38,6 +36,7 @@ export default function RegisterPage() {
     if (!validate()) return
 
     setLoading(true)
+    const supabase = createClient()
     try {
       const { error: signUpError } = await supabase.auth.signUp({
         email: email.trim(),

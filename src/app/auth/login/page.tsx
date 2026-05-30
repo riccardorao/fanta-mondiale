@@ -8,7 +8,6 @@ import Button from '@/components/ui/Button'
 import Input from '@/components/ui/Input'
 
 export default function LoginPage() {
-  const supabase = createClient()
   const router = useRouter()
 
   const [email, setEmail] = useState('')
@@ -32,6 +31,7 @@ export default function LoginPage() {
     if (!validate()) return
 
     setLoading(true)
+    const supabase = createClient()
     try {
       const { error: signInError } = await supabase.auth.signInWithPassword({
         email: email.trim(),

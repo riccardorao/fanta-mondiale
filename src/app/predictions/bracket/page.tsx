@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import toast from 'react-hot-toast'
 import { createClient } from '@/lib/supabase/client'
@@ -27,7 +27,7 @@ const STAGE_POINTS: Record<Stage, number> = {
 }
 
 export default function BracketPredictionsPage() {
-  const supabase = createClient()
+  const supabaseRef = useRef<ReturnType<typeof createClient> | null>(null)
   const router = useRouter()
 
   const [matches, setMatches] = useState<Match[]>([])
@@ -39,6 +39,7 @@ export default function BracketPredictionsPage() {
 
   useEffect(() => {
     const load = async () => {
+      const supabase = (supabaseRef.current ??= createClient())
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) {
         router.push('/auth/login')
@@ -83,7 +84,8 @@ export default function BracketPredictionsPage() {
 
   const handlePredict = useCallback(
     async (matchId: string, winnerId: string) => {
-      if (!userId || locked) return
+      if (!userId || locked || !supabaseRef.current) return
+      const supabase = supabaseRef.current
 
       const predObj: BracketPrediction = {
         id: crypto.randomUUID(),
