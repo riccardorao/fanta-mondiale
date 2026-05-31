@@ -22,8 +22,8 @@ export default function Error({
     <div className="min-h-[calc(100vh-64px)] flex items-center justify-center px-4">
       <div className="glass rounded-3xl p-10 max-w-md w-full text-center">
         <p className="text-6xl mb-4">⚠️</p>
-        <h1 className="text-xl font-syne font-black text-white mb-2">{t.err_500_title}</h1>
-        <p className="text-slate-400 text-sm mb-6">{t.err_500_desc}</p>
+        <h1 className="text-xl font-syne font-black text-ink mb-2">{t.err_500_title}</h1>
+        <p className="text-ink-soft text-sm mb-6">{t.err_500_desc}</p>
         <div className="flex items-center justify-center gap-3">
           <button
             onClick={reset}
@@ -33,7 +33,7 @@ export default function Error({
           </button>
           <Link
             href="/"
-            className="inline-flex items-center justify-center bg-night-3 text-white font-semibold px-6 py-3 rounded-2xl text-sm hover:bg-night-4 transition-all active:scale-95"
+            className="inline-flex items-center justify-center bg-night-3 text-ink font-semibold px-6 py-3 rounded-2xl text-sm hover:bg-night-4 transition-all active:scale-95"
           >
             {t.err_home}
           </Link>

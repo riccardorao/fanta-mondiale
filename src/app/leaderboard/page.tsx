@@ -58,12 +58,12 @@ export default async function LeaderboardPage({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-3xl sm:text-4xl font-syne font-black text-white mb-2">
+          <h1 className="text-3xl sm:text-4xl font-syne font-black text-ink mb-2">
             🏆 <span className="gradient-text-ai">Classifica</span>
           </h1>
-          <p className="text-slate-400 text-sm">FIFA World Cup 2026 Prediction Game</p>
+          <p className="text-ink-soft text-sm">FIFA World Cup 2026 Prediction Game</p>
           {count !== null && (
-            <p className="text-slate-600 text-xs mt-1">{count} partecipanti</p>
+            <p className="text-ink-muted text-xs mt-1">{count} partecipanti</p>
           )}
         </div>
 
@@ -71,7 +71,7 @@ export default async function LeaderboardPage({
         {user && currentUserRank && !rows.find((r) => r.user_id === user.id) && (
           <div className="bg-blue-dim rounded-xl px-4 py-3 mb-4 text-sm flex items-center gap-3 shadow-blue-sm">
             <span className="text-blue-light font-bold">La tua posizione</span>
-            <span className="text-white font-bold">#{currentUserRank}</span>
+            <span className="text-ink font-bold">#{currentUserRank}</span>
             <a href="/leaderboard" className="text-blue-light text-xs hover:underline ml-auto">
               Vai alla tua pagina →
             </a>
@@ -80,8 +80,8 @@ export default async function LeaderboardPage({
 
         {rows.length === 0 ? (
           <div className="text-center py-16">
-            <p className="text-slate-500 text-lg">Nessun risultato ancora.</p>
-            <p className="text-slate-600 text-sm mt-2">La classifica si popolerà quando le partite saranno giocate.</p>
+            <p className="text-ink-muted text-lg">Nessun risultato ancora.</p>
+            <p className="text-ink-muted text-sm mt-2">La classifica si popolerà quando le partite saranno giocate.</p>
           </div>
         ) : (
           <>
@@ -90,16 +90,16 @@ export default async function LeaderboardPage({
               <table className="w-full text-sm">
                 <thead>
                   <tr className="bg-night-2/80 border-b border-night-3">
-                    <th className="text-left px-4 py-3 text-slate-400 font-semibold w-16">Pos</th>
-                    <th className="text-left px-4 py-3 text-slate-400 font-semibold">Giocatore</th>
-                    <th className="text-center px-3 py-3 text-slate-400 font-semibold">Totale</th>
-                    <th className="text-center px-3 py-3 text-slate-400 font-semibold hidden md:table-cell">Gironi</th>
-                    <th className="text-center px-3 py-3 text-slate-400 font-semibold hidden md:table-cell">Esatti</th>
-                    <th className="text-center px-3 py-3 text-slate-400 font-semibold hidden lg:table-cell">R32</th>
-                    <th className="text-center px-3 py-3 text-slate-400 font-semibold hidden lg:table-cell">R16</th>
-                    <th className="text-center px-3 py-3 text-slate-400 font-semibold hidden lg:table-cell">QF</th>
-                    <th className="text-center px-3 py-3 text-slate-400 font-semibold hidden lg:table-cell">SF</th>
-                    <th className="text-center px-3 py-3 text-slate-400 font-semibold hidden lg:table-cell">Finale</th>
+                    <th className="text-left px-4 py-3 text-ink-soft font-semibold w-16">Pos</th>
+                    <th className="text-left px-4 py-3 text-ink-soft font-semibold">Giocatore</th>
+                    <th className="text-center px-3 py-3 text-ink-soft font-semibold">Totale</th>
+                    <th className="text-center px-3 py-3 text-ink-soft font-semibold hidden md:table-cell">Gironi</th>
+                    <th className="text-center px-3 py-3 text-ink-soft font-semibold hidden md:table-cell">Esatti</th>
+                    <th className="text-center px-3 py-3 text-ink-soft font-semibold hidden lg:table-cell">R32</th>
+                    <th className="text-center px-3 py-3 text-ink-soft font-semibold hidden lg:table-cell">R16</th>
+                    <th className="text-center px-3 py-3 text-ink-soft font-semibold hidden lg:table-cell">QF</th>
+                    <th className="text-center px-3 py-3 text-ink-soft font-semibold hidden lg:table-cell">SF</th>
+                    <th className="text-center px-3 py-3 text-ink-soft font-semibold hidden lg:table-cell">Finale</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -125,10 +125,10 @@ export default async function LeaderboardPage({
                               rank === 1
                                 ? 'bg-amber-accent/20 text-amber-accent'
                                 : rank === 2
-                                ? 'bg-slate-400/20 text-slate-300'
+                                ? 'bg-slate-400/20 text-ink-soft'
                                 : rank === 3
                                 ? 'bg-amber-700/30 text-amber-600'
-                                : 'bg-night-1 text-slate-400'
+                                : 'bg-night-1 text-ink-soft'
                             )}
                           >
                             {rank <= 3 ? getRankIcon(rank) : rank}
@@ -136,7 +136,7 @@ export default async function LeaderboardPage({
                         </td>
                         <td className="px-4 py-3">
                           <div className="flex items-center gap-2">
-                            <span className="font-semibold text-white">
+                            <span className="font-semibold text-ink">
                               {entry.profile?.name} {entry.profile?.surname}
                             </span>
                             {isCurrentUser && (
@@ -147,33 +147,33 @@ export default async function LeaderboardPage({
                           </div>
                         </td>
                         <td className="px-3 py-3 text-center">
-                          <span className={cn('text-lg tabular-nums font-bold', isCurrentUser ? 'text-blue-light' : 'text-white')}>
+                          <span className={cn('text-lg tabular-nums font-bold', isCurrentUser ? 'text-blue-light' : 'text-ink')}>
                             {entry.total_points}
                           </span>
                         </td>
-                        <td className="px-3 py-3 text-center text-slate-400 hidden md:table-cell">
+                        <td className="px-3 py-3 text-center text-ink-soft hidden md:table-cell">
                           {entry.group_stage_points}
                         </td>
-                        <td className="px-3 py-3 text-center text-slate-400 hidden md:table-cell">
+                        <td className="px-3 py-3 text-center text-ink-soft hidden md:table-cell">
                           {entry.exact_score_bonus > 0 ? (
                             <span className="text-blue-light">+{entry.exact_score_bonus}</span>
                           ) : (
                             '0'
                           )}
                         </td>
-                        <td className="px-3 py-3 text-center text-slate-400 hidden lg:table-cell">
+                        <td className="px-3 py-3 text-center text-ink-soft hidden lg:table-cell">
                           {entry.r32_points}
                         </td>
-                        <td className="px-3 py-3 text-center text-slate-400 hidden lg:table-cell">
+                        <td className="px-3 py-3 text-center text-ink-soft hidden lg:table-cell">
                           {entry.r16_points}
                         </td>
-                        <td className="px-3 py-3 text-center text-slate-400 hidden lg:table-cell">
+                        <td className="px-3 py-3 text-center text-ink-soft hidden lg:table-cell">
                           {entry.qf_points}
                         </td>
-                        <td className="px-3 py-3 text-center text-slate-400 hidden lg:table-cell">
+                        <td className="px-3 py-3 text-center text-ink-soft hidden lg:table-cell">
                           {entry.sf_points}
                         </td>
-                        <td className="px-3 py-3 text-center text-slate-400 hidden lg:table-cell">
+                        <td className="px-3 py-3 text-center text-ink-soft hidden lg:table-cell">
                           {entry.final_points}
                         </td>
                       </tr>
@@ -204,27 +204,27 @@ export default async function LeaderboardPage({
                             rank === 1
                               ? 'bg-amber-accent/20 text-amber-accent'
                               : rank === 2
-                              ? 'bg-slate-400/20 text-slate-300'
+                              ? 'bg-slate-400/20 text-ink-soft'
                               : rank === 3
                               ? 'bg-amber-700/30 text-amber-600'
-                              : 'bg-night-1 text-slate-400'
+                              : 'bg-night-1 text-ink-soft'
                           )}
                         >
                           {rank <= 3 ? getRankIcon(rank) : rank}
                         </span>
                         <div>
-                          <p className="font-semibold text-white text-sm">
+                          <p className="font-semibold text-ink text-sm">
                             {entry.profile?.name} {entry.profile?.surname}
                             {isCurrentUser && (
                               <span className="ml-2 text-xs text-blue-light">(Tu)</span>
                             )}
                           </p>
-                          <p className="text-xs text-slate-500">
+                          <p className="text-xs text-ink-muted">
                             Gironi: {entry.group_stage_points} + Esatti: {entry.exact_score_bonus} + KO: {entry.r32_points + entry.r16_points + entry.qf_points + entry.sf_points + entry.final_points}
                           </p>
                         </div>
                       </div>
-                      <span className={cn('text-2xl tabular-nums font-bold', isCurrentUser ? 'text-blue-light' : 'text-white')}>
+                      <span className={cn('text-2xl tabular-nums font-bold', isCurrentUser ? 'text-blue-light' : 'text-ink')}>
                         {entry.total_points}
                       </span>
                     </div>
@@ -239,18 +239,18 @@ export default async function LeaderboardPage({
                 {page > 1 && (
                   <a
                     href={`/leaderboard?page=${page - 1}`}
-                    className="px-4 py-2 bg-night-1 text-white rounded-xl hover:bg-night-2 text-sm font-medium transition-colors"
+                    className="px-4 py-2 bg-night-1 text-ink rounded-xl hover:bg-night-2 text-sm font-medium transition-colors"
                   >
                     ← Precedente
                   </a>
                 )}
-                <span className="text-slate-500 text-sm">
+                <span className="text-ink-muted text-sm">
                   Pagina {page} di {totalPages}
                 </span>
                 {page < totalPages && (
                   <a
                     href={`/leaderboard?page=${page + 1}`}
-                    className="px-4 py-2 bg-night-1 text-white rounded-xl hover:bg-night-2 text-sm font-medium transition-colors"
+                    className="px-4 py-2 bg-night-1 text-ink rounded-xl hover:bg-night-2 text-sm font-medium transition-colors"
                   >
                     Successiva →
                   </a>

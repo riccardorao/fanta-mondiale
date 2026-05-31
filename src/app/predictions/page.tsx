@@ -179,7 +179,7 @@ export default function PredictionsPage() {
       <div className="min-h-screen bg-night flex items-center justify-center">
         <div className="flex flex-col items-center gap-3">
           <div className="w-10 h-10 border-2 border-blue-primary border-t-transparent rounded-full animate-spin" />
-          <p className="text-slate-400 text-sm">Caricamento pronostici...</p>
+          <p className="text-ink-soft text-sm">Caricamento pronostici...</p>
         </div>
       </div>
     )
@@ -189,7 +189,7 @@ export default function PredictionsPage() {
     return (
       <div className="min-h-screen bg-night flex items-center justify-center px-4">
         <div className="glass rounded-2xl p-6 max-w-md text-center">
-          <p className="text-red-400 font-semibold">{error}</p>
+          <p className="text-red-500 font-semibold">{error}</p>
         </div>
       </div>
     )
@@ -201,19 +201,19 @@ export default function PredictionsPage() {
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6">
           <div>
-            <h1 className="text-2xl sm:text-3xl font-syne font-black text-white">
+            <h1 className="text-2xl sm:text-3xl font-syne font-black text-ink">
               Pronostici <span className="gradient-text-ai">Gironi</span>
             </h1>
-            <p className="text-slate-500 text-sm mt-1">Pronostica tutte le 72 partite</p>
+            <p className="text-ink-muted text-sm mt-1">Pronostica tutte le 72 partite</p>
           </div>
           <div className="flex items-center gap-3">
             {saving && (
-              <div className="flex items-center gap-2 text-xs text-slate-500">
+              <div className="flex items-center gap-2 text-xs text-ink-muted">
                 <div className="w-3 h-3 border border-blue-light border-t-transparent rounded-full animate-spin" />
                 Salvataggio...
               </div>
             )}
-            <span className="text-sm text-slate-500 tabular-nums">{predictions.length}/72</span>
+            <span className="text-sm text-ink-muted tabular-nums">{predictions.length}/72</span>
             {locked && <span className="text-xs text-amber-accent font-semibold">🔒 Bloccato</span>}
           </div>
         </div>
@@ -239,7 +239,7 @@ export default function PredictionsPage() {
                   className={`px-4 py-2.5 rounded-xl text-sm font-semibold transition-all duration-150 ${
                     isActive
                       ? 'bg-blue-primary text-white shadow-blue-sm'
-                      : 'bg-night-2 text-slate-400 hover:bg-night-3 hover:text-white'
+                      : 'bg-night-2 text-ink-soft hover:bg-night-3 hover:text-ink'
                   }`}
                 >
                   Gruppo {g.group.name}

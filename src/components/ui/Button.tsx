@@ -13,11 +13,11 @@ const variantStyles: Record<NonNullable<ButtonProps['variant']>, string> = {
   primary:
     'bg-blue-primary text-white font-bold hover:bg-blue-hover shadow-blue-sm active:scale-95 disabled:opacity-50',
   secondary:
-    'bg-night-2 text-slate-300 hover:bg-night-3 hover:text-white active:bg-night-1 disabled:opacity-50',
+    'bg-night-2 text-ink-soft hover:bg-night-3 hover:text-ink active:bg-night-1 disabled:opacity-50',
   outline:
     'bg-transparent text-blue-light hover:bg-blue-dim active:bg-blue-dim/50 disabled:opacity-50',
   ghost:
-    'bg-transparent text-slate-400 hover:bg-night-2 hover:text-white active:bg-night-1 disabled:opacity-50',
+    'bg-transparent text-ink-soft hover:bg-night-2 hover:text-ink active:bg-night-1 disabled:opacity-50',
   danger:
     'bg-red-600 text-white font-bold hover:bg-red-500 active:bg-red-700 disabled:bg-red-900 disabled:opacity-50',
 }

@@ -10,7 +10,7 @@ interface TeamFlagProps {
 export default function TeamFlag({ team, compact = false, className }: TeamFlagProps) {
   if (!team) {
     return (
-      <span className={cn('inline-flex items-center gap-1.5 text-slate-500', className)}>
+      <span className={cn('inline-flex items-center gap-1.5 text-ink-muted', className)}>
         <span className="text-lg">🏳️</span>
         {!compact && <span className="text-sm font-medium">TBD</span>}
       </span>
@@ -24,7 +24,7 @@ export default function TeamFlag({ team, compact = false, className }: TeamFlagP
         title={team.name}
       >
         <span className="text-xl leading-none">{team.flag_emoji}</span>
-        <span className="text-xs font-semibold text-slate-300 uppercase tracking-wide">
+        <span className="text-xs font-semibold text-ink-soft uppercase tracking-wide">
           {team.code}
         </span>
       </span>
@@ -34,7 +34,7 @@ export default function TeamFlag({ team, compact = false, className }: TeamFlagP
   return (
     <span className={cn('inline-flex items-center gap-2', className)}>
       <span className="text-2xl leading-none">{team.flag_emoji}</span>
-      <span className="text-sm font-semibold text-white">{team.name}</span>
+      <span className="text-sm font-semibold text-ink">{team.name}</span>
     </span>
   )
 }

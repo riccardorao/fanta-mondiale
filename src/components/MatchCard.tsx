@@ -74,7 +74,7 @@ export default function MatchCard({
         <div className="flex items-center gap-2 flex-wrap">
           <span className={cn(
             'text-xs font-bold px-2.5 py-0.5 rounded-full',
-            isLive ? 'bg-red-500/20 text-red-400' : 'bg-night-2 text-slate-400'
+            isLive ? 'bg-red-500/20 text-red-500' : 'bg-night-2 text-ink-soft'
           )}>
             {isLive ? '● LIVE' : STAGE_LABELS[match.stage]}
           </span>
@@ -84,7 +84,7 @@ export default function MatchCard({
             </span>
           )}
         </div>
-        <span className="text-xs text-slate-600">{formatMatchDate(match.scheduled_at)}</span>
+        <span className="text-xs text-ink-muted">{formatMatchDate(match.scheduled_at)}</span>
       </div>
 
       {/* Teams + score */}
@@ -96,17 +96,17 @@ export default function MatchCard({
         <div className="flex-shrink-0 px-3 text-center min-w-[80px]">
           {isCompleted && match.home_score !== null ? (
             <div className="flex items-center justify-center gap-1">
-              <span className="text-2xl tabular-nums font-bold text-white">{match.home_score}</span>
-              <span className="text-slate-600 text-lg mx-0.5">–</span>
-              <span className="text-2xl tabular-nums font-bold text-white">{match.away_score}</span>
+              <span className="text-2xl tabular-nums font-bold text-ink">{match.home_score}</span>
+              <span className="text-ink-muted text-lg mx-0.5">–</span>
+              <span className="text-2xl tabular-nums font-bold text-ink">{match.away_score}</span>
             </div>
           ) : isLive ? (
-            <span className="text-base font-bold text-red-400 animate-pulse">LIVE</span>
+            <span className="text-base font-bold text-red-500 animate-pulse">LIVE</span>
           ) : (
-            <span className="text-base font-semibold text-slate-600">vs</span>
+            <span className="text-base font-semibold text-ink-muted">vs</span>
           )}
           {match.home_penalties !== null && match.away_penalties !== null && (
-            <div className="text-xs text-slate-600 mt-0.5">
+            <div className="text-xs text-ink-muted mt-0.5">
               ({match.home_penalties}–{match.away_penalties} rig.)
             </div>
           )}
@@ -119,7 +119,7 @@ export default function MatchCard({
 
       {/* Prediction UI */}
       {match.stage === 'group' && showPrediction && isLoggedIn && (
-        <div className="mt-4 pt-3 border-t border-white/[0.06]">
+        <div className="mt-4 pt-3 border-t border-ink/10">
           <div className="flex items-center gap-3 flex-wrap justify-between">
             {/* 1 X 2 */}
             <div className="flex gap-2">
@@ -136,11 +136,11 @@ export default function MatchCard({
                       'w-10 h-10 rounded-xl text-sm font-bold transition-all duration-150 active:scale-95',
                       isSelected
                         ? isCorrect
-                          ? 'bg-emerald-500/20 text-emerald-400'
+                          ? 'bg-emerald-500/20 text-emerald-600'
                           : isWrong
-                          ? 'bg-red-500/20 text-red-400'
+                          ? 'bg-red-500/20 text-red-500'
                           : 'bg-blue-primary text-white shadow-blue-sm'
-                        : 'bg-night-1 text-slate-400 hover:bg-night-2 hover:text-white',
+                        : 'bg-night-1 text-ink-soft hover:bg-night-2 hover:text-ink',
                       !isSelected && isCompleted && actualResult === outcome && 'bg-emerald-500/10 text-emerald-500',
                       locked && 'cursor-default'
                     )}
@@ -150,7 +150,7 @@ export default function MatchCard({
                 )
               })}
               {selectedOutcome && (
-                <span className="text-xs text-slate-500 self-center ml-1 hidden sm:block">
+                <span className="text-xs text-ink-muted self-center ml-1 hidden sm:block">
                   {outcomeLabel[selectedOutcome]}
                 </span>
               )}
@@ -159,29 +159,29 @@ export default function MatchCard({
             {/* Score inputs */}
             {selectedOutcome && !locked && (
               <div className="flex items-center gap-2">
-                <span className="text-xs text-slate-500">+5 se esatto:</span>
+                <span className="text-xs text-ink-muted">+5 se esatto:</span>
                 <input
                   type="number" min={0} max={99} value={homeScore}
                   onChange={(e) => handleScoreChange('home', e.target.value)}
                   placeholder="0"
-                  className="w-10 text-center bg-night-1 rounded-lg py-1.5 text-white text-sm tabular-nums"
+                  className="w-10 text-center bg-night-1 rounded-lg py-1.5 text-ink text-sm tabular-nums"
                 />
-                <span className="text-slate-600 text-sm">–</span>
+                <span className="text-ink-muted text-sm">–</span>
                 <input
                   type="number" min={0} max={99} value={awayScore}
                   onChange={(e) => handleScoreChange('away', e.target.value)}
                   placeholder="0"
-                  className="w-10 text-center bg-night-1 rounded-lg py-1.5 text-white text-sm tabular-nums"
+                  className="w-10 text-center bg-night-1 rounded-lg py-1.5 text-ink text-sm tabular-nums"
                 />
               </div>
             )}
 
             {locked && selectedOutcome && (
               <div className="flex items-center gap-2 text-xs">
-                <span className="text-slate-500">Il tuo pick:</span>
+                <span className="text-ink-muted">Il tuo pick:</span>
                 <span className="font-bold text-blue-light">{outcomeLabel[selectedOutcome]}</span>
                 {prediction?.predicted_home_score != null && (
-                  <span className="text-slate-600">
+                  <span className="text-ink-muted">
                     ({prediction.predicted_home_score}–{prediction.predicted_away_score})
                   </span>
                 )}
@@ -193,14 +193,14 @@ export default function MatchCard({
           {isCompleted && selectedOutcome && (
             <div className="mt-2.5">
               {selectedOutcome === actualResult ? (
-                <span className="text-xs text-emerald-400 font-medium">
+                <span className="text-xs text-emerald-600 font-medium">
                   ✓ Risultato esatto! +10 punti
                   {prediction?.predicted_home_score === match.home_score &&
                     prediction?.predicted_away_score === match.away_score &&
                     ' +5 risultato esatto'}
                 </span>
               ) : (
-                <span className="text-xs text-red-400 font-medium">✗ Risultato sbagliato</span>
+                <span className="text-xs text-red-500 font-medium">✗ Risultato sbagliato</span>
               )}
             </div>
           )}
@@ -208,7 +208,7 @@ export default function MatchCard({
       )}
 
       <div className="mt-2 text-right">
-        <span className="text-xs text-slate-700">#{match.match_number}</span>
+        <span className="text-xs text-ink-muted">#{match.match_number}</span>
       </div>
     </div>
   )

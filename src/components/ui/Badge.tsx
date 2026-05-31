@@ -8,10 +8,10 @@ interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
 const variantStyles: Record<NonNullable<BadgeProps['variant']>, string> = {
   default: 'bg-blue-dim text-blue-light',
   gold: 'bg-amber-accent/10 text-amber-accent',
-  red: 'bg-red-500/15 text-red-400',
-  gray: 'bg-night-3 text-slate-400',
+  red: 'bg-red-500/15 text-red-500',
+  gray: 'bg-night-3 text-ink-soft',
   blue: 'bg-blue-dim text-blue-light',
-  green: 'bg-emerald-500/15 text-emerald-400',
+  green: 'bg-emerald-500/15 text-emerald-600',
 }
 
 export default function Badge({

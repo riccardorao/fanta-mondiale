@@ -48,7 +48,7 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="it">
-      <body className={`${spaceGrotesk.variable} ${syne.variable} font-space bg-night text-slate-100 min-h-screen`}>
+      <body className={`${spaceGrotesk.variable} ${syne.variable} font-space bg-night text-ink min-h-screen`}>
         <LanguageProvider>
           <Navbar />
           <main className="min-h-[calc(100vh-64px)]">{children}</main>

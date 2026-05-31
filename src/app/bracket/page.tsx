@@ -73,17 +73,17 @@ export default async function BracketPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="mb-8 text-center">
-          <h1 className="text-3xl sm:text-4xl font-syne font-black text-white mb-2">
+          <h1 className="text-3xl sm:text-4xl font-syne font-black text-ink mb-2">
             World Cup <span className="gradient-text-gold">2026</span>
           </h1>
-          <p className="text-slate-500 text-sm">
+          <p className="text-ink-muted text-sm">
             Risultati in tempo reale — aggiornati durante il torneo
           </p>
         </div>
 
         {/* Group Stage */}
         <section className="mb-12">
-          <h2 className="text-lg font-syne font-black text-white mb-5 flex items-center gap-2">
+          <h2 className="text-lg font-syne font-black text-ink mb-5 flex items-center gap-2">
             <span className="text-blue-light">⚽</span> Fase a Gironi
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
@@ -98,40 +98,40 @@ export default async function BracketPage() {
                     groupName={group.name}
                     className="mb-4"
                   />
-                  <div className="border-t border-white/[0.06] pt-3 flex flex-col gap-2">
+                  <div className="border-t border-ink/10 pt-3 flex flex-col gap-2">
                     {gMatches.map((match) => (
                       <div key={match.id} className="text-xs bg-night-1/50 rounded-xl px-3 py-2">
                         <div className="flex items-center justify-between mb-1">
-                          <span className="text-slate-600">{formatMatchDate(match.scheduled_at)}</span>
+                          <span className="text-ink-muted">{formatMatchDate(match.scheduled_at)}</span>
                           <span className={
                             match.status === 'live'
-                              ? 'text-red-400 font-bold animate-pulse'
+                              ? 'text-red-500 font-bold animate-pulse'
                               : match.status === 'completed'
-                              ? 'text-emerald-400 font-semibold'
-                              : 'text-slate-600'
+                              ? 'text-emerald-600 font-semibold'
+                              : 'text-ink-muted'
                           }>
                             {match.status === 'live' ? '● LIVE' : match.status === 'completed' ? 'FT' : 'vs'}
                           </span>
                         </div>
                         <div className="flex items-center justify-between">
-                          <span className="flex items-center gap-1 font-medium text-slate-300">
+                          <span className="flex items-center gap-1 font-medium text-ink-soft">
                             <span>{match.home_team?.flag_emoji}</span>
                             <span>{match.home_team?.code ?? 'TBD'}</span>
                           </span>
                           {match.status === 'completed' ? (
-                            <span className="font-bold text-white tabular-nums px-2">
+                            <span className="font-bold text-ink tabular-nums px-2">
                               {match.home_score} – {match.away_score}
                             </span>
                           ) : (
-                            <span className="text-slate-700 px-2 text-xs">—</span>
+                            <span className="text-ink-muted px-2 text-xs">—</span>
                           )}
-                          <span className="flex items-center gap-1 font-medium text-slate-300">
+                          <span className="flex items-center gap-1 font-medium text-ink-soft">
                             <span>{match.away_team?.code ?? 'TBD'}</span>
                             <span>{match.away_team?.flag_emoji}</span>
                           </span>
                         </div>
                         {match.home_penalties !== null && match.away_penalties !== null && (
-                          <div className="text-center text-slate-600 mt-0.5">
+                          <div className="text-center text-ink-muted mt-0.5">
                             (rig. {match.home_penalties}–{match.away_penalties})
                           </div>
                         )}
@@ -146,7 +146,7 @@ export default async function BracketPage() {
 
         {/* Knockout Bracket */}
         <section>
-          <h2 className="text-lg font-syne font-black text-white mb-5 flex items-center gap-2">
+          <h2 className="text-lg font-syne font-black text-ink mb-5 flex items-center gap-2">
             <span className="text-amber-accent">🏆</span> Knockout Bracket
           </h2>
 
@@ -183,8 +183,8 @@ export default async function BracketPage() {
 
           {/* Third place */}
           {thirdPlaceMatch && (
-            <div className="mt-8 pt-6 border-t border-white/[0.06]">
-              <h3 className="text-base font-syne font-black text-white mb-4">🥉 Terzo Posto</h3>
+            <div className="mt-8 pt-6 border-t border-ink/10">
+              <h3 className="text-base font-syne font-black text-ink mb-4">🥉 Terzo Posto</h3>
               <div className="max-w-xs">
                 <BracketMatchCard match={resolveKo(thirdPlaceMatch)} locked compact={false} />
               </div>

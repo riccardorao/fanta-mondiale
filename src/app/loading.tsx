@@ -4,9 +4,9 @@ export default function Loading() {
       <div className="flex flex-col items-center gap-3">
         <div className="w-10 h-10 border-2 border-blue-primary border-t-transparent rounded-full animate-spin" />
         <span className="font-syne font-black text-lg">
-          <span className="text-white">FANT</span>
+          <span className="text-ink">FANT</span>
           <span className="gradient-text-ai">AI</span>
-          <span className="text-white">D</span>
+          <span className="text-ink">D</span>
         </span>
       </div>
     </div>

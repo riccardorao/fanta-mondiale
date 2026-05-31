@@ -49,17 +49,17 @@ export default function ResetPasswordPage() {
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
           <Link href="/" className="inline-block mb-6">
-            <span className="font-syne font-black text-3xl text-white">FANT</span>
+            <span className="font-syne font-black text-3xl text-ink">FANT</span>
             <span className="font-syne font-black text-3xl gradient-text-ai">AI</span>
-            <span className="font-syne font-black text-3xl text-white">D</span>
+            <span className="font-syne font-black text-3xl text-ink">D</span>
           </Link>
-          <h1 className="text-2xl font-syne font-black text-white mb-1">{t.auth_reset_title}</h1>
-          <p className="text-slate-400 text-sm">{t.auth_reset_subtitle}</p>
+          <h1 className="text-2xl font-syne font-black text-ink mb-1">{t.auth_reset_title}</h1>
+          <p className="text-ink-soft text-sm">{t.auth_reset_subtitle}</p>
         </div>
 
         <div className="glass rounded-3xl p-6 sm:p-8">
           {error && (
-            <div className="bg-red-500/10 rounded-2xl px-4 py-3 mb-5 text-red-400 text-sm">
+            <div className="bg-red-500/10 rounded-2xl px-4 py-3 mb-5 text-red-500 text-sm">
               {error}{' '}
               <Link href="/auth/login" className="underline hover:text-red-300">
                 {t.auth_login_link}
@@ -69,28 +69,28 @@ export default function ResetPasswordPage() {
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-4" noValidate>
             <div className="flex flex-col gap-1.5">
-              <label className="text-sm font-medium text-slate-300">{t.auth_reset_new}</label>
+              <label className="text-sm font-medium text-ink-soft">{t.auth_reset_new}</label>
               <input
                 type="password"
                 placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 autoComplete="new-password"
-                className="bg-night-1 rounded-xl px-4 py-3 text-white placeholder-slate-600 text-sm transition-all focus:bg-night-2"
+                className="bg-night-1 rounded-xl px-4 py-3 text-ink placeholder-ink-muted text-sm transition-all focus:bg-night-2"
               />
-              {fieldErrors.password && <p className="text-xs text-red-400">{fieldErrors.password}</p>}
+              {fieldErrors.password && <p className="text-xs text-red-500">{fieldErrors.password}</p>}
             </div>
             <div className="flex flex-col gap-1.5">
-              <label className="text-sm font-medium text-slate-300">{t.auth_confirm_password}</label>
+              <label className="text-sm font-medium text-ink-soft">{t.auth_confirm_password}</label>
               <input
                 type="password"
                 placeholder="••••••••"
                 value={confirm}
                 onChange={(e) => setConfirm(e.target.value)}
                 autoComplete="new-password"
-                className="bg-night-1 rounded-xl px-4 py-3 text-white placeholder-slate-600 text-sm transition-all focus:bg-night-2"
+                className="bg-night-1 rounded-xl px-4 py-3 text-ink placeholder-ink-muted text-sm transition-all focus:bg-night-2"
               />
-              {fieldErrors.confirm && <p className="text-xs text-red-400">{fieldErrors.confirm}</p>}
+              {fieldErrors.confirm && <p className="text-xs text-red-500">{fieldErrors.confirm}</p>}
             </div>
 
             <button

@@ -98,11 +98,11 @@ export default async function DashboardPage() {
 
         {/* Welcome header */}
         <div className="mb-8">
-          <h1 className="text-3xl sm:text-4xl font-syne font-black text-white">
+          <h1 className="text-3xl sm:text-4xl font-syne font-black text-ink">
             Bentornato,{' '}
             <span className="gradient-text-ai">{profile.name}!</span>
           </h1>
-          <p className="text-slate-400 mt-1">
+          <p className="text-ink-soft mt-1">
             La tua panoramica Fanta Mondiale 2026.
           </p>
         </div>
@@ -111,7 +111,7 @@ export default async function DashboardPage() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
           {/* Total Points */}
           <div className="glass rounded-2xl p-5 text-center shadow-card">
-            <p className="text-xs text-slate-500 uppercase tracking-wider font-semibold mb-2">Punti Totali</p>
+            <p className="text-xs text-ink-muted uppercase tracking-wider font-semibold mb-2">Punti Totali</p>
             <p className="text-4xl tabular-nums font-bold gradient-text-gold num-glow">
               {leaderboardEntry?.total_points ?? 0}
             </p>
@@ -119,34 +119,34 @@ export default async function DashboardPage() {
 
           {/* Rank */}
           <div className="glass rounded-2xl p-5 text-center shadow-card">
-            <p className="text-xs text-slate-500 uppercase tracking-wider font-semibold mb-2">Posizione</p>
-            <p className="text-4xl tabular-nums font-bold text-white num-glow">
+            <p className="text-xs text-ink-muted uppercase tracking-wider font-semibold mb-2">Posizione</p>
+            <p className="text-4xl tabular-nums font-bold text-ink num-glow">
               {userRank !== null ? (
                 <>
                   {userRank}
-                  <sup className="text-lg text-slate-400">{getRankSuffix(userRank)}</sup>
+                  <sup className="text-lg text-ink-soft">{getRankSuffix(userRank)}</sup>
                 </>
               ) : (
-                <span className="text-slate-600 text-2xl">—</span>
+                <span className="text-ink-muted text-2xl">—</span>
               )}
             </p>
           </div>
 
           {/* Group Predictions */}
           <div className="glass rounded-2xl p-5 text-center shadow-card">
-            <p className="text-xs text-slate-500 uppercase tracking-wider font-semibold mb-2">Gironi</p>
-            <p className="text-4xl tabular-nums font-bold text-white num-glow">
+            <p className="text-xs text-ink-muted uppercase tracking-wider font-semibold mb-2">Gironi</p>
+            <p className="text-4xl tabular-nums font-bold text-ink num-glow">
               {groupPredCount ?? 0}
-              <span className="text-slate-500 text-lg font-medium">/72</span>
+              <span className="text-ink-muted text-lg font-medium">/72</span>
             </p>
           </div>
 
           {/* Bracket Predictions */}
           <div className="glass rounded-2xl p-5 text-center shadow-card">
-            <p className="text-xs text-slate-500 uppercase tracking-wider font-semibold mb-2">Bracket</p>
-            <p className="text-4xl tabular-nums font-bold text-white num-glow">
+            <p className="text-xs text-ink-muted uppercase tracking-wider font-semibold mb-2">Bracket</p>
+            <p className="text-4xl tabular-nums font-bold text-ink num-glow">
               {bracketPredCount ?? 0}
-              <span className="text-slate-500 text-lg font-medium">/32</span>
+              <span className="text-ink-muted text-lg font-medium">/32</span>
             </p>
           </div>
         </div>
@@ -154,7 +154,7 @@ export default async function DashboardPage() {
         {/* Points breakdown (if any) */}
         {leaderboardEntry && leaderboardEntry.total_points > 0 && (
           <div className="glass rounded-2xl p-5 mb-8 shadow-card">
-            <h2 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4">Dettaglio Punti</h2>
+            <h2 className="text-xs font-bold text-ink-soft uppercase tracking-wider mb-4">Dettaglio Punti</h2>
             <div className="grid grid-cols-3 sm:grid-cols-7 gap-3">
               {[
                 { label: 'Gironi', value: leaderboardEntry.group_stage_points },
@@ -166,8 +166,8 @@ export default async function DashboardPage() {
                 { label: 'Finale', value: leaderboardEntry.final_points },
               ].map((item) => (
                 <div key={item.label} className="bg-night-1 rounded-xl p-3 text-center">
-                  <p className="text-xs text-slate-500 mb-1">{item.label}</p>
-                  <p className={`text-xl tabular-nums font-bold ${item.value > 0 ? 'text-blue-light' : 'text-slate-600'}`}>
+                  <p className="text-xs text-ink-muted mb-1">{item.label}</p>
+                  <p className={`text-xl tabular-nums font-bold ${item.value > 0 ? 'text-blue-light' : 'text-ink-muted'}`}>
                     {item.value}
                   </p>
                 </div>
@@ -177,17 +177,17 @@ export default async function DashboardPage() {
         )}
 
         {/* Quick Actions */}
-        <h2 className="text-xl font-syne font-black text-white mb-4">Azioni Rapide</h2>
+        <h2 className="text-xl font-syne font-black text-ink mb-4">Azioni Rapide</h2>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
           <Link
             href="/predictions"
             className="glass glass-hover rounded-2xl p-5 group shadow-card"
           >
             <div className="text-3xl mb-3">⚽</div>
-            <h3 className="font-bold text-white mb-1 group-hover:text-blue-light transition-colors">
+            <h3 className="font-bold text-ink mb-1 group-hover:text-blue-light transition-colors">
               Pronostica i Gironi
             </h3>
-            <p className="text-sm text-slate-500">
+            <p className="text-sm text-ink-muted">
               {groupPredCount ?? 0}/72 pronostici fatti
             </p>
             {!locked && (
@@ -202,10 +202,10 @@ export default async function DashboardPage() {
             className="glass glass-hover rounded-2xl p-5 group shadow-card"
           >
             <div className="text-3xl mb-3">🏆</div>
-            <h3 className="font-bold text-white mb-1 group-hover:text-blue-light transition-colors">
+            <h3 className="font-bold text-ink mb-1 group-hover:text-blue-light transition-colors">
               Costruisci il Bracket
             </h3>
-            <p className="text-sm text-slate-500">
+            <p className="text-sm text-ink-muted">
               {bracketPredCount ?? 0}/32 pick bracket fatti
             </p>
             {!locked && (
@@ -220,10 +220,10 @@ export default async function DashboardPage() {
             className="glass glass-hover rounded-2xl p-5 group shadow-card"
           >
             <div className="text-3xl mb-3">📊</div>
-            <h3 className="font-bold text-white mb-1 group-hover:text-blue-light transition-colors">
+            <h3 className="font-bold text-ink mb-1 group-hover:text-blue-light transition-colors">
               Classifica
             </h3>
-            <p className="text-sm text-slate-500">
+            <p className="text-sm text-ink-muted">
               {userRank !== null ? `Sei in posizione ${userRank}${getRankSuffix(userRank)}` : 'Scopri dove sei'}
             </p>
             <span className="mt-3 inline-block text-xs text-blue-light font-semibold">
@@ -235,33 +235,33 @@ export default async function DashboardPage() {
         {/* Upcoming matches */}
         {upcomingMatches && upcomingMatches.length > 0 && (
           <div>
-            <h2 className="text-xl font-syne font-black text-white mb-4">Prossime Partite</h2>
+            <h2 className="text-xl font-syne font-black text-ink mb-4">Prossime Partite</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
               {upcomingMatches.map((match: any) => (
                 <div
                   key={match.id}
                   className="glass rounded-2xl p-4 shadow-card"
                 >
-                  <p className="text-xs text-slate-500 mb-2">
+                  <p className="text-xs text-ink-muted mb-2">
                     Partita #{match.match_number} · {match.stage.toUpperCase()}
                   </p>
                   <div className="flex items-center justify-between gap-2">
                     <div className="flex items-center gap-2 flex-1">
                       <span className="text-lg">{(match.home_team as any)?.flag_emoji ?? '🏳️'}</span>
-                      <span className="text-sm font-semibold text-white truncate">
+                      <span className="text-sm font-semibold text-ink truncate">
                         {(match.home_team as any)?.code ?? 'TBD'}
                       </span>
                     </div>
-                    <span className="text-slate-500 text-xs font-medium px-2">vs</span>
+                    <span className="text-ink-muted text-xs font-medium px-2">vs</span>
                     <div className="flex items-center gap-2 flex-1 justify-end">
-                      <span className="text-sm font-semibold text-white truncate">
+                      <span className="text-sm font-semibold text-ink truncate">
                         {(match.away_team as any)?.code ?? 'TBD'}
                       </span>
                       <span className="text-lg">{(match.away_team as any)?.flag_emoji ?? '🏳️'}</span>
                     </div>
                   </div>
                   {match.scheduled_at && (
-                    <p className="text-xs text-slate-600 mt-2 text-center">
+                    <p className="text-xs text-ink-muted mt-2 text-center">
                       {new Date(match.scheduled_at).toLocaleDateString('it-IT', {
                         day: 'numeric',
                         month: 'short',
@@ -281,7 +281,7 @@ export default async function DashboardPage() {
           <div className="mt-8 glass rounded-2xl p-4 flex items-center justify-between shadow-blue-sm">
             <div>
               <p className="text-sm font-semibold text-blue-light">Pannello Admin</p>
-              <p className="text-xs text-slate-500">Gestisci risultati e dati utenti</p>
+              <p className="text-xs text-ink-muted">Gestisci risultati e dati utenti</p>
             </div>
             <Link
               href="/admin"

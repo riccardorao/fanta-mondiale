@@ -34,7 +34,7 @@ export function CardHeader({ className, children, ...props }: HTMLAttributes<HTM
 export function CardTitle({ className, children, ...props }: HTMLAttributes<HTMLHeadingElement>) {
   return (
     <h3
-      className={cn('text-lg font-bold text-white', className)}
+      className={cn('text-lg font-bold text-ink', className)}
       {...props}
     >
       {children}

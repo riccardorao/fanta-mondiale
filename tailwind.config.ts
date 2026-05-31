@@ -9,24 +9,69 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        // ── Light surfaces ──────────────────────────────────────────────
+        canvas: '#FFFFFF',
+        surface: '#FFFFFF',
+        // Legacy "night" scale remapped to light neutrals so every existing
+        // `bg-night*` / `night-*` usage flips to the light theme automatically.
         night: {
-          DEFAULT: '#16243F',
-          1: '#1E2F4D',
-          2: '#263A5B',
-          3: '#324867',
-          4: '#3F5478',
+          DEFAULT: '#FFFFFF',
+          1: '#F5F6FB',
+          2: '#EEF1F8',
+          3: '#E4E8F2',
+          4: '#D7DCEA',
         },
+        // ── Text / ink ──────────────────────────────────────────────────
+        ink: {
+          DEFAULT: '#0F172A', // headings — near-black navy
+          soft: '#37415A',    // body text
+          muted: '#5B6678',   // secondary text (still clearly readable)
+        },
+        // ── Brand: blue ─────────────────────────────────────────────────
         blue: {
+          DEFAULT: '#2563EB',
           primary: '#2563EB',
           hover: '#1D4ED8',
-          light: '#60A5FA',
-          dim: 'rgba(37,99,235,0.15)',
-          glow: 'rgba(96,165,250,0.3)',
+          light: '#3B82F6',   // readable accent on white
+          dim: 'rgba(37,99,235,0.10)',
+          glow: 'rgba(37,99,235,0.25)',
         },
+        // ── Brand: red ──────────────────────────────────────────────────
+        red: {
+          DEFAULT: '#E11D48',
+          primary: '#E11D48',
+          hover: '#BE123C',
+          light: '#F43F5E',
+          dim: 'rgba(225,29,72,0.10)',
+        },
+        // ── Brand: purple (the "AI" in FANTAID) ─────────────────────────
+        purple: {
+          DEFAULT: '#8B5CF6',
+          primary: '#8B5CF6',
+          hover: '#7C3AED',
+          light: '#A78BFA',
+          dim: 'rgba(139,92,246,0.10)',
+        },
+        // Status accent (warnings / locked). Darkened for contrast on white.
         amber: {
-          accent: '#F59E0B',
-          dim: 'rgba(245,158,11,0.15)',
+          accent: '#B45309',
+          dim: 'rgba(180,83,9,0.12)',
         },
+      },
+      // Type scale bumped one step up across the board — nothing tiny, very
+      // legible on phones.
+      fontSize: {
+        xs: ['0.8125rem', { lineHeight: '1.2rem' }],   // 13px
+        sm: ['0.9375rem', { lineHeight: '1.45rem' }],  // 15px
+        base: ['1.0625rem', { lineHeight: '1.65rem' }],// 17px
+        lg: ['1.1875rem', { lineHeight: '1.8rem' }],   // 19px
+        xl: ['1.375rem', { lineHeight: '1.9rem' }],    // 22px
+        '2xl': ['1.625rem', { lineHeight: '2.05rem' }],// 26px
+        '3xl': ['2rem', { lineHeight: '2.3rem' }],     // 32px
+        '4xl': ['2.5rem', { lineHeight: '2.7rem' }],   // 40px
+        '5xl': ['3.25rem', { lineHeight: '1.05' }],    // 52px
+        '6xl': ['4rem', { lineHeight: '1.02' }],       // 64px
+        '7xl': ['4.75rem', { lineHeight: '1' }],
       },
       fontFamily: {
         syne: ['var(--font-syne)', 'sans-serif'],
@@ -35,14 +80,15 @@ const config: Config = {
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-ai': 'linear-gradient(135deg, #60A5FA 0%, #818CF8 50%, #A78BFA 100%)',
+        'gradient-ai': 'linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%)',
+        'gradient-brand': 'linear-gradient(135deg, #2563EB 0%, #8B5CF6 50%, #E11D48 100%)',
       },
       boxShadow: {
-        'blue-sm': '0 0 12px rgba(37,99,235,0.25)',
-        'blue-md': '0 0 24px rgba(37,99,235,0.35)',
-        'blue-lg': '0 0 48px rgba(37,99,235,0.45)',
-        'glow': '0 0 20px rgba(96,165,250,0.4)',
-        'card': '0 4px 24px rgba(0,0,0,0.4)',
+        'blue-sm': '0 6px 18px rgba(37,99,235,0.18)',
+        'blue-md': '0 10px 28px rgba(37,99,235,0.22)',
+        'blue-lg': '0 16px 40px rgba(37,99,235,0.25)',
+        'glow': '0 8px 24px rgba(139,92,246,0.22)',
+        'card': '0 6px 24px rgba(15,23,42,0.07), 0 1px 3px rgba(15,23,42,0.05)',
       },
       animation: {
         'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
