@@ -106,10 +106,10 @@ export default function BonusPredictions({ locked = false }: BonusPredictionsPro
       {/* Top goalscorer */}
       <div className="glass rounded-2xl p-4">
         <div className="flex items-baseline justify-between mb-1">
-          <h3 className="font-syne font-black text-white">⚽ {t.pred_goalscorer_title}</h3>
-          <span className="text-xs font-bold text-pink-400 tabular-nums">+50 {t.pts}</span>
+          <h3 className="font-syne font-black text-ink">⚽ {t.pred_goalscorer_title}</h3>
+          <span className="text-xs font-bold text-red-primary tabular-nums">+50 {t.pts}</span>
         </div>
-        <p className="text-slate-500 text-xs mb-3">{t.pred_goalscorer_subtitle}</p>
+        <p className="text-ink-muted text-xs mb-3">{t.pred_goalscorer_subtitle}</p>
         <div className="flex gap-2">
           <input
             type="text"
@@ -117,7 +117,7 @@ export default function BonusPredictions({ locked = false }: BonusPredictionsPro
             onChange={(e) => setGoalscorer(e.target.value)}
             disabled={locked}
             placeholder={t.pred_goalscorer_placeholder}
-            className="flex-1 bg-night-1 rounded-xl px-3 py-2.5 text-white text-sm placeholder:text-slate-600 focus:outline-none disabled:opacity-60"
+            className="flex-1 bg-night-1 rounded-xl px-3 py-2.5 text-ink text-sm placeholder:text-ink-muted focus:outline-none disabled:opacity-60"
           />
           {!locked && (
             <button
@@ -134,10 +134,10 @@ export default function BonusPredictions({ locked = false }: BonusPredictionsPro
       {/* Final standings top 4 */}
       <div className="glass rounded-2xl p-4">
         <div className="flex items-baseline justify-between mb-1">
-          <h3 className="font-syne font-black text-white">🏆 {t.pred_standings_title}</h3>
-          <span className="text-xs font-bold text-emerald-400 tabular-nums">+100/85/65/50</span>
+          <h3 className="font-syne font-black text-ink">🏆 {t.pred_standings_title}</h3>
+          <span className="text-xs font-bold text-emerald-600 tabular-nums">+100/85/65/50</span>
         </div>
-        <p className="text-slate-500 text-xs mb-3">{t.pred_standings_subtitle}</p>
+        <p className="text-ink-muted text-xs mb-3">{t.pred_standings_subtitle}</p>
         <div className="flex flex-col gap-2">
           {POSITIONS.map(({ key, pts }, idx) => (
             <div key={key} className="flex items-center gap-2">
@@ -148,7 +148,7 @@ export default function BonusPredictions({ locked = false }: BonusPredictionsPro
                 value={standings[key]}
                 onChange={(e) => saveStanding(key, e.target.value)}
                 disabled={locked}
-                className="flex-1 bg-night-1 rounded-xl px-3 py-2 text-white text-sm focus:outline-none disabled:opacity-60"
+                className="flex-1 bg-night-1 rounded-xl px-3 py-2 text-ink text-sm focus:outline-none disabled:opacity-60"
               >
                 <option value="">—</option>
                 {teams.map((team) => (
@@ -157,7 +157,7 @@ export default function BonusPredictions({ locked = false }: BonusPredictionsPro
                   </option>
                 ))}
               </select>
-              <span className="text-xs text-slate-600 tabular-nums w-8 text-right flex-shrink-0">+{pts}</span>
+              <span className="text-xs text-ink-muted tabular-nums w-8 text-right flex-shrink-0">+{pts}</span>
             </div>
           ))}
         </div>

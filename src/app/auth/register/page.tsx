@@ -56,13 +56,13 @@ export default function RegisterPage() {
       <div className="min-h-[calc(100vh-64px)] bg-night flex items-center justify-center px-4">
         <div className="glass rounded-3xl p-8 max-w-sm w-full text-center">
           <div className="text-5xl mb-4">✉️</div>
-          <h2 className="text-2xl font-syne font-black text-white mb-3">{t.auth_check_email_title}</h2>
-          <p className="text-slate-400 mb-1 text-sm">
+          <h2 className="text-2xl font-syne font-black text-ink mb-3">{t.auth_check_email_title}</h2>
+          <p className="text-ink-soft mb-1 text-sm">
             {t.auth_check_email_desc}{' '}
             <span className="text-blue-light font-semibold">{email}</span>
           </p>
-          <p className="text-slate-500 text-sm mb-6">{t.auth_check_email_sub}</p>
-          <Link href="/auth/login" className="text-blue-light hover:text-white font-semibold transition-colors text-sm">
+          <p className="text-ink-muted text-sm mb-6">{t.auth_check_email_sub}</p>
+          <Link href="/auth/login" className="text-blue-light hover:text-ink font-semibold transition-colors text-sm">
             {t.auth_back_login}
           </Link>
         </div>
@@ -78,16 +78,16 @@ export default function RegisterPage() {
     opts?: { type?: string; placeholder?: string; autoComplete?: string }
   ) => (
     <div className="flex flex-col gap-1.5">
-      <label className="text-sm font-medium text-slate-300">{label}</label>
+      <label className="text-sm font-medium text-ink-soft">{label}</label>
       <input
         type={opts?.type ?? 'text'}
         placeholder={opts?.placeholder}
         value={value}
         onChange={(e) => onChange(e.target.value)}
         autoComplete={opts?.autoComplete}
-        className="bg-night-1 rounded-xl px-4 py-3 text-white placeholder-slate-600 text-sm transition-all focus:bg-night-2"
+        className="bg-night-1 rounded-xl px-4 py-3 text-ink placeholder-ink-muted text-sm transition-all focus:bg-night-2"
       />
-      {err && <p className="text-xs text-red-400">{err}</p>}
+      {err && <p className="text-xs text-red-500">{err}</p>}
     </div>
   )
 
@@ -99,17 +99,17 @@ export default function RegisterPage() {
       <div className="w-full max-w-sm relative z-10">
         <div className="text-center mb-8">
           <Link href="/" className="inline-block mb-6">
-            <span className="font-syne font-black text-3xl text-white">FANT</span>
+            <span className="font-syne font-black text-3xl text-ink">FANT</span>
             <span className="font-syne font-black text-3xl gradient-text-ai">AI</span>
-            <span className="font-syne font-black text-3xl text-white">D</span>
+            <span className="font-syne font-black text-3xl text-ink">D</span>
           </Link>
-          <h1 className="text-2xl font-syne font-black text-white mb-1">{t.auth_register_title}</h1>
-          <p className="text-slate-400 text-sm">{t.auth_register_subtitle}</p>
+          <h1 className="text-2xl font-syne font-black text-ink mb-1">{t.auth_register_title}</h1>
+          <p className="text-ink-soft text-sm">{t.auth_register_subtitle}</p>
         </div>
 
         <div className="glass rounded-3xl p-6 sm:p-8">
           {error && (
-            <div className="bg-red-500/10 rounded-2xl px-4 py-3 mb-5 text-red-400 text-sm">{error}</div>
+            <div className="bg-red-500/10 rounded-2xl px-4 py-3 mb-5 text-red-500 text-sm">{error}</div>
           )}
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-4" noValidate>
@@ -131,10 +131,10 @@ export default function RegisterPage() {
             </button>
           </form>
 
-          <div className="mt-6 text-center pt-5 border-t border-white/[0.06]">
-            <p className="text-slate-500 text-sm">
+          <div className="mt-6 text-center pt-5 border-t border-ink/10">
+            <p className="text-ink-muted text-sm">
               {t.auth_has_account}{' '}
-              <Link href="/auth/login" className="text-blue-light font-semibold hover:text-white transition-colors">
+              <Link href="/auth/login" className="text-blue-light font-semibold hover:text-ink transition-colors">
                 {t.auth_login_link}
               </Link>
             </p>

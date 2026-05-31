@@ -49,7 +49,7 @@ const translations = {
     home_scoring_title: 'Punteggio',
     home_scoring_subtitle: 'I punti vengono assegnati automaticamente con i risultati ufficiali',
     home_cta_start: 'Inizia a pronosticare',
-    home_footer: 'Fantaid 2026 — Un gioco di pronostici. Non affiliato con la FIFA.',
+    home_footer: 'FANTAID 2026 — Un gioco di pronostici. Non affiliato con la FIFA.',
     home_feat1_title: 'Pronostica le partite',
     home_feat1_desc: 'Scegli il risultato (1/X/2) per tutte le partite della fase a gironi. Indovina anche il risultato esatto per punti bonus.',
     home_feat2_title: 'Costruisci il bracket',
@@ -68,7 +68,7 @@ const translations = {
     auth_password: 'Password',
     auth_forgot: 'Password dimenticata?',
     auth_register_title: 'Crea account',
-    auth_register_subtitle: 'Unisciti a Fantaid 2026 e inizia a pronosticare',
+    auth_register_subtitle: 'Unisciti a FANTAID 2026 e inizia a pronosticare',
     auth_register_btn: 'Crea account',
     auth_first_name: 'Nome',
     auth_last_name: 'Cognome',
@@ -90,7 +90,7 @@ const translations = {
 
     // Dashboard
     dash_welcome: 'Bentornato,',
-    dash_overview: 'Ecco il riepilogo di Fantaid 2026.',
+    dash_overview: 'Ecco il riepilogo di FANTAID 2026.',
     dash_locked: 'I pronostici sono bloccati',
     dash_locked_sub: 'Il termine per i pronostici è passato. Puoi ancora vedere i risultati.',
     dash_total_pts: 'Punti Totali',
@@ -211,7 +211,7 @@ const translations = {
 
     // Admin
     admin_title: 'Admin',
-    admin_subtitle: 'Gestisci il torneo Fantaid 2026.',
+    admin_subtitle: 'Gestisci il torneo FANTAID 2026.',
     admin_enter_results: 'Inserisci Risultati',
     admin_enter_results_desc: 'Aggiorna punteggi e risultati. I punti vengono ricalcolati automaticamente.',
     admin_public_bracket: 'Bracket Pubblico',
@@ -226,6 +226,21 @@ const translations = {
     admin_users: 'Utenti',
     admin_group_picks: 'Scelte Gironi',
     admin_bracket_picks: 'Scelte Bracket',
+
+    // Share + support
+    share_title: 'Bracket completato! 🎉',
+    share_desc: 'Condividi i tuoi pronostici e sfida i tuoi amici.',
+    share_cta: 'Condividi',
+    share_whatsapp: 'WhatsApp',
+    share_x: 'X',
+    share_instagram: 'Instagram',
+    share_copy: 'Copia link',
+    share_copied: 'Link copiato!',
+    share_message: 'Ho appena completato il mio bracket dei Mondiali 2026 su FANTAID! Crea il tuo e sfidami 👉',
+    coffee_text: 'Offrimi un caffè',
+    coffee_desc: 'Ti piace FANTAID? Aiutami a tenerlo online ☕',
+    bracket_submit: 'Conferma e condividi il bracket',
+    bracket_submit_hint: 'Salvataggio automatico attivo — conferma per condividere.',
   },
   en: {
     // Nav
@@ -271,7 +286,7 @@ const translations = {
     home_scoring_title: 'Scoring',
     home_scoring_subtitle: 'Points are awarded automatically as official results come in',
     home_cta_start: 'Start Predicting',
-    home_footer: 'Fantaid 2026 — A fan prediction game. Not affiliated with FIFA.',
+    home_footer: 'FANTAID 2026 — A fan prediction game. Not affiliated with FIFA.',
     home_feat1_title: 'Predict Matches',
     home_feat1_desc: 'Pick the outcome (1/X/2) for all group stage games. Guess the exact score for bonus points.',
     home_feat2_title: 'Build your Bracket',
@@ -290,7 +305,7 @@ const translations = {
     auth_password: 'Password',
     auth_forgot: 'Forgot password?',
     auth_register_title: 'Create Account',
-    auth_register_subtitle: 'Join Fantaid 2026 and start predicting',
+    auth_register_subtitle: 'Join FANTAID 2026 and start predicting',
     auth_register_btn: 'Create Account',
     auth_first_name: 'First Name',
     auth_last_name: 'Last Name',
@@ -312,7 +327,7 @@ const translations = {
 
     // Dashboard
     dash_welcome: 'Welcome back,',
-    dash_overview: "Here's your Fantaid 2026 overview.",
+    dash_overview: "Here's your FANTAID 2026 overview.",
     dash_locked: 'Predictions are now locked',
     dash_locked_sub: 'The prediction deadline has passed. You can still view results.',
     dash_total_pts: 'Total Points',
@@ -433,7 +448,7 @@ const translations = {
 
     // Admin
     admin_title: 'Admin',
-    admin_subtitle: 'Manage the Fantaid 2026 tournament.',
+    admin_subtitle: 'Manage the FANTAID 2026 tournament.',
     admin_enter_results: 'Enter Match Results',
     admin_enter_results_desc: 'Update scores and results. Points are recomputed automatically.',
     admin_public_bracket: 'Public Bracket',
@@ -448,6 +463,21 @@ const translations = {
     admin_users: 'Users',
     admin_group_picks: 'Group Picks',
     admin_bracket_picks: 'Bracket Picks',
+
+    // Share + support
+    share_title: 'Bracket complete! 🎉',
+    share_desc: 'Share your predictions and challenge your friends.',
+    share_cta: 'Share',
+    share_whatsapp: 'WhatsApp',
+    share_x: 'X',
+    share_instagram: 'Instagram',
+    share_copy: 'Copy link',
+    share_copied: 'Link copied!',
+    share_message: 'I just completed my 2026 World Cup bracket on FANTAID! Build yours and challenge me 👉',
+    coffee_text: 'Buy me a coffee',
+    coffee_desc: 'Enjoying FANTAID? Help me keep it online ☕',
+    bracket_submit: 'Confirm & share bracket',
+    bracket_submit_hint: 'Auto-save is on — confirm to share.',
   },
 }
 

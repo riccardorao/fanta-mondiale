@@ -73,7 +73,7 @@ export default function Navbar() {
         'text-sm font-medium transition-colors duration-150 px-1 py-0.5',
         pathname === href || (href !== '/' && pathname.startsWith(href))
           ? 'text-blue-light'
-          : 'text-slate-400 hover:text-white'
+          : 'text-ink-soft hover:text-ink'
       )}
     >
       {label}
@@ -90,7 +90,7 @@ export default function Navbar() {
             'text-xs font-bold px-2 py-1 rounded-md transition-all duration-150 uppercase tracking-wide',
             lang === l
               ? 'bg-blue-primary text-white shadow-blue-sm'
-              : 'text-slate-500 hover:text-slate-300'
+              : 'text-ink-muted hover:text-ink-soft'
           )}
         >
           {l}
@@ -125,14 +125,14 @@ export default function Navbar() {
     : []
 
   return (
-    <nav className="bg-night-1/80 backdrop-blur-xl border-b border-white/[0.06] h-16 sticky top-0 z-50">
+    <nav className="bg-night-1/80 backdrop-blur-xl border-b border-ink/10 h-16 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center justify-between gap-4">
 
         {/* Logo */}
         <Link href="/" className="flex items-center gap-0 flex-shrink-0 group">
-          <span className="font-syne font-black text-xl tracking-tight text-white">FANT</span>
+          <span className="font-syne font-black text-xl tracking-tight text-ink">FANT</span>
           <span className="font-syne font-black text-xl tracking-tight gradient-text-ai">AI</span>
-          <span className="font-syne font-black text-xl tracking-tight text-white">D</span>
+          <span className="font-syne font-black text-xl tracking-tight text-ink">D</span>
         </Link>
 
         {/* Desktop nav */}
@@ -141,11 +141,11 @@ export default function Navbar() {
             <>
               {links.map((l) => navLink(l.href, l.label))}
               {user ? (
-                <div className="flex items-center gap-3 ml-1 pl-4 border-l border-white/10">
-                  <span className="text-sm text-slate-400 max-w-[120px] truncate">{userName}</span>
+                <div className="flex items-center gap-3 ml-1 pl-4 border-l border-ink/10">
+                  <span className="text-sm text-ink-soft max-w-[120px] truncate">{userName}</span>
                   <button
                     onClick={handleLogout}
-                    className="text-sm font-medium text-slate-400 hover:text-red-400 transition-colors duration-150"
+                    className="text-sm font-medium text-ink-soft hover:text-red-500 transition-colors duration-150"
                   >
                     {t.nav_logout}
                   </button>
@@ -154,7 +154,7 @@ export default function Navbar() {
                 <>
                   <Link
                     href="/auth/login"
-                    className="text-sm font-medium text-slate-400 hover:text-white transition-colors"
+                    className="text-sm font-medium text-ink-soft hover:text-ink transition-colors"
                   >
                     {t.nav_login}
                   </Link>
@@ -175,7 +175,7 @@ export default function Navbar() {
         <div className="md:hidden flex items-center gap-2">
           <LangToggle />
           <button
-            className="p-2 text-slate-400 hover:text-white transition-colors rounded-lg"
+            className="p-2 text-ink-soft hover:text-ink transition-colors rounded-lg"
             onClick={() => setMenuOpen(!menuOpen)}
             aria-label="Toggle menu"
           >
@@ -190,14 +190,14 @@ export default function Navbar() {
 
       {/* Mobile menu */}
       {menuOpen && (
-        <div className="md:hidden bg-night-1/95 backdrop-blur-xl border-b border-white/[0.06] px-4 pb-4 pt-2 flex flex-col gap-3">
+        <div className="md:hidden bg-night-1/95 backdrop-blur-xl border-b border-ink/10 px-4 pb-4 pt-2 flex flex-col gap-3">
           {!loading && (
             <>
               {links.map((l) => navLink(l.href, l.label))}
               {user ? (
-                <div className="pt-3 border-t border-white/[0.06] flex items-center justify-between">
-                  <span className="text-sm text-slate-400 truncate max-w-[200px]">{userName}</span>
-                  <button onClick={handleLogout} className="text-sm font-medium text-red-400 hover:text-red-300">
+                <div className="pt-3 border-t border-ink/10 flex items-center justify-between">
+                  <span className="text-sm text-ink-soft truncate max-w-[200px]">{userName}</span>
+                  <button onClick={handleLogout} className="text-sm font-medium text-red-500 hover:text-red-primary-hover">
                     {t.nav_logout}
                   </button>
                 </div>

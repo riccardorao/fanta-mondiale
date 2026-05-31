@@ -84,7 +84,7 @@ export default function Countdown({ targetDate }: CountdownProps) {
                 {String(unit.value).padStart(2, '0')}
               </span>
             </div>
-            <span className="text-[10px] sm:text-xs text-slate-500 mt-1.5 uppercase tracking-widest font-semibold">
+            <span className="text-xs sm:text-xs text-ink-muted mt-1.5 uppercase tracking-widest font-semibold">
               {unit.label}
             </span>
           </div>

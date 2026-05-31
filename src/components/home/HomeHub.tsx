@@ -32,9 +32,9 @@ const STAGE_CONFIG: { stage: Stage; label: string }[] = [
 
 function rankBadge(rank: number) {
   if (rank === 1) return 'bg-amber-accent/20 text-amber-accent'
-  if (rank === 2) return 'bg-slate-400/20 text-slate-300'
+  if (rank === 2) return 'bg-slate-400/20 text-ink-soft'
   if (rank === 3) return 'bg-amber-700/30 text-amber-600'
-  return 'bg-night-1 text-slate-400'
+  return 'bg-night-1 text-ink-soft'
 }
 
 function rankIcon(rank: number) {
@@ -64,18 +64,18 @@ export default function HomeHub({
         <div className="flex items-center justify-between gap-4 mb-6 flex-wrap">
           <div className="flex items-center gap-3">
             <span className="font-syne font-black text-2xl sm:text-3xl">
-              <span className="text-white">FANT</span>
+              <span className="text-ink">FANT</span>
               <span className="gradient-text-ai">AI</span>
-              <span className="text-white">D</span>
+              <span className="text-ink">D</span>
             </span>
-            <span className="inline-flex items-center gap-1.5 bg-emerald-500/15 text-emerald-400 text-xs font-bold px-3 py-1.5 rounded-full">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+            <span className="inline-flex items-center gap-1.5 bg-emerald-500/15 text-emerald-600 text-xs font-bold px-3 py-1.5 rounded-full">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
               {t.hub_live_badge}
             </span>
           </div>
           <Link
             href="/results"
-            className="text-sm font-semibold text-blue-light hover:text-white transition-colors"
+            className="text-sm font-semibold text-blue-light hover:text-ink transition-colors"
           >
             {t.hub_results_cta}
           </Link>
@@ -86,10 +86,10 @@ export default function HomeHub({
           <section className="order-2 lg:order-1">
             <div className="flex items-end justify-between mb-4">
               <div>
-                <h2 className="text-xl font-syne font-black text-white">{t.hub_bracket_title}</h2>
-                <p className="text-slate-500 text-sm">{t.hub_bracket_sub}</p>
+                <h2 className="text-xl font-syne font-black text-ink">{t.hub_bracket_title}</h2>
+                <p className="text-ink-muted text-sm">{t.hub_bracket_sub}</p>
               </div>
-              <Link href="/bracket" className="text-xs font-semibold text-blue-light hover:text-white whitespace-nowrap">
+              <Link href="/bracket" className="text-xs font-semibold text-blue-light hover:text-ink whitespace-nowrap">
                 {t.hub_view_full_bracket}
               </Link>
             </div>
@@ -120,7 +120,7 @@ export default function HomeHub({
 
             {thirdPlace && (
               <div className="mt-5">
-                <h3 className="text-sm font-syne font-black text-white mb-3">🥉 Terzo Posto</h3>
+                <h3 className="text-sm font-syne font-black text-ink mb-3">🥉 Terzo Posto</h3>
                 <div className="max-w-xs">
                   <BracketMatchCard match={thirdPlace} locked compact />
                 </div>
@@ -133,17 +133,17 @@ export default function HomeHub({
             <div className="lg:sticky lg:top-20">
               <div className="flex items-end justify-between mb-4">
                 <div>
-                  <h2 className="text-xl font-syne font-black text-white">{t.hub_leaderboard_title}</h2>
-                  <p className="text-slate-500 text-sm">{participants} {t.lb_participants}</p>
+                  <h2 className="text-xl font-syne font-black text-ink">{t.hub_leaderboard_title}</h2>
+                  <p className="text-ink-muted text-sm">{participants} {t.lb_participants}</p>
                 </div>
-                <Link href="/leaderboard" className="text-xs font-semibold text-blue-light hover:text-white whitespace-nowrap">
+                <Link href="/leaderboard" className="text-xs font-semibold text-blue-light hover:text-ink whitespace-nowrap">
                   {t.hub_view_full_lb}
                 </Link>
               </div>
 
               <div className="glass rounded-2xl p-2">
                 {leaders.length === 0 ? (
-                  <p className="text-slate-500 text-sm text-center py-8">{t.hub_no_lb}</p>
+                  <p className="text-ink-muted text-sm text-center py-8">{t.hub_no_lb}</p>
                 ) : (
                   <ol className="flex flex-col">
                     {leaders.map((entry, idx) => {
@@ -163,10 +163,10 @@ export default function HomeHub({
                           )}>
                             {rankIcon(rank)}
                           </span>
-                          <span className={cn('flex-1 truncate text-sm font-medium', isMe ? 'text-blue-light' : 'text-white')}>
+                          <span className={cn('flex-1 truncate text-sm font-medium', isMe ? 'text-blue-light' : 'text-ink')}>
                             {entry.name} {entry.surname}
                           </span>
-                          <span className={cn('text-base font-bold tabular-nums', isMe ? 'text-blue-light' : 'text-white')}>
+                          <span className={cn('text-base font-bold tabular-nums', isMe ? 'text-blue-light' : 'text-ink')}>
                             {entry.total_points}
                           </span>
                         </li>
@@ -179,10 +179,10 @@ export default function HomeHub({
               {/* Your rank pill when outside the visible top list */}
               {currentUserId && currentUserRank && !userInTop && (
                 <div className="mt-3 glass rounded-2xl px-4 py-3 flex items-center gap-3 shadow-blue-sm">
-                  <span className="inline-flex items-center justify-center w-7 h-7 rounded-full bg-night-1 text-slate-300 text-xs font-bold tabular-nums">
+                  <span className="inline-flex items-center justify-center w-7 h-7 rounded-full bg-night-1 text-ink-soft text-xs font-bold tabular-nums">
                     {currentUserRank}
                   </span>
-                  <span className="flex-1 text-sm text-slate-400">{t.hub_your_rank}</span>
+                  <span className="flex-1 text-sm text-ink-soft">{t.hub_your_rank}</span>
                   <span className="text-base font-bold tabular-nums text-blue-light">{currentUserPoints ?? 0}</span>
                 </div>
               )}

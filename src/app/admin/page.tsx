@@ -79,14 +79,14 @@ export default async function AdminPage() {
         {/* Header */}
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-2">
-            <span className="bg-red-600/20 text-red-400 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+            <span className="bg-red-600/20 text-red-500 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
               Admin
             </span>
           </div>
-          <h1 className="text-3xl font-syne font-black text-white">
+          <h1 className="text-3xl font-syne font-black text-ink">
             Dashboard <span className="gradient-text-ai">Admin</span>
           </h1>
-          <p className="text-slate-400 text-sm mt-1">
+          <p className="text-ink-soft text-sm mt-1">
             Benvenuto, {profile.name}. Gestisci il torneo Fanta Mondiale 2026.
           </p>
         </div>
@@ -94,12 +94,12 @@ export default async function AdminPage() {
         {/* Stats */}
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
           {[
-            { label: 'Partite Totali', value: totalMatches ?? 0, icon: '📋', color: 'text-white' },
+            { label: 'Partite Totali', value: totalMatches ?? 0, icon: '📋', color: 'text-ink' },
             { label: 'Completate', value: completedMatches ?? 0, icon: '✅', color: 'text-blue-light' },
-            { label: 'Live', value: liveMatches ?? 0, icon: '🔴', color: 'text-red-400' },
-            { label: 'Utenti', value: totalUsers ?? 0, icon: '👤', color: 'text-white' },
-            { label: 'Pick Gironi', value: totalGroupPreds ?? 0, icon: '⚽', color: 'text-white' },
-            { label: 'Pick Bracket', value: totalBracketPreds ?? 0, icon: '🏆', color: 'text-white' },
+            { label: 'Live', value: liveMatches ?? 0, icon: '🔴', color: 'text-red-500' },
+            { label: 'Utenti', value: totalUsers ?? 0, icon: '👤', color: 'text-ink' },
+            { label: 'Pick Gironi', value: totalGroupPreds ?? 0, icon: '⚽', color: 'text-ink' },
+            { label: 'Pick Bracket', value: totalBracketPreds ?? 0, icon: '🏆', color: 'text-ink' },
           ].map((stat) => (
             <div
               key={stat.label}
@@ -109,13 +109,13 @@ export default async function AdminPage() {
               <div className={`text-2xl tabular-nums font-bold ${stat.color}`}>
                 {stat.value}
               </div>
-              <div className="text-xs text-slate-500 mt-0.5">{stat.label}</div>
+              <div className="text-xs text-ink-muted mt-0.5">{stat.label}</div>
             </div>
           ))}
         </div>
 
         {/* Quick links */}
-        <h2 className="text-xl font-syne font-black text-white mb-4">Azioni Admin</h2>
+        <h2 className="text-xl font-syne font-black text-ink mb-4">Azioni Admin</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {adminLinks.map((link) => (
             <Link
@@ -129,13 +129,13 @@ export default async function AdminPage() {
               <h3
                 className={`font-bold mb-1 transition-colors ${
                   link.highlight
-                    ? 'text-blue-light group-hover:text-white'
-                    : 'text-white group-hover:text-blue-light'
+                    ? 'text-blue-light group-hover:text-ink'
+                    : 'text-ink group-hover:text-blue-light'
                 }`}
               >
                 {link.title}
               </h3>
-              <p className="text-sm text-slate-500">{link.description}</p>
+              <p className="text-sm text-ink-muted">{link.description}</p>
               <span className="mt-3 inline-block text-xs text-blue-light font-semibold">
                 Vai →
               </span>
@@ -145,7 +145,7 @@ export default async function AdminPage() {
 
         {/* Match progress */}
         <div className="mt-8 glass rounded-2xl p-5 shadow-card">
-          <h2 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">
+          <h2 className="text-xs font-bold text-ink-soft uppercase tracking-wider mb-3">
             Avanzamento Torneo
           </h2>
           <div className="flex items-center gap-3">
@@ -157,10 +157,10 @@ export default async function AdminPage() {
                 }}
               />
             </div>
-            <span className="text-sm tabular-nums font-bold text-white">
+            <span className="text-sm tabular-nums font-bold text-ink">
               {completedMatches ?? 0}/{totalMatches ?? 0}
             </span>
-            <span className="text-sm text-slate-400">partite completate</span>
+            <span className="text-sm text-ink-soft">partite completate</span>
           </div>
         </div>
       </div>

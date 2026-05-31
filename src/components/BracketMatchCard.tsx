@@ -68,24 +68,24 @@ export default function BracketMatchCard({
         <span className="text-lg leading-none flex-shrink-0">{team?.flag_emoji ?? '🏳️'}</span>
         <span className={cn(
           'text-sm font-medium truncate',
-          isWinner ? 'text-white font-semibold' : 'text-slate-300',
+          isWinner ? 'text-ink font-semibold' : 'text-ink-soft',
           isPredicted && !isCompleted && 'text-blue-light',
-          isCorrect && 'text-emerald-400 font-semibold',
-          isWrong && 'text-red-400',
-          !team && 'text-slate-600 italic'
+          isCorrect && 'text-emerald-600 font-semibold',
+          isWrong && 'text-red-500',
+          !team && 'text-ink-muted italic'
         )}>
           {team ? (compact ? team.code : team.name) : 'TBD'}
         </span>
       </div>
       <div className="flex items-center gap-1.5 flex-shrink-0">
         {isCompleted && score != null && (
-          <span className={cn('text-base tabular-nums font-bold w-5 text-right', isWinner ? 'text-white' : 'text-slate-500')}>
+          <span className={cn('text-base tabular-nums font-bold w-5 text-right', isWinner ? 'text-ink' : 'text-ink-muted')}>
             {score}
           </span>
         )}
         {isPredicted && !isCompleted && <span className="text-blue-light text-xs">●</span>}
-        {isCorrect && <span className="text-emerald-400 text-xs">✓</span>}
-        {isWrong && <span className="text-red-400 text-xs">✗</span>}
+        {isCorrect && <span className="text-emerald-600 text-xs">✓</span>}
+        {isWrong && <span className="text-red-500 text-xs">✗</span>}
       </div>
     </div>
   )
@@ -98,10 +98,10 @@ export default function BracketMatchCard({
     )}>
       {/* Header */}
       <div className="px-3 py-2 bg-night-2/60 flex items-center justify-between gap-2">
-        <span className="text-xs text-slate-600 tabular-nums">#{match.match_number}</span>
-        {isLive && <span className="text-xs text-red-400 font-bold animate-pulse">● LIVE</span>}
+        <span className="text-xs text-ink-muted tabular-nums">#{match.match_number}</span>
+        {isLive && <span className="text-xs text-red-500 font-bold animate-pulse">● LIVE</span>}
         {match.scheduled_at && (
-          <span className="text-xs text-slate-600">{formatMatchDate(match.scheduled_at)}</span>
+          <span className="text-xs text-ink-muted">{formatMatchDate(match.scheduled_at)}</span>
         )}
       </div>
 
@@ -113,7 +113,7 @@ export default function BracketMatchCard({
           isPredicted={homeIsPredicted} isCorrect={homeIsCorrect} isWrong={homeIsWrong}
         />
         <div className="text-center py-0.5">
-          <span className="text-xs text-slate-700 font-medium">vs</span>
+          <span className="text-xs text-ink-muted font-medium">vs</span>
         </div>
         <TeamRow
           team={awayTeam} score={match.away_score}
@@ -125,7 +125,7 @@ export default function BracketMatchCard({
       {/* Penalties */}
       {isCompleted && match.home_penalties != null && match.away_penalties != null && (
         <div className="px-3 py-1.5 bg-night-2/40 text-center">
-          <span className="text-xs text-slate-500">Rig: {match.home_penalties}–{match.away_penalties}</span>
+          <span className="text-xs text-ink-muted">Rig: {match.home_penalties}–{match.away_penalties}</span>
         </div>
       )}
 
@@ -135,7 +135,7 @@ export default function BracketMatchCard({
           {selectedWinnerId ? (
             <p className="text-xs text-blue-light font-medium">● Salvato</p>
           ) : (
-            <p className="text-xs text-slate-600">Clicca una squadra</p>
+            <p className="text-xs text-ink-muted">Clicca una squadra</p>
           )}
         </div>
       )}

@@ -53,18 +53,18 @@ export default function ResultsView({ stats }: { stats: MatchStat[] }) {
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         {/* Header */}
         <div className="mb-6">
-          <h1 className="text-2xl sm:text-3xl font-syne font-black text-white">
+          <h1 className="text-2xl sm:text-3xl font-syne font-black text-ink">
             <span className="gradient-text-ai">{t.results_title.split(' ')[0]}</span>{' '}
             {t.results_title.split(' ').slice(1).join(' ')}
           </h1>
-          <p className="text-slate-500 text-sm mt-1">{t.results_subtitle}</p>
+          <p className="text-ink-muted text-sm mt-1">{t.results_subtitle}</p>
         </div>
 
         {stats.length === 0 ? (
           <div className="glass rounded-2xl p-10 text-center">
             <p className="text-4xl mb-3">📊</p>
-            <p className="text-slate-300 font-semibold">{t.results_no_results}</p>
-            <p className="text-slate-500 text-sm mt-1">{t.results_no_results_sub}</p>
+            <p className="text-ink-soft font-semibold">{t.results_no_results}</p>
+            <p className="text-ink-muted text-sm mt-1">{t.results_no_results_sub}</p>
           </div>
         ) : (
           <div className="flex flex-col gap-4">
@@ -83,8 +83,8 @@ export default function ResultsView({ stats }: { stats: MatchStat[] }) {
                       {stageLabel(s.stage)}
                     </span>
                     {s.groupName && <span className="text-amber-accent font-medium">Gruppo {s.groupName}</span>}
-                    <span className="text-slate-600 ml-auto">{formatMatchDate(s.scheduledAt)}</span>
-                    <span className={cn('font-bold', isLive ? 'text-red-400 animate-pulse' : 'text-emerald-400')}>
+                    <span className="text-ink-muted ml-auto">{formatMatchDate(s.scheduledAt)}</span>
+                    <span className={cn('font-bold', isLive ? 'text-red-500 animate-pulse' : 'text-emerald-600')}>
                       {isLive ? t.results_live : t.results_ft}
                     </span>
                   </div>
@@ -92,30 +92,30 @@ export default function ResultsView({ stats }: { stats: MatchStat[] }) {
                   {/* Scoreline */}
                   <div className="flex items-center justify-between gap-3 px-4 py-4">
                     <div className="flex-1 flex items-center justify-end gap-2 min-w-0">
-                      <span className={cn('text-sm font-semibold truncate', homeWinner ? 'text-white' : 'text-slate-400')}>
+                      <span className={cn('text-sm font-semibold truncate', homeWinner ? 'text-ink' : 'text-ink-soft')}>
                         {s.home?.name ?? 'TBD'}
                       </span>
                       <span className="text-2xl leading-none flex-shrink-0">{s.home?.flag ?? '🏳️'}</span>
                     </div>
                     <div className="flex-shrink-0 text-center min-w-[72px]">
                       <div className="flex items-center justify-center gap-1.5">
-                        <span className={cn('text-2xl font-syne font-black tabular-nums', homeWinner ? 'text-white' : 'text-slate-400')}>
+                        <span className={cn('text-2xl font-syne font-black tabular-nums', homeWinner ? 'text-ink' : 'text-ink-soft')}>
                           {s.homeScore ?? '–'}
                         </span>
-                        <span className="text-slate-600">:</span>
-                        <span className={cn('text-2xl font-syne font-black tabular-nums', awayWinner ? 'text-white' : 'text-slate-400')}>
+                        <span className="text-ink-muted">:</span>
+                        <span className={cn('text-2xl font-syne font-black tabular-nums', awayWinner ? 'text-ink' : 'text-ink-soft')}>
                           {s.awayScore ?? '–'}
                         </span>
                       </div>
                       {s.homePenalties != null && s.awayPenalties != null && (
-                        <p className="text-[11px] text-slate-500 mt-0.5 tabular-nums">
+                        <p className="text-xs text-ink-muted mt-0.5 tabular-nums">
                           rig. {s.homePenalties}–{s.awayPenalties}
                         </p>
                       )}
                     </div>
                     <div className="flex-1 flex items-center gap-2 min-w-0">
                       <span className="text-2xl leading-none flex-shrink-0">{s.away?.flag ?? '🏳️'}</span>
-                      <span className={cn('text-sm font-semibold truncate', awayWinner ? 'text-white' : 'text-slate-400')}>
+                      <span className={cn('text-sm font-semibold truncate', awayWinner ? 'text-ink' : 'text-ink-soft')}>
                         {s.away?.name ?? 'TBD'}
                       </span>
                     </div>
@@ -124,19 +124,19 @@ export default function ResultsView({ stats }: { stats: MatchStat[] }) {
                   {/* Stats */}
                   <div className="px-4 pb-4">
                     {s.totalPreds === 0 ? (
-                      <p className="text-slate-600 text-xs text-center py-2">{t.results_no_preds}</p>
+                      <p className="text-ink-muted text-xs text-center py-2">{t.results_no_preds}</p>
                     ) : (
                       <div className="bg-night-1/60 rounded-xl p-3.5 flex flex-col gap-3">
                         {/* Correct rate (only meaningful once completed) */}
                         {s.status === 'completed' && (
                           <div>
                             <div className="flex items-center justify-between mb-1.5 text-xs">
-                              <span className="text-slate-400">
-                                <span className="text-emerald-400 font-bold tabular-nums">{s.correctCount}</span>
-                                <span className="text-slate-600">/{s.totalPreds}</span>{' '}
+                              <span className="text-ink-soft">
+                                <span className="text-emerald-600 font-bold tabular-nums">{s.correctCount}</span>
+                                <span className="text-ink-muted">/{s.totalPreds}</span>{' '}
                                 {correctLabel}
                               </span>
-                              <span className="font-bold tabular-nums text-emerald-400">{correctPct}%</span>
+                              <span className="font-bold tabular-nums text-emerald-600">{correctPct}%</span>
                             </div>
                             <div className="h-2 rounded-full bg-night-3 overflow-hidden">
                               <div
@@ -145,7 +145,7 @@ export default function ResultsView({ stats }: { stats: MatchStat[] }) {
                               />
                             </div>
                             {s.isGroup && s.exactHits > 0 && (
-                              <p className="text-[11px] text-blue-light mt-1.5">
+                              <p className="text-xs text-blue-light mt-1.5">
                                 🎯 {s.exactHits} {t.results_exact_hits}
                               </p>
                             )}
@@ -154,7 +154,7 @@ export default function ResultsView({ stats }: { stats: MatchStat[] }) {
 
                         {/* Distribution */}
                         <div>
-                          <p className="text-[11px] uppercase tracking-wider text-slate-600 font-semibold mb-1.5">
+                          <p className="text-xs uppercase tracking-wider text-ink-muted font-semibold mb-1.5">
                             {t.results_distribution}
                           </p>
                           <div className="flex h-2.5 rounded-full overflow-hidden bg-night-3">
@@ -162,29 +162,29 @@ export default function ResultsView({ stats }: { stats: MatchStat[] }) {
                               <>
                                 <div className="bg-blue-primary" style={{ width: `${pct(s.dist.a, s.totalPreds)}%` }} />
                                 <div className="bg-slate-500" style={{ width: `${pct(s.dist.b, s.totalPreds)}%` }} />
-                                <div className="bg-violet-400" style={{ width: `${pct(s.dist.c, s.totalPreds)}%` }} />
+                                <div className="bg-purple-primary" style={{ width: `${pct(s.dist.c, s.totalPreds)}%` }} />
                               </>
                             ) : (
                               <>
                                 <div className="bg-blue-primary" style={{ width: `${pct(s.dist.a, s.totalPreds)}%` }} />
-                                <div className="bg-violet-400" style={{ width: `${pct(s.dist.c, s.totalPreds)}%` }} />
+                                <div className="bg-purple-primary" style={{ width: `${pct(s.dist.c, s.totalPreds)}%` }} />
                               </>
                             )}
                           </div>
-                          <div className="flex items-center gap-3 mt-1.5 text-[11px] flex-wrap">
+                          <div className="flex items-center gap-3 mt-1.5 text-xs flex-wrap">
                             {s.isGroup ? (
                               <>
                                 <Legend color="bg-blue-primary" label={`${s.home?.code ?? t.results_home}`} value={pct(s.dist.a, s.totalPreds)} />
                                 <Legend color="bg-slate-500" label={t.results_draw} value={pct(s.dist.b, s.totalPreds)} />
-                                <Legend color="bg-violet-400" label={`${s.away?.code ?? t.results_away}`} value={pct(s.dist.c, s.totalPreds)} />
+                                <Legend color="bg-purple-primary" label={`${s.away?.code ?? t.results_away}`} value={pct(s.dist.c, s.totalPreds)} />
                               </>
                             ) : (
                               <>
                                 <Legend color="bg-blue-primary" label={`${s.home?.code ?? t.results_home}`} value={pct(s.dist.a, s.totalPreds)} />
-                                <Legend color="bg-violet-400" label={`${s.away?.code ?? t.results_away}`} value={pct(s.dist.c, s.totalPreds)} />
+                                <Legend color="bg-purple-primary" label={`${s.away?.code ?? t.results_away}`} value={pct(s.dist.c, s.totalPreds)} />
                               </>
                             )}
-                            <span className="text-slate-600 ml-auto tabular-nums">{s.totalPreds} {t.results_players}</span>
+                            <span className="text-ink-muted ml-auto tabular-nums">{s.totalPreds} {t.results_players}</span>
                           </div>
                         </div>
                       </div>
@@ -202,9 +202,9 @@ export default function ResultsView({ stats }: { stats: MatchStat[] }) {
 
 function Legend({ color, label, value }: { color: string; label: string; value: number }) {
   return (
-    <span className="flex items-center gap-1.5 text-slate-400">
+    <span className="flex items-center gap-1.5 text-ink-soft">
       <span className={cn('w-2 h-2 rounded-full', color)} />
-      {label} <span className="tabular-nums text-slate-500">{value}%</span>
+      {label} <span className="tabular-nums text-ink-muted">{value}%</span>
     </span>
   )
 }

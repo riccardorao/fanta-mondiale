@@ -177,7 +177,7 @@ export default function AdminResultsPage() {
       <div className="min-h-screen bg-night flex items-center justify-center">
         <div className="flex flex-col items-center gap-3">
           <div className="w-10 h-10 border-2 border-blue-primary border-t-transparent rounded-full animate-spin" />
-          <p className="text-slate-400 text-sm">Caricamento partite...</p>
+          <p className="text-ink-soft text-sm">Caricamento partite...</p>
         </div>
       </div>
     )
@@ -187,7 +187,7 @@ export default function AdminResultsPage() {
     return (
       <div className="min-h-screen bg-night flex items-center justify-center px-4">
         <div className="glass rounded-2xl p-6 max-w-md text-center">
-          <p className="text-red-400 font-semibold">{error}</p>
+          <p className="text-red-500 font-semibold">{error}</p>
         </div>
       </div>
     )
@@ -198,15 +198,15 @@ export default function AdminResultsPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="flex items-center gap-3 mb-2">
-          <a href="/admin" className="text-sm text-slate-500 hover:text-blue-light transition-colors">
+          <a href="/admin" className="text-sm text-ink-muted hover:text-blue-light transition-colors">
             ← Admin
           </a>
         </div>
         <div className="mb-6">
-          <h1 className="text-2xl sm:text-3xl font-syne font-black text-white">
+          <h1 className="text-2xl sm:text-3xl font-syne font-black text-ink">
             Risultati <span className="gradient-text-ai">Partite</span>
           </h1>
-          <p className="text-slate-500 text-sm mt-1">
+          <p className="text-ink-muted text-sm mt-1">
             Salva un risultato per ricalcolare automaticamente i punteggi.
           </p>
         </div>
@@ -223,7 +223,7 @@ export default function AdminResultsPage() {
                   className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-150 ${
                     isActive
                       ? 'bg-blue-primary text-white shadow-blue-sm'
-                      : 'bg-night-2 text-slate-400 hover:bg-night-3 hover:text-white'
+                      : 'bg-night-2 text-ink-soft hover:bg-night-3 hover:text-ink'
                   }`}
                 >
                   {label}
@@ -245,7 +245,7 @@ export default function AdminResultsPage() {
               <div key={match.id} className="glass rounded-2xl p-4">
                 {/* Match header */}
                 <div className="flex flex-wrap items-center gap-2 mb-4">
-                  <span className="text-xs text-slate-600 font-medium tabular-nums">#{match.match_number}</span>
+                  <span className="text-xs text-ink-muted font-medium tabular-nums">#{match.match_number}</span>
                   <span className="text-xs bg-blue-dim text-blue-light rounded-full px-2 py-0.5 font-semibold">
                     {match.stage.toUpperCase()}
                   </span>
@@ -253,7 +253,7 @@ export default function AdminResultsPage() {
                     <span className="text-xs text-amber-accent font-medium">Gruppo {match.group.name}</span>
                   )}
                   {match.scheduled_at && (
-                    <span className="text-xs text-slate-600 ml-auto">
+                    <span className="text-xs text-ink-muted ml-auto">
                       {new Date(match.scheduled_at).toLocaleDateString('it-IT', {
                         day: 'numeric',
                         month: 'short',
@@ -268,7 +268,7 @@ export default function AdminResultsPage() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 items-end">
                   {/* Home team + score */}
                   <div>
-                    <label className="block text-xs text-slate-500 mb-1.5 font-medium">
+                    <label className="block text-xs text-ink-muted mb-1.5 font-medium">
                       {match.home_team
                         ? `${match.home_team.flag_emoji} ${match.home_team.name}`
                         : 'Casa'}
@@ -280,13 +280,13 @@ export default function AdminResultsPage() {
                       value={form.homeScore}
                       onChange={(e) => updateForm(match.id, 'homeScore', e.target.value)}
                       placeholder="—"
-                      className="w-full bg-night-1 rounded-xl px-3 py-2 text-white text-center text-lg font-bold focus:outline-none focus:ring-2 focus:ring-blue-primary/50 tabular-nums"
+                      className="w-full bg-night-1 rounded-xl px-3 py-2 text-ink text-center text-lg font-bold focus:outline-none focus:ring-2 focus:ring-blue-primary/50 tabular-nums"
                     />
                   </div>
 
                   {/* Away team + score */}
                   <div>
-                    <label className="block text-xs text-slate-500 mb-1.5 font-medium">
+                    <label className="block text-xs text-ink-muted mb-1.5 font-medium">
                       {match.away_team
                         ? `${match.away_team.flag_emoji} ${match.away_team.name}`
                         : 'Ospite'}
@@ -298,14 +298,14 @@ export default function AdminResultsPage() {
                       value={form.awayScore}
                       onChange={(e) => updateForm(match.id, 'awayScore', e.target.value)}
                       placeholder="—"
-                      className="w-full bg-night-1 rounded-xl px-3 py-2 text-white text-center text-lg font-bold focus:outline-none focus:ring-2 focus:ring-blue-primary/50 tabular-nums"
+                      className="w-full bg-night-1 rounded-xl px-3 py-2 text-ink text-center text-lg font-bold focus:outline-none focus:ring-2 focus:ring-blue-primary/50 tabular-nums"
                     />
                   </div>
 
                   {/* Knockout: penalties + winner */}
                   {isKnockout ? (
                     <div className="flex flex-col gap-2">
-                      <label className="text-xs text-slate-500 font-medium">Rigori (se pari)</label>
+                      <label className="text-xs text-ink-muted font-medium">Rigori (se pari)</label>
                       <div className="flex gap-2 items-center">
                         <input
                           type="number"
@@ -314,9 +314,9 @@ export default function AdminResultsPage() {
                           value={form.homePenalties}
                           onChange={(e) => updateForm(match.id, 'homePenalties', e.target.value)}
                           placeholder="C"
-                          className="flex-1 bg-night-1 rounded-xl px-2 py-1.5 text-white text-center text-sm focus:outline-none focus:ring-2 focus:ring-blue-primary/50 tabular-nums"
+                          className="flex-1 bg-night-1 rounded-xl px-2 py-1.5 text-ink text-center text-sm focus:outline-none focus:ring-2 focus:ring-blue-primary/50 tabular-nums"
                         />
-                        <span className="text-slate-700 text-sm">–</span>
+                        <span className="text-ink-muted text-sm">–</span>
                         <input
                           type="number"
                           min={0}
@@ -324,15 +324,15 @@ export default function AdminResultsPage() {
                           value={form.awayPenalties}
                           onChange={(e) => updateForm(match.id, 'awayPenalties', e.target.value)}
                           placeholder="O"
-                          className="flex-1 bg-night-1 rounded-xl px-2 py-1.5 text-white text-center text-sm focus:outline-none focus:ring-2 focus:ring-blue-primary/50 tabular-nums"
+                          className="flex-1 bg-night-1 rounded-xl px-2 py-1.5 text-ink text-center text-sm focus:outline-none focus:ring-2 focus:ring-blue-primary/50 tabular-nums"
                         />
                       </div>
                       <div>
-                        <label className="text-xs text-slate-500 font-medium block mb-1">Vincitore</label>
+                        <label className="text-xs text-ink-muted font-medium block mb-1">Vincitore</label>
                         <select
                           value={form.winnerId}
                           onChange={(e) => updateForm(match.id, 'winnerId', e.target.value)}
-                          className="w-full bg-night-1 rounded-xl px-3 py-1.5 text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-primary/50"
+                          className="w-full bg-night-1 rounded-xl px-3 py-1.5 text-ink text-sm focus:outline-none focus:ring-2 focus:ring-blue-primary/50"
                         >
                           <option value="">— Seleziona vincitore —</option>
                           {match.home_team && (
@@ -354,11 +354,11 @@ export default function AdminResultsPage() {
 
                   {/* Status + save */}
                   <div className="flex flex-col gap-2">
-                    <label className="text-xs text-slate-500 font-medium">Stato</label>
+                    <label className="text-xs text-ink-muted font-medium">Stato</label>
                     <select
                       value={form.status}
                       onChange={(e) => updateForm(match.id, 'status', e.target.value as MatchStatus)}
-                      className="w-full bg-night-1 rounded-xl px-3 py-1.5 text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-primary/50"
+                      className="w-full bg-night-1 rounded-xl px-3 py-1.5 text-ink text-sm focus:outline-none focus:ring-2 focus:ring-blue-primary/50"
                     >
                       <option value="upcoming">In programma</option>
                       <option value="live">In corso</option>
@@ -384,22 +384,22 @@ export default function AdminResultsPage() {
 
                 {/* Current stored result */}
                 {match.status === 'completed' && (
-                  <div className="mt-3 pt-3 border-t border-white/[0.06] flex flex-wrap items-center gap-2 text-xs">
-                    <span className="text-slate-600">Salvato:</span>
-                    <span className="text-white font-semibold tabular-nums">
+                  <div className="mt-3 pt-3 border-t border-ink/10 flex flex-wrap items-center gap-2 text-xs">
+                    <span className="text-ink-muted">Salvato:</span>
+                    <span className="text-ink font-semibold tabular-nums">
                       {match.home_team?.code ?? 'Casa'} {match.home_score} – {match.away_score}{' '}
                       {match.away_team?.code ?? 'Ospite'}
                     </span>
                     {match.winner && (
                       <>
-                        <span className="text-slate-700">·</span>
-                        <span className="text-emerald-400">
+                        <span className="text-ink-muted">·</span>
+                        <span className="text-emerald-600">
                           Vincitore: {match.winner.flag_emoji} {match.winner.name}
                         </span>
                       </>
                     )}
                     {match.home_penalties !== null && (
-                      <span className="text-slate-600">
+                      <span className="text-ink-muted">
                         (rig. {match.home_penalties}–{match.away_penalties})
                       </span>
                     )}
@@ -412,7 +412,7 @@ export default function AdminResultsPage() {
 
         {filteredMatches.length === 0 && (
           <div className="text-center py-12">
-            <p className="text-slate-600">Nessuna partita trovata per questa fase.</p>
+            <p className="text-ink-muted">Nessuna partita trovata per questa fase.</p>
           </div>
         )}
       </div>

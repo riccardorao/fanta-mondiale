@@ -69,42 +69,42 @@ export default function LoginPage() {
       <div className="w-full max-w-sm relative z-10">
         <div className="text-center mb-8">
           <Link href="/" className="inline-block mb-6">
-            <span className="font-syne font-black text-3xl text-white">FANT</span>
+            <span className="font-syne font-black text-3xl text-ink">FANT</span>
             <span className="font-syne font-black text-3xl gradient-text-ai">AI</span>
-            <span className="font-syne font-black text-3xl text-white">D</span>
+            <span className="font-syne font-black text-3xl text-ink">D</span>
           </Link>
-          <h1 className="text-2xl font-syne font-black text-white mb-1">{t.auth_login_title}</h1>
-          <p className="text-slate-400 text-sm">{t.auth_login_subtitle}</p>
+          <h1 className="text-2xl font-syne font-black text-ink mb-1">{t.auth_login_title}</h1>
+          <p className="text-ink-soft text-sm">{t.auth_login_subtitle}</p>
         </div>
 
         <div className="glass rounded-3xl p-6 sm:p-8">
           {error && (
-            <div className="bg-red-500/10 rounded-2xl px-4 py-3 mb-5 text-red-400 text-sm">
+            <div className="bg-red-500/10 rounded-2xl px-4 py-3 mb-5 text-red-500 text-sm">
               {error}
             </div>
           )}
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-4" noValidate>
             <div className="flex flex-col gap-1.5">
-              <label className="text-sm font-medium text-slate-300">{t.auth_email}</label>
+              <label className="text-sm font-medium text-ink-soft">{t.auth_email}</label>
               <input
                 type="email"
                 placeholder="nome@esempio.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 autoComplete="email"
-                className="bg-night-1 rounded-xl px-4 py-3 text-white placeholder-slate-600 text-sm transition-all focus:bg-night-2"
+                className="bg-night-1 rounded-xl px-4 py-3 text-ink placeholder-ink-muted text-sm transition-all focus:bg-night-2"
               />
-              {fieldErrors.email && <p className="text-xs text-red-400">{fieldErrors.email}</p>}
+              {fieldErrors.email && <p className="text-xs text-red-500">{fieldErrors.email}</p>}
             </div>
 
             <div className="flex flex-col gap-1.5">
               <div className="flex items-center justify-between">
-                <label className="text-sm font-medium text-slate-300">{t.auth_password}</label>
+                <label className="text-sm font-medium text-ink-soft">{t.auth_password}</label>
                 <button
                   type="button"
                   onClick={handleForgot}
-                  className="text-xs text-slate-500 hover:text-blue-light transition-colors"
+                  className="text-xs text-ink-muted hover:text-blue-light transition-colors"
                 >
                   {t.auth_forgot}
                 </button>
@@ -115,9 +115,9 @@ export default function LoginPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 autoComplete="current-password"
-                className="bg-night-1 rounded-xl px-4 py-3 text-white placeholder-slate-600 text-sm transition-all focus:bg-night-2"
+                className="bg-night-1 rounded-xl px-4 py-3 text-ink placeholder-ink-muted text-sm transition-all focus:bg-night-2"
               />
-              {fieldErrors.password && <p className="text-xs text-red-400">{fieldErrors.password}</p>}
+              {fieldErrors.password && <p className="text-xs text-red-500">{fieldErrors.password}</p>}
             </div>
 
             <button
@@ -130,10 +130,10 @@ export default function LoginPage() {
             </button>
           </form>
 
-          <div className="mt-6 text-center pt-5 border-t border-white/[0.06]">
-            <p className="text-slate-500 text-sm">
+          <div className="mt-6 text-center pt-5 border-t border-ink/10">
+            <p className="text-ink-muted text-sm">
               {t.auth_no_account}{' '}
-              <Link href="/auth/register" className="text-blue-light font-semibold hover:text-white transition-colors">
+              <Link href="/auth/register" className="text-blue-light font-semibold hover:text-ink transition-colors">
                 {t.auth_register_link}
               </Link>
             </p>

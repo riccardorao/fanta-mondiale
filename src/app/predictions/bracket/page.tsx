@@ -8,6 +8,8 @@ import { isPredictionLocked } from '@/lib/utils'
 import { useLang } from '@/contexts/LanguageContext'
 import BracketMatchCard from '@/components/BracketMatchCard'
 import BonusPredictions from '@/components/BonusPredictions'
+import ShareButtons from '@/components/ShareButtons'
+import BuyMeACoffee from '@/components/BuyMeACoffee'
 import {
   buildBracketFromPredictions,
   type GroupInput,
@@ -43,6 +45,7 @@ export default function BracketPredictionsPage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [locked, setLocked] = useState(false)
+  const [submitted, setSubmitted] = useState(false)
 
   // match_number <-> match_id maps for the knockout shells
   const idByNumber = useMemo(() => {
@@ -205,7 +208,7 @@ export default function BracketPredictionsPage() {
       <div className="min-h-screen flex items-center justify-center">
         <div className="flex flex-col items-center gap-3">
           <div className="w-10 h-10 border-2 border-blue-primary border-t-transparent rounded-full animate-spin" />
-          <p className="text-slate-400 text-sm">{t.loading_label}</p>
+          <p className="text-ink-soft text-sm">{t.loading_label}</p>
         </div>
       </div>
     )
@@ -215,7 +218,7 @@ export default function BracketPredictionsPage() {
     return (
       <div className="min-h-screen flex items-center justify-center px-4">
         <div className="glass rounded-2xl p-6 max-w-md text-center">
-          <p className="text-red-400 font-semibold">{error}</p>
+          <p className="text-red-500 font-semibold">{error}</p>
         </div>
       </div>
     )
@@ -246,17 +249,17 @@ export default function BracketPredictionsPage() {
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-4">
           <div>
-            <h1 className="text-2xl sm:text-3xl font-syne font-black text-white">
+            <h1 className="text-2xl sm:text-3xl font-syne font-black text-ink">
               Bracket <span className="gradient-text-ai">Knockout</span>
             </h1>
-            <p className="text-slate-500 text-sm mt-1">{t.pred_bracket_subtitle}</p>
+            <p className="text-ink-muted text-sm mt-1">{t.pred_bracket_subtitle}</p>
           </div>
           <div className="flex flex-wrap items-center gap-3">
             {locked && <span className="text-xs text-amber-accent font-semibold">{t.pred_locked}</span>}
             <div className="glass rounded-2xl px-4 py-2 text-center">
-              <p className="text-xs text-slate-500 uppercase tracking-wide">{t.pred_picks_made}</p>
-              <p className="text-2xl tabular-nums font-bold text-white">
-                {picksMade}<span className="text-slate-600 text-base">/{TOTAL_KO_MATCHES}</span>
+              <p className="text-xs text-ink-muted uppercase tracking-wide">{t.pred_picks_made}</p>
+              <p className="text-2xl tabular-nums font-bold text-ink">
+                {picksMade}<span className="text-ink-muted text-base">/{TOTAL_KO_MATCHES}</span>
               </p>
             </div>
           </div>
@@ -281,7 +284,7 @@ export default function BracketPredictionsPage() {
         <div className="flex flex-wrap gap-2 mb-6">
           {STAGE_CONFIG.map(({ stage, label }) => (
             <div key={stage} className="glass rounded-xl px-3 py-1.5 text-xs flex items-center gap-1.5">
-              <span className="text-slate-400">{label}</span>
+              <span className="text-ink-soft">{label}</span>
               <span className="text-blue-light font-bold tabular-nums">{STAGE_POINTS[stage]}</span>
             </div>
           ))}
@@ -297,7 +300,7 @@ export default function BracketPredictionsPage() {
                 <div key={stage} className="flex flex-col gap-2">
                   <div className="text-center mb-3">
                     <span className="text-xs font-bold text-blue-light uppercase tracking-wider">{label}</span>
-                    <div className="text-xs text-slate-600 tabular-nums">{STAGE_POINTS[stage]} pt</div>
+                    <div className="text-xs text-ink-muted tabular-nums">{STAGE_POINTS[stage]} pt</div>
                   </div>
                   <div
                     className="flex flex-col gap-3"
@@ -313,14 +316,40 @@ export default function BracketPredictionsPage() {
 
         {/* Third place match */}
         {thirdPlaceShell && (
-          <div className="mt-8 pt-6 border-t border-white/[0.06]">
-            <h2 className="text-base font-syne font-black text-white mb-4">
+          <div className="mt-8 pt-6 border-t border-ink/10">
+            <h2 className="text-base font-syne font-black text-ink mb-4">
               🥉 Terzo Posto
               <span className="text-blue-light text-sm font-normal ml-2 tabular-nums">{STAGE_POINTS['third_place']} pt</span>
             </h2>
             <div className="max-w-xs">{renderCard(thirdPlaceShell, false)}</div>
           </div>
         )}
+
+        {/* Submit → reveal share + support */}
+        <div className="mt-10 pt-8 border-t border-ink/10">
+          {!submitted ? (
+            <div className="text-center">
+              <button
+                onClick={() => setSubmitted(true)}
+                disabled={picksMade === 0 || locked}
+                className="inline-flex items-center justify-center gap-2 bg-blue-primary text-white font-bold px-8 py-4 rounded-2xl text-base hover:bg-blue-hover transition-all shadow-blue-md active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {t.bracket_submit}
+              </button>
+              <p className="text-ink-muted text-sm mt-3">{t.bracket_submit_hint}</p>
+            </div>
+          ) : (
+            <div className="glass rounded-3xl p-6 sm:p-8 text-center max-w-2xl mx-auto">
+              <h2 className="text-2xl sm:text-3xl font-syne font-black text-ink mb-2">{t.share_title}</h2>
+              <p className="text-ink-soft text-base mb-6">{t.share_desc}</p>
+              <ShareButtons />
+              <div className="mt-8 pt-6 border-t border-ink/10">
+                <p className="text-ink-soft text-base mb-4">{t.coffee_desc}</p>
+                <BuyMeACoffee />
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   )

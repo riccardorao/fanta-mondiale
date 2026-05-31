@@ -3,13 +3,13 @@
 @tailwind utilities;
 
 :root {
-  --night: #16243F;
-  --night-1: #1E2F4D;
-  --night-2: #263A5B;
-  --night-3: #324867;
-  --blue-primary: #2563EB;
-  --blue-light: #60A5FA;
-  --foreground: #F1F5F9;
+  --canvas: #FFFFFF;
+  --ink: #0F172A;
+  --ink-soft: #37415A;
+  --ink-muted: #5B6678;
+  --blue: #2563EB;
+  --red: #E11D48;
+  --purple: #8B5CF6;
 }
 
 * {
@@ -18,61 +18,62 @@
 }
 
 body {
-  background-color: var(--night);
-  /* Soft blue glow from the top gives depth without a heavy, near-black feel */
+  background-color: var(--canvas);
+  /* Soft, clear background: faint purple/blue/red glows on white for depth */
   background-image:
-    radial-gradient(ellipse 90% 65% at 50% -10%, rgba(37, 99, 235, 0.14), transparent 60%),
-    radial-gradient(ellipse 70% 50% at 100% 0%, rgba(96, 165, 250, 0.07), transparent 55%);
+    radial-gradient(ellipse 80% 50% at 50% -8%, rgba(139, 92, 246, 0.10), transparent 60%),
+    radial-gradient(ellipse 60% 45% at 100% 0%, rgba(37, 99, 235, 0.07), transparent 55%),
+    radial-gradient(ellipse 55% 45% at 0% 8%, rgba(225, 29, 72, 0.05), transparent 55%);
   background-attachment: fixed;
-  color: var(--foreground);
+  color: var(--ink);
   font-family: var(--font-space), system-ui, sans-serif;
+  font-size: 17px;
 }
 
 /* Tabular figures everywhere numbers carry meaning */
 .tabular-nums { font-variant-numeric: tabular-nums; }
 
 /* Custom scrollbar */
-::-webkit-scrollbar { width: 4px; height: 4px; }
-::-webkit-scrollbar-track { background: var(--night-1); }
-::-webkit-scrollbar-thumb { background: var(--blue-primary); border-radius: 2px; }
-::-webkit-scrollbar-thumb:hover { background: var(--blue-light); }
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: #EEF1F8; }
+::-webkit-scrollbar-thumb { background: var(--purple); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--blue); }
 
-/* Gradient text utility */
+/* Gradient text — the "AI" in FANTAID is purple */
 .gradient-text-ai {
-  background: linear-gradient(135deg, #60A5FA 0%, #818CF8 60%, #A78BFA 100%);
+  background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-.gradient-text-gold {
-  background: linear-gradient(135deg, #F59E0B 0%, #FCD34D 100%);
+/* Brand gradient used for big headline accents (blue → purple → red) */
+.gradient-text-gold,
+.gradient-text-brand {
+  background: linear-gradient(135deg, #2563EB 0%, #8B5CF6 50%, #E11D48 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-/* Glass card utility */
+/* Card surface — clean white card with soft shadow (no dark glass) */
 .glass {
-  background: rgba(38, 58, 91, 0.62);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border: 1px solid rgba(148, 163, 184, 0.08);
+  background: #FFFFFF;
+  border: 1px solid rgba(15, 23, 42, 0.07);
+  box-shadow: 0 6px 24px rgba(15, 23, 42, 0.07), 0 1px 3px rgba(15, 23, 42, 0.05);
 }
 
 .glass-hover {
-  transition: background 0.2s, box-shadow 0.2s, border-color 0.2s;
+  transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
 }
 .glass-hover:hover {
-  background: rgba(50, 72, 103, 0.8);
-  border-color: rgba(96, 165, 250, 0.25);
-  box-shadow: 0 0 32px rgba(37, 99, 235, 0.18);
+  border-color: rgba(139, 92, 246, 0.35);
+  box-shadow: 0 12px 32px rgba(139, 92, 246, 0.16);
+  transform: translateY(-2px);
 }
 
-/* Number glow for stats */
-.num-glow {
-  text-shadow: 0 0 20px rgba(96, 165, 250, 0.5);
-}
+/* Number emphasis (kept subtle on white) */
+.num-glow { text-shadow: none; }
 
 /* Bracket connectors */
 .bracket-connector { position: relative; }
@@ -82,37 +83,37 @@ body {
   right: -1rem;
   top: 50%;
   width: 1rem;
-  height: 1px;
-  background: var(--blue-light);
-  opacity: 0.3;
+  height: 2px;
+  background: var(--purple);
+  opacity: 0.35;
 }
 
 /* Mobile touch targets */
 @media (max-width: 640px) {
   button, a[role="button"] {
-    min-height: 44px;
+    min-height: 48px;
   }
 }
 
 /* Input focus ring */
 input:focus, textarea:focus, select:focus {
   outline: none;
-  box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.4);
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.30);
 }
 
 /* Animated gradient border */
 .border-gradient {
   position: relative;
   border-radius: 16px;
-  background: var(--night-2);
+  background: #FFFFFF;
 }
 .border-gradient::before {
   content: '';
   position: absolute;
   inset: 0;
   border-radius: 16px;
-  padding: 1px;
-  background: linear-gradient(135deg, rgba(96,165,250,0.3), rgba(129,140,248,0.2), rgba(96,165,250,0.05));
+  padding: 1.5px;
+  background: linear-gradient(135deg, #2563EB, #8B5CF6, #E11D48);
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
