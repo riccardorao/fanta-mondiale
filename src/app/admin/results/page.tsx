@@ -94,7 +94,7 @@ export default function AdminResultsPage() {
       setLoading(false)
     }
     load()
-  }, [])
+  }, [router])
 
   const updateForm = useCallback(
     (matchId: string, field: keyof MatchForm, value: string) => {

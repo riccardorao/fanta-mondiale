@@ -2,9 +2,10 @@ export const dynamic = 'force-dynamic'
 
 import { createClient } from '@/lib/supabase/server'
 import { hasCompetitionStarted } from '@/lib/competition'
+import { buildBracketFromResults, isGroupStageComplete, type GroupInput } from '@/lib/bracket'
 import Landing from '@/components/home/Landing'
 import HomeHub from '@/components/home/HomeHub'
-import type { Match } from '@/types/database'
+import type { Match, Team, Group } from '@/types/database'
 
 const HUB_LEADERS = 8
 
@@ -26,7 +27,7 @@ export default async function HomePage() {
   }
 
   // Competition is live → load the hub data: knockout bracket + leaderboard.
-  const [{ data: { user } }, matchesRes, leadersRes, countRes] = await Promise.all([
+  const [{ data: { user } }, matchesRes, teamsRes, groupsRes, leadersRes, countRes] = await Promise.all([
     supabase.auth.getUser(),
     supabase
       .from('matches')
@@ -36,8 +37,9 @@ export default async function HomePage() {
         away_team:away_team_id(*),
         winner:winner_id(*)
       `)
-      .in('stage', ['r32', 'r16', 'qf', 'sf', 'third_place', 'final'])
       .order('match_number'),
+    supabase.from('teams').select('*'),
+    supabase.from('groups').select('*').order('name'),
     supabase
       .from('leaderboard')
       .select('user_id, total_points, profile:user_id(name, surname)')
@@ -47,7 +49,34 @@ export default async function HomePage() {
     supabase.from('leaderboard').select('user_id', { count: 'exact', head: true }),
   ])
 
-  const matches = (matchesRes.data as Match[]) ?? []
+  const allMatches = (matchesRes.data as Match[]) ?? []
+  const teams = (teamsRes.data as Team[]) ?? []
+  const groupMatches = allMatches.filter((m) => m.stage === 'group')
+  const knockoutMatches = allMatches.filter((m) => m.stage !== 'group')
+
+  // Resolve knockout participants from real standings + real winners.
+  const groupInputs: GroupInput[] = ((groupsRes.data as Group[]) ?? []).map((g) => ({
+    name: g.name,
+    teams: teams.filter((t) => t.group_id === g.id),
+    matches: groupMatches.filter((m) => m.group_id === g.id),
+  }))
+  const teamMap = new Map(teams.map((t) => [t.id, t]))
+  const winnersByMatch: Record<number, string> = {}
+  for (const m of knockoutMatches) if (m.winner_id) winnersByMatch[m.match_number] = m.winner_id
+  const participants = isGroupStageComplete(groupInputs)
+    ? buildBracketFromResults(groupInputs, winnersByMatch).participants
+    : ({} as Record<number, { home: string | null; away: string | null }>)
+
+  const matches: Match[] = knockoutMatches.map((m) => {
+    const p = participants[m.match_number] ?? { home: null, away: null }
+    return {
+      ...m,
+      home_team_id: m.home_team_id ?? p.home,
+      away_team_id: m.away_team_id ?? p.away,
+      home_team: m.home_team ?? (p.home ? teamMap.get(p.home) : undefined),
+      away_team: m.away_team ?? (p.away ? teamMap.get(p.away) : undefined),
+    }
+  })
 
   const leaders = (leadersRes.data ?? []).map((row: any) => ({
     user_id: row.user_id as string,
