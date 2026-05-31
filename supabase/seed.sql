@@ -35,7 +35,8 @@ INSERT INTO public.groups (name) VALUES
   ('I'),
   ('J'),
   ('K'),
-  ('L');
+  ('L')
+ON CONFLICT (name) DO NOTHING;
 
 -- -----------------------------------------------------------------------------
 -- 2. TEAMS (48 total, 4 per group) -- real 2026 World Cup draw
@@ -111,7 +112,8 @@ INSERT INTO public.teams (name, code, flag_emoji, group_id, confederation) VALUE
   ('England',        'ENG', '🏴󠁧󠁢󠁥󠁮󠁧󠁿', (SELECT id FROM public.groups WHERE name = 'L'), 'UEFA'),
   ('Croatia',        'CRO', '🇭🇷', (SELECT id FROM public.groups WHERE name = 'L'), 'UEFA'),
   ('Ghana',          'GHA', '🇬🇭', (SELECT id FROM public.groups WHERE name = 'L'), 'CAF'),
-  ('Panama',         'PAN', '🇵🇦', (SELECT id FROM public.groups WHERE name = 'L'), 'CONCACAF');
+  ('Panama',         'PAN', '🇵🇦', (SELECT id FROM public.groups WHERE name = 'L'), 'CONCACAF')
+ON CONFLICT (code) DO NOTHING;
 
 -- -----------------------------------------------------------------------------
 -- 3. GROUP STAGE MATCHES (72 matches, numbers 1–72)
@@ -514,7 +516,8 @@ INSERT INTO public.matches (stage, group_id, match_number, home_team_id, away_te
   ('group', (SELECT id FROM public.groups WHERE name = 'L'), 72,
    (SELECT id FROM public.teams WHERE code = 'CRO'),
    (SELECT id FROM public.teams WHERE code = 'GHA'),
-   '2026-06-27T19:00:00Z', 'MetLife Stadium, New York/New Jersey');
+   '2026-06-27T19:00:00Z', 'MetLife Stadium, New York/New Jersey')
+ON CONFLICT (match_number) DO NOTHING;
 
 -- -----------------------------------------------------------------------------
 -- 4. KNOCKOUT STAGE SHELLS (matches 73–104, no teams assigned yet)
@@ -540,7 +543,8 @@ INSERT INTO public.matches (stage, match_number, scheduled_at, venue) VALUES
   ('r32', 85,  '2026-07-03T23:00:00Z', 'Hard Rock Stadium, Miami'),
   ('r32', 86,  '2026-07-03T16:00:00Z', 'Arrowhead Stadium, Kansas City'),
   ('r32', 87,  '2026-07-01T16:00:00Z', 'Estadio BBVA, Monterrey'),
-  ('r32', 88,  '2026-06-30T16:00:00Z', 'BMO Field, Toronto');
+  ('r32', 88,  '2026-06-30T16:00:00Z', 'BMO Field, Toronto')
+ON CONFLICT (match_number) DO NOTHING;
 
 -- ROUND OF 16 (8 matches: 89–96)
 -- July 4–7, 2026  (2 matches per day)
@@ -552,7 +556,8 @@ INSERT INTO public.matches (stage, match_number, scheduled_at, venue) VALUES
   ('r16', 93,  '2026-07-06T19:00:00Z', 'Mercedes-Benz Stadium, Atlanta'),
   ('r16', 94,  '2026-07-06T23:00:00Z', 'Lumen Field, Seattle'),
   ('r16', 95,  '2026-07-07T19:00:00Z', 'Hard Rock Stadium, Miami'),
-  ('r16', 96,  '2026-07-07T23:00:00Z', 'NRG Stadium, Houston');
+  ('r16', 96,  '2026-07-07T23:00:00Z', 'NRG Stadium, Houston')
+ON CONFLICT (match_number) DO NOTHING;
 
 -- QUARTER-FINALS (4 matches: 97–100)
 -- July 9–11, 2026
@@ -560,20 +565,24 @@ INSERT INTO public.matches (stage, match_number, scheduled_at, venue) VALUES
   ('qf',  97,  '2026-07-09T23:00:00Z', 'SoFi Stadium, Los Angeles'),
   ('qf',  98,  '2026-07-10T19:00:00Z', 'Gillette Stadium, Boston'),
   ('qf',  99,  '2026-07-11T19:00:00Z', 'AT&T Stadium, Dallas'),
-  ('qf', 100,  '2026-07-11T23:00:00Z', 'Arrowhead Stadium, Kansas City');
+  ('qf', 100,  '2026-07-11T23:00:00Z', 'Arrowhead Stadium, Kansas City')
+ON CONFLICT (match_number) DO NOTHING;
 
 -- SEMI-FINALS (2 matches: 101–102)
 -- July 14–15, 2026
 INSERT INTO public.matches (stage, match_number, scheduled_at, venue) VALUES
   ('sf', 101,  '2026-07-14T19:00:00Z', 'AT&T Stadium, Dallas'),
-  ('sf', 102,  '2026-07-15T19:00:00Z', 'Mercedes-Benz Stadium, Atlanta');
+  ('sf', 102,  '2026-07-15T19:00:00Z', 'Mercedes-Benz Stadium, Atlanta')
+ON CONFLICT (match_number) DO NOTHING;
 
 -- THIRD PLACE (1 match: 103)
 -- July 18, 2026
 INSERT INTO public.matches (stage, match_number, scheduled_at, venue) VALUES
-  ('third_place', 103, '2026-07-18T19:00:00Z', 'Hard Rock Stadium, Miami');
+  ('third_place', 103, '2026-07-18T19:00:00Z', 'Hard Rock Stadium, Miami')
+ON CONFLICT (match_number) DO NOTHING;
 
 -- FINAL (1 match: 104)
 -- July 19, 2026
 INSERT INTO public.matches (stage, match_number, scheduled_at, venue) VALUES
-  ('final', 104, '2026-07-19T19:00:00Z', 'MetLife Stadium, New York/New Jersey');
+  ('final', 104, '2026-07-19T19:00:00Z', 'MetLife Stadium, New York/New Jersey')
+ON CONFLICT (match_number) DO NOTHING;
