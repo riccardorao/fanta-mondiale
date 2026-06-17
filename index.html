@@ -745,8 +745,9 @@
       <span class="hud-item" id="hud-right">GHA-PAN UP NEXT</span>
     </div>
     <header>
-      <h1>FANTAMONDIALE</h1>
-      <div class="ticker"><span>RECENT RESULTS: PORTUGAL 1-1 DR CONGO / AUSTRIA 3-1 JORDAN / ARGENTINA 3-0 ALGERIA / IRAQ 1-4 NORWAY / FRANCE 3-1 SENEGAL</span></div>
+      <h1>TOTOMONDIALE</h1>
+      <div class="ticker"><span>RECENT RESULTS: PORTUGAL 1-1 DR CONGO / AUSTRIA 3-1 JORDAN / ARGENTINA 3-0 ALGERIA /
+          IRAQ 1-4 NORWAY / FRANCE 3-1 SENEGAL</span></div>
       <div class="sub" id="sub"></div>
       <div class="stats" id="stats"></div>
     </header>
@@ -965,7 +966,7 @@
     function render(rows, meta) {
       const maxBar = Math.max(1, meta.max_possible || 1);
       document.getElementById('foot').innerHTML =
-        `© FANTAMONDIALE 2026 - ALL RIGHTS RESERVED<br>UPDATED ${meta.generated || '--:--'}`;
+        `© TOTOMONDIALE 2026 - ALL RIGHTS RESERVED<br>UPDATED ${meta.generated || '--:--'}`;
 
       // Auto-update ticker & HUD from Supabase fields set by fetch_results.py
       if (meta.ticker_text) {
