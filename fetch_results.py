@@ -96,6 +96,62 @@ WORLDCUP26_TEAM_MAP = {
 # ─── Excel group layout ────────────────────────────────────────────────────────
 GH = {g: r for g, r in zip("ABCDEFGHIJKL", [4, 11, 18, 25, 32, 39, 46, 53, 60, 67, 74, 81])}
 
+# ─── Display names for ticker (Excel name → readable ticker name) ─────────────
+DISPLAY_NAMES = {
+    "MEXICO":        "Mexico",
+    "SOUTH AFRICA":  "South Africa",
+    "SOUTH KOREA":   "South Korea",
+    "CZECHIA":       "Czechia",
+    "CANADA":        "Canada",
+    "BOSNIA H.":     "Bosnia",
+    "QATAR":         "Qatar",
+    "SWITZERLAND":   "Switzerland",
+    "BRAZIL":        "Brazil",
+    "MOROCCO":       "Morocco",
+    "HAITI":         "Haiti",
+    "SCOTLAND":      "Scotland",
+    "USA":           "USA",
+    "PARAGUAY":      "Paraguay",
+    "AUSTRALIA":     "Australia",
+    "TURKEY":        "Turkey",
+    "GERMANY":       "Germany",
+    "CURAÇAO":       "Curaçao",
+    "NETHERLANDS":   "Netherlands",
+    "JAPAN":         "Japan",
+    "SWEDEN":        "Sweden",
+    "TUNISIA":       "Tunisia",
+    "IRAN":          "Iran",
+    "NEW ZEALAND":   "New Zealand",
+    "BELGIUM":       "Belgium",
+    "EGYPT":         "Egypt",
+    "SPAIN":         "Spain",
+    "CAPO VERDE":    "Cape Verde",
+    "SAUDI ARABIA":  "Saudi Arabia",
+    "URUGUAY":       "Uruguay",
+    "FRANCE":        "France",
+    "SENEGAL":       "Senegal",
+    "IRAQ":          "Iraq",
+    "NORWAY":        "Norway",
+    "ARGENTINA":     "Argentina",
+    "ALGERIA":       "Algeria",
+    "AUSTRIA":       "Austria",
+    "JORDAN":        "Jordan",
+    "IVORY COAST":   "Ivory Coast",
+    "ECUADOR":       "Ecuador",
+    "PORTUGAL":      "Portugal",
+    "DR CONGO":      "DR Congo",
+    "UZBEKISTAN":    "Uzbekistan",
+    "COLOMBIA":      "Colombia",
+    "ENGLAND":       "England",
+    "CROATIA":       "Croatia",
+    "GHANA":         "Ghana",
+    "PANAMA":        "Panama",
+}
+
+def display(excel_name):
+    """Return the readable display name for a ticker entry."""
+    return DISPLAY_NAMES.get(excel_name, excel_name.title())
+
 
 # ─── Fetch helpers ────────────────────────────────────────────────────────────
 
@@ -248,7 +304,7 @@ def update_excel(finished_games, dry_run=False):
         current_home = ws.cell(row, ci("D")).value
         current_away = ws.cell(row, ci("E")).value
 
-        result_strings.append(f"{m['home'][:3]} {m['home_score']}-{m['away_score']} {m['away'][:3]}")
+        result_strings.append(f"{display(m['home'])} {m['home_score']}-{m['away_score']} {display(m['away'])}")
 
         if current_home == m["home_score"] and current_away == m["away_score"]:
             continue  # already correct
@@ -337,7 +393,7 @@ def main():
 
     if args.ticker_only:
         ticker = build_ticker_text([
-            f"{m['home'][:3]} {m['home_score']}-{m['away_score']} {m['away'][:3]}"
+            f"{display(m['home'])} {m['home_score']}-{m['away_score']} {display(m['away'])}"
             for m in finished[-10:]
         ])
         print(f"[ticker] {ticker}")
