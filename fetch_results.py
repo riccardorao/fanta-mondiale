@@ -354,7 +354,7 @@ def update_excel(finished_games, dry_run=False):
         current_home = ws.cell(row, ci("D")).value
         current_away = ws.cell(row, ci("E")).value
 
-        result_strings.append(f"{display(m['home'])} {m['home_score']}-{m['away_score']} {display(m['away'])}")
+        result_strings.append(f"{display(m['home']).upper()} {m['home_score']}-{m['away_score']} {display(m['away']).upper()}")
 
         if current_home == m["home_score"] and current_away == m["away_score"]:
             continue  # already correct
@@ -383,7 +383,7 @@ def update_excel(finished_games, dry_run=False):
 def build_ticker_text(result_strings):
     if not result_strings:
         return ""
-    return " ★ RECENT RESULTS ★ " + " // ".join(result_strings) + " ★ "
+    return "RECENT RESULTS: " + " / ".join(result_strings)
 
 def build_next_game_text(next_game):
     if not next_game:
@@ -458,11 +458,11 @@ def main():
     if args.ticker_only:
         # Build ticker most-recent first
         strs = [
-            f"{display(m['home'])} {m['home_score']}-{m['away_score']} {display(m['away'])}"
+            f"{display(m['home']).upper()} {m['home_score']}-{m['away_score']} {display(m['away']).upper()}"
             for m in finished
         ]
         strs.reverse()  # most recent first
-        ticker = build_ticker_text(strs[:15])
+        ticker = build_ticker_text(strs[:5])
         print(f"[ticker] {ticker}")
         push_meta_to_supabase(ticker, next_game_text)
         return
@@ -474,9 +474,9 @@ def main():
         return
 
     if result_strings and not args.no_push:
-        # Reverse for most-recent first, keep last 15
+        # Reverse for most-recent first, keep last 5
         result_strings.reverse()
-        ticker = build_ticker_text(result_strings[:15])
+        ticker = build_ticker_text(result_strings[:5])
         print(f"\n[ticker] {ticker}")
         push_meta_to_supabase(ticker, next_game_text)
 
