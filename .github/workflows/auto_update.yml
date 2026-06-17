@@ -1,9 +1,9 @@
 name: Auto-update Leaderboard
 
 on:
-  # Run every 30 minutes during World Cup match windows (10:00–24:00 UTC)
+  # Run every 5 minutes during World Cup match windows (10:00–24:00 UTC)
   schedule:
-    - cron: '*/30 10-23 * * *'
+    - cron: '*/5 10-23 * * *'
 
   # Also allow manual trigger from GitHub mobile app or website
   workflow_dispatch:

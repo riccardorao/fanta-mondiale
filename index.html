@@ -977,12 +977,22 @@
         if (hudLeft && hudRight) {
           const parts = meta.next_game_text.split('|');
           if (parts.length === 2) {
-            const scorePart = parts[1].replace('LIVE:', '').trim();
-            hudLeft.textContent = parts[0];
-            hudLeft.classList.remove('blink');
+            if (parts[0].includes('LIVE:') && parts[1].includes('LIVE:')) {
+              const score1 = parts[0].replace('LIVE:', '').trim();
+              const score2 = parts[1].replace('LIVE:', '').trim();
+              hudLeft.textContent = score1;
+              hudLeft.classList.add('blink');
 
-            hudRight.textContent = scorePart;
-            hudRight.classList.add('blink');
+              hudRight.textContent = score2;
+              hudRight.classList.add('blink');
+            } else {
+              const scorePart = parts[1].replace('LIVE:', '').trim();
+              hudLeft.textContent = scorePart;
+              hudLeft.classList.add('blink');
+
+              hudRight.textContent = parts[0];
+              hudRight.classList.remove('blink');
+            }
           } else {
             hudLeft.textContent = 'WELCOME BACK';
             hudLeft.classList.remove('blink');
