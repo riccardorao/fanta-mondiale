@@ -894,24 +894,30 @@
       const winners = meta.stats.winners || [];
       const scorers = meta.stats.scorers || [];
 
-      // Render Winners
+      // Render Winners (all predicted, with bars relative to the top country)
       let winnersHtml = '';
       if (winners.length > 0) {
+        const refCount = winners[0].count || 1;
         winnersHtml = `
           <div class="stats-card">
-            <div class="stats-title">★ MOST PREDICTED CHAMPIONS ★</div>
-            <div class="stats-grid-winners">
+            <div class="stats-title">MOST PREDICTED ⭐️ WORLD CHAMPIONS ⭐️</div>
+            <div class="stats-scorers-list">
         `;
 
-        winners.slice(0, 3).forEach((w, i) => {
-          const rankLabel = RANK_LABEL[i] || `${i + 1}TH`;
+        winners.forEach((w, i) => {
+          const pct = Math.round((w.count / refCount) * 100);
           const flag = getFlagEmoji(w.team);
+          const barColor = `hsl(${120 * (w.count / refCount)}, 100%, 50%)`;
           winnersHtml += `
-            <div class="winner-box">
-              <div class="w-rank">${rankLabel}</div>
-              <div class="w-flag">${flag}</div>
-              <div class="w-team">${w.team}</div>
-              <div class="w-count">${w.count} ${w.count === 1 ? 'VOTE' : 'VOTES'}</div>
+            <div class="scorer-row">
+              <div class="scorer-rank">#${i + 1}</div>
+              <div class="scorer-info">
+                <span class="scorer-name">${w.team} ${flag}</span>
+                <div class="scorer-bar-wrap">
+                  <div class="scorer-bar" data-w="${pct}" style="background:${barColor}; box-shadow: 0 0 10px ${barColor}"></div>
+                </div>
+              </div>
+              <div class="scorer-votes">${w.count} ${w.count === 1 ? 'VOTE' : 'VOTES'}</div>
             </div>
           `;
         });
@@ -922,27 +928,23 @@
         `;
       }
 
-      // Render Scorers
+      // Render Scorers (top 5, vertical list, no bars, vote count written)
       let scorersHtml = '';
       if (scorers.length > 0) {
         scorersHtml = `
           <div class="stats-card">
-            <div class="stats-title">★ MOST PREDICTED TOP SCORERS ★</div>
+            <div class="stats-title">MOST PREDICTED ⚽️ TOP SCORERS ⚽️</div>
             <div class="stats-scorers-list">
         `;
 
         scorers.slice(0, 5).forEach((s, i) => {
-          const pct = Math.round((s.count / totalParticipants) * 100);
           scorersHtml += `
-            <div class="scorer-row">
+            <div class="scorer-row no-bar">
               <div class="scorer-rank">#${i + 1}</div>
               <div class="scorer-info">
                 <span class="scorer-name">${s.player}</span>
-                <div class="scorer-bar-wrap">
-                  <div class="scorer-bar" data-w="${pct}"></div>
-                </div>
               </div>
-              <div class="scorer-votes">${s.count} ${s.count === 1 ? 'VOTE' : 'VOTES'} (${pct}%)</div>
+              <div class="scorer-votes">${s.count} ${s.count === 1 ? 'VOTE' : 'VOTES'}</div>
             </div>
           `;
         });
