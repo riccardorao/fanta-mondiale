@@ -308,7 +308,7 @@ TEMPLATE = r"""<!DOCTYPE html>
     background:rgba(5,0,20,0.65);
     transform:translateY(20px);opacity:0;animation:rise .6s forwards}
   .pod .medal{font-size:38px;margin-bottom:6px}
-  .pod .pname{font-weight:400;font-size:16px;margin:6px 0;color:#fff;text-transform:uppercase}
+  .pod .pname{font-weight:400;font-size:16px;margin:6px 0;color:#fff}
   .pod .ppts{font-family:'Press Start 2P',monospace;font-size:26px;letter-spacing:1px;font-weight:900;margin:8px 0;color:var(--neon-green)}
   .pod .plabel{display:none}
   .pod-rank{font-family:'Press Start 2P',monospace;font-size:13px;margin-top:4px;letter-spacing:1px}
@@ -331,7 +331,7 @@ TEMPLATE = r"""<!DOCTYPE html>
   .row:hover .ball{opacity:1;animation:bob .5s ease-in-out infinite alternate}
   @keyframes bob{from{transform:translateY(0) rotate(0deg)}to{transform:translateY(-3px) rotate(20deg)}}
   .rank{font-family:'Press Start 2P',monospace;font-size:12px;color:var(--neon-green);text-align:center;text-shadow:0 0 6px var(--neon-green)}
-  .who{font-weight:400;font-size:17px;color:#fff;text-transform:uppercase}
+  .who{font-weight:400;font-size:17px;color:#fff}
   .barwrap{height:12px;background:#000;border:1px solid var(--neon-cyan);margin-top:7px;overflow:hidden;width:min(440px,44vw)}
   .bar{height:100%;width:0;transition:width 1.2s cubic-bezier(.2,.8,.2,1);box-shadow:0 0 10px currentColor}
   .pts{font-family:'Press Start 2P',monospace;font-size:14px;font-weight:900;text-align:right;color:var(--neon-yellow)}
@@ -343,7 +343,7 @@ TEMPLATE = r"""<!DOCTYPE html>
   @media (min-width:700px){.cats{grid-template-columns:repeat(6,1fr)}}
   .cat{background:rgba(5,0,20,0.7);border:1px solid var(--neon-cyan);box-shadow:0 0 0 2px var(--ink),0 0 0 3px var(--neon-pink);padding:10px;text-align:center}
   .cat .cl{font-size:9px;color:var(--neon-cyan);text-transform:uppercase;letter-spacing:1px;font-family:'Press Start 2P',monospace}
-  .cat .cv{font-size:18px;margin-top:6px;color:var(--neon-green);font-weight:700;text-shadow:0 0 6px var(--neon-green)}
+  .cat .cv{font-size:18px;margin-top:6px;color:var(--neon-green);font-weight:700}
   .cat.zero{opacity:.35}
   .ctx{padding:10px 16px;font-size:14px;color:var(--neon-cyan);background:rgba(0,0,0,0.4)}
   footer{text-align:center;color:var(--neon-cyan);font-size:13px;margin-top:36px;line-height:1.6;text-shadow:0 0 6px var(--neon-cyan)}
