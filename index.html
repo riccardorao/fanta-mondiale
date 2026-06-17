@@ -74,7 +74,7 @@
     background:rgba(5,0,20,0.65);
     transform:translateY(20px);opacity:0;animation:rise .6s forwards}
   .pod .medal{font-size:38px;margin-bottom:6px}
-  .pod .pname{font-family:'Press Start 2P',monospace;font-size:13px;color:var(--neon-cyan);text-transform:uppercase;letter-spacing:1px;margin:6px 0}
+  .pod .pname{font-family:'Press Start 2P',monospace;font-size:clamp(10px,2.5vw,13px);color:var(--neon-cyan);text-transform:uppercase;letter-spacing:1px;margin:6px 0}
   .pod .ppts{font-family:'Press Start 2P',monospace;font-size:26px;letter-spacing:1px;font-weight:900;margin:8px 0;color:var(--neon-green)}
   .pod .plabel{display:none}
   .pod-rank{font-family:'Press Start 2P',monospace;font-size:13px;margin-top:4px;letter-spacing:1px}
@@ -96,10 +96,10 @@
   .ball{font-size:14px;text-align:center;opacity:0;transition:opacity .2s;display:none}
   .row:hover .ball{opacity:1;animation:bob .5s ease-in-out infinite alternate}
   @keyframes bob{from{transform:translateY(0) rotate(0deg)}to{transform:translateY(-3px) rotate(20deg)}}
-  .who{font-family:'Press Start 2P',monospace;font-size:10px;color:var(--neon-cyan);text-transform:uppercase;letter-spacing:1px;white-space:nowrap}
-  .barwrap{height:12px;background:#000;border:1px solid var(--neon-cyan);margin-top:7px;overflow:hidden;width:clamp(150px,70vw,800px)}
+  .who{font-family:'Press Start 2P',monospace;font-size:clamp(8px,2.5vw,10px);color:var(--neon-cyan);text-transform:uppercase;letter-spacing:1px;white-space:nowrap}
+  .barwrap{height:12px;background:#000;border:1px solid var(--neon-cyan);margin-top:7px;overflow:hidden;width:clamp(80px,40vw,500px)}
   .bar{height:100%;width:0;transition:width 1.2s cubic-bezier(.2,.8,.2,1);box-shadow:0 0 10px currentColor}
-  .pts{font-family:'Press Start 2P',monospace;font-size:14px;font-weight:900;text-align:right;color:var(--neon-yellow)}
+  .pts{font-family:'Press Start 2P',monospace;font-size:clamp(12px,3vw,14px);font-weight:900;text-align:right;color:var(--neon-yellow)}
   .chev{color:var(--neon-pink);transition:transform .25s;text-align:center;font-weight:900;font-size:12px;text-shadow:0 0 6px var(--neon-pink)}
   .row.open .chev{transform:rotate(180deg)}
   .detail{max-height:0;overflow:hidden;transition:max-height .35s ease}
@@ -239,6 +239,28 @@ function render(rows, meta){
   };
 }
 load();
+
+/* Auto-adjust font sizes if text wraps */
+function preventWrapping() {
+  document.querySelectorAll('.pname').forEach(el => {
+    if(el.scrollHeight > el.clientHeight) {
+      el.style.fontSize = 'clamp(8px, 2vw, 10px)';
+    }
+  });
+  document.querySelectorAll('.who').forEach(el => {
+    if(el.scrollHeight > el.clientHeight) {
+      el.style.fontSize = 'clamp(7px, 2vw, 8px)';
+    }
+  });
+  document.querySelectorAll('.pts').forEach(el => {
+    if(el.scrollHeight > el.clientHeight) {
+      el.style.fontSize = 'clamp(10px, 2.5vw, 12px)';
+    }
+  });
+}
+
+setTimeout(preventWrapping, 500);
+window.addEventListener('resize', preventWrapping);
 </script>
 </body>
 </html>
