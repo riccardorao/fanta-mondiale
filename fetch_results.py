@@ -103,7 +103,7 @@ DISPLAY_NAMES = {
     "SOUTH KOREA":   "South Korea",
     "CZECHIA":       "Czechia",
     "CANADA":        "Canada",
-    "BOSNIA H.":     "Bosnia",
+    "BOSNIA H.":     "Bosnia Herzegovina",
     "QATAR":         "Qatar",
     "SWITZERLAND":   "Switzerland",
     "BRAZIL":        "Brazil",
@@ -148,9 +148,33 @@ DISPLAY_NAMES = {
     "PANAMA":        "Panama",
 }
 
+# 3-letter codes for next game HUD display
+SHORT_CODES = {
+    "MEXICO": "MEX", "SOUTH AFRICA": "RSA", "SOUTH KOREA": "KOR",
+    "CZECHIA": "CZE", "CANADA": "CAN", "BOSNIA H.": "BOS",
+    "QATAR": "QAT", "SWITZERLAND": "SUI", "BRAZIL": "BRA",
+    "MOROCCO": "MAR", "HAITI": "HAI", "SCOTLAND": "SCO",
+    "USA": "USA", "PARAGUAY": "PAR", "AUSTRALIA": "AUS",
+    "TURKEY": "TUR", "GERMANY": "GER", "CURAÇAO": "CUR",
+    "NETHERLANDS": "NED", "JAPAN": "JPN", "SWEDEN": "SWE",
+    "TUNISIA": "TUN", "IRAN": "IRN", "NEW ZEALAND": "NZL",
+    "BELGIUM": "BEL", "EGYPT": "EGY", "SPAIN": "ESP",
+    "CAPO VERDE": "CPV", "SAUDI ARABIA": "KSA", "URUGUAY": "URU",
+    "FRANCE": "FRA", "SENEGAL": "SEN", "IRAQ": "IRQ",
+    "NORWAY": "NOR", "ARGENTINA": "ARG", "ALGERIA": "ALG",
+    "AUSTRIA": "AUT", "JORDAN": "JOR", "IVORY COAST": "CIV",
+    "ECUADOR": "ECU", "PORTUGAL": "POR", "DR CONGO": "COD",
+    "UZBEKISTAN": "UZB", "COLOMBIA": "COL", "ENGLAND": "ENG",
+    "CROATIA": "CRO", "GHANA": "GHA", "PANAMA": "PAN",
+}
+
 def display(excel_name):
     """Return the readable display name for a ticker entry."""
     return DISPLAY_NAMES.get(excel_name, excel_name.title())
+
+def short(excel_name):
+    """Return 3-letter code for next-game HUD."""
+    return SHORT_CODES.get(excel_name, excel_name[:3])
 
 
 # ─── Fetch helpers ────────────────────────────────────────────────────────────
@@ -168,7 +192,7 @@ def _get_json(url, headers=None, timeout=20):
 def fetch_from_footballdata(api_key):
     """
     Fetch finished group matches from football-data.org.
-    Returns a normalized list of match dicts.
+    Returns (finished_matches, next_game_dict_or_None).
     """
     print(f"[fetch] football-data.org → {FOOTBALLDATA_URL}")
     try:
@@ -179,69 +203,94 @@ def fetch_from_footballdata(api_key):
         raise
 
     finished = []
+    upcoming = []
     for m in data.get("matches", []):
         if m.get("stage") not in ("GROUP_STAGE",):
             continue
-        if m.get("status") != "FINISHED":
-            continue
-        hs = m.get("score", {}).get("fullTime", {}).get("home")
-        as_ = m.get("score", {}).get("fullTime", {}).get("away")
-        if hs is None or as_ is None:
-            continue
+        status = m.get("status")
         home_api = m.get("homeTeam", {}).get("name", "")
         away_api = m.get("awayTeam", {}).get("name", "")
         home_xl = FOOTBALLDATA_TEAM_MAP.get(home_api)
         away_xl = FOOTBALLDATA_TEAM_MAP.get(away_api)
         if not home_xl or not away_xl:
-            print(f"  [WARN] Unknown team: '{home_api}' or '{away_api}' — add to FOOTBALLDATA_TEAM_MAP")
+            if status in ("FINISHED", "LIVE", "IN_PLAY"):
+                print(f"  [WARN] Unknown team: '{home_api}' or '{away_api}' — add to FOOTBALLDATA_TEAM_MAP")
             continue
-        finished.append({
-            "id": str(m.get("id", "")),
-            "home": home_xl, "away": away_xl,
-            "home_score": int(hs), "away_score": int(as_),
-        })
+        if status == "FINISHED":
+            hs = m.get("score", {}).get("fullTime", {}).get("home")
+            as_ = m.get("score", {}).get("fullTime", {}).get("away")
+            if hs is None or as_ is None:
+                continue
+            finished.append({
+                "id": str(m.get("id", "")),
+                "home": home_xl, "away": away_xl,
+                "home_score": int(hs), "away_score": int(as_),
+            })
+        else:
+            upcoming.append({
+                "home": home_xl, "away": away_xl,
+                "utc_date": m.get("utcDate", ""),
+            })
+
     print(f"[fetch] Got {len(finished)} finished group matches from football-data.org")
-    return finished
+    next_game = None
+    if upcoming:
+        upcoming.sort(key=lambda x: x["utc_date"] or "")
+        next_game = {
+            "home": upcoming[0]["home"],
+            "away": upcoming[0]["away"],
+            "date": upcoming[0]["utc_date"],
+        }
+        print(f"[fetch] Next game: {short(next_game['home'])}-{short(next_game['away'])}")
+    return finished, next_game
 
 
 def fetch_from_worldcup26():
     """
     Fetch finished group matches from worldcup26.ir (local-only fallback).
-    Returns a normalized list of match dicts.
+    Returns (finished_matches, next_game_dict_or_None).
     """
     print(f"[fetch] worldcup26.ir → {WORLDCUP26_URL}")
     data = _get_json(WORLDCUP26_URL, timeout=15)
     finished = []
+    next_game = None
     for g in data.get("games", []):
         if g.get("type") != "group":
-            continue
-        if g.get("finished", "").upper() != "TRUE":
-            continue
-        try:
-            hs = int(g["home_score"])
-            as_ = int(g["away_score"])
-        except (KeyError, ValueError, TypeError):
             continue
         home_api = g.get("home_team_name_en", "")
         away_api = g.get("away_team_name_en", "")
         home_xl = WORLDCUP26_TEAM_MAP.get(home_api)
         away_xl = WORLDCUP26_TEAM_MAP.get(away_api)
         if not home_xl or not away_xl:
-            print(f"  [WARN] Unknown team: '{home_api}' or '{away_api}' — add to WORLDCUP26_TEAM_MAP")
+            if g.get("finished", "").upper() == "TRUE":
+                print(f"  [WARN] Unknown team: '{home_api}' or '{away_api}' — add to WORLDCUP26_TEAM_MAP")
             continue
-        finished.append({
-            "id": g["id"],
-            "home": home_xl, "away": away_xl,
-            "home_score": hs, "away_score": as_,
-        })
+        if g.get("finished", "").upper() == "TRUE":
+            try:
+                hs = int(g["home_score"])
+                as_ = int(g["away_score"])
+            except (KeyError, ValueError, TypeError):
+                continue
+            finished.append({
+                "id": g["id"],
+                "home": home_xl, "away": away_xl,
+                "home_score": hs, "away_score": as_,
+            })
+        elif next_game is None:
+            # First unfinished group match = next game
+            next_game = {"home": home_xl, "away": away_xl,
+                         "date": g.get("local_date", "")}
     print(f"[fetch] Got {len(finished)} finished group matches from worldcup26.ir")
-    return finished
+    if next_game:
+        print(f"[fetch] Next game: {short(next_game['home'])}-{short(next_game['away'])}")
+    return finished, next_game
 
 
 def fetch_games():
     """
     Try football-data.org first (works in GitHub Actions).
     Fall back to worldcup26.ir (works locally).
+    Returns (finished_list, next_game_or_None).
     """
     from dotenv import load_dotenv
     load_dotenv()
@@ -249,7 +298,8 @@ def fetch_games():
     api_key = os.environ.get("FOOTBALL_DATA_API_KEY", "")
     if api_key:
         try:
-            return fetch_from_footballdata(api_key)
+            finished, next_game = fetch_from_footballdata(api_key)
+            return finished, next_game
         except Exception as e:
             print(f"  [WARN] football-data.org failed: {e}")
             print("  [WARN] Falling back to worldcup26.ir ...")
@@ -335,19 +385,29 @@ def build_ticker_text(result_strings):
         return ""
     return " ★ RECENT RESULTS ★ " + " // ".join(result_strings) + " ★ "
 
+def build_next_game_text(next_game):
+    if not next_game:
+        return None
+    return f"NEXT GAME {short(next_game['home'])}-{short(next_game['away'])}"
 
-def push_ticker_to_supabase(ticker_text):
+
+def push_meta_to_supabase(ticker_text, next_game_text=None):
+    """Update ticker_text (and optionally next_game_text) in Supabase."""
     from dotenv import load_dotenv
     load_dotenv()
 
     url_base = os.environ.get("SUPABASE_URL", "https://ecqieaselexhcqkwbtcy.supabase.co").rstrip("/")
     key = os.environ.get("SUPABASE_SERVICE_KEY")
     if not key:
-        print("[ticker] Skipping: SUPABASE_SERVICE_KEY not set.")
+        print("[supabase] Skipping: SUPABASE_SERVICE_KEY not set.")
         return
 
+    payload = {"ticker_text": ticker_text}
+    if next_game_text:
+        payload["next_game_text"] = next_game_text
+
     url = f"{url_base}/rest/v1/xl_leaderboard_meta?id=eq.1"
-    body = json.dumps({"ticker_text": ticker_text}).encode()
+    body = json.dumps(payload).encode()
     req = urllib.request.Request(url, data=body, method="PATCH", headers={
         "apikey": key,
         "Authorization": "Bearer " + key,
@@ -356,9 +416,9 @@ def push_ticker_to_supabase(ticker_text):
     })
     try:
         with urllib.request.urlopen(req) as r:
-            print(f"[ticker] Updated Supabase ticker ✓ (HTTP {r.status})")
+            print(f"[supabase] Updated ticker + next game ✓ (HTTP {r.status})")
     except urllib.error.HTTPError as e:
-        print(f"[ticker] ERROR: HTTP {e.code}: {e.read().decode()[:200]}")
+        print(f"[supabase] ERROR: HTTP {e.code}: {e.read().decode()[:200]}")
 
 
 def run_subprocess(script_name):
@@ -384,20 +444,27 @@ def main():
     print(f"  {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     print(f"{'='*60}\n")
 
-    finished = fetch_games()
+    finished, next_game = fetch_games()
     print(f"[fetch] {len(finished)} finished group-stage matches found.\n")
+
+    next_game_text = build_next_game_text(next_game)
+    if next_game_text:
+        print(f"[next]  {next_game_text}")
 
     if not finished:
         print("[fetch] Nothing to do.")
         return
 
     if args.ticker_only:
-        ticker = build_ticker_text([
+        # Build ticker most-recent first
+        strs = [
             f"{display(m['home'])} {m['home_score']}-{m['away_score']} {display(m['away'])}"
-            for m in finished[-10:]
-        ])
+            for m in finished
+        ]
+        strs.reverse()  # most recent first
+        ticker = build_ticker_text(strs[:15])
         print(f"[ticker] {ticker}")
-        push_ticker_to_supabase(ticker)
+        push_meta_to_supabase(ticker, next_game_text)
         return
 
     updated, result_strings = update_excel(finished, dry_run=args.dry_run)
@@ -407,9 +474,11 @@ def main():
         return
 
     if result_strings and not args.no_push:
-        ticker = build_ticker_text(result_strings[-10:])
+        # Reverse for most-recent first, keep last 15
+        result_strings.reverse()
+        ticker = build_ticker_text(result_strings[:15])
         print(f"\n[ticker] {ticker}")
-        push_ticker_to_supabase(ticker)
+        push_meta_to_supabase(ticker, next_game_text)
 
     if not args.no_push:
         run_subprocess("push_to_supabase.py")
