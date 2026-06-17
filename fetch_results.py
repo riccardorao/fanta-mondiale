@@ -246,7 +246,7 @@ def fetch_from_footballdata(api_key):
             })
 
     print(f"[fetch] Got {len(finished)} finished group matches from football-data.org")
-    live_game = None
+    live_games = []
     next_game = None
 
     upcoming.sort(key=lambda x: x["utc_date"] or "")
@@ -254,15 +254,15 @@ def fetch_from_footballdata(api_key):
     future_matches = [u for u in upcoming if not u["is_live"]]
 
     if live_matches:
-        live_game = live_matches[0]
+        live_games = live_matches[:2]
     if future_matches:
         next_game = future_matches[0]
 
     if next_game:
         print(f"[fetch] Next game: {short(next_game['home'])}-{short(next_game['away'])}")
-    if live_game:
-        print(f"[fetch] Live game in progress: {short(live_game['home'])}-{short(live_game['away'])}")
-    return finished, next_game, live_game
+    for lg in live_games:
+        print(f"[fetch] Live game in progress: {short(lg['home'])}-{short(lg['away'])}")
+    return finished, next_game, live_games
 
 
 def fetch_from_worldcup26():
@@ -318,7 +318,7 @@ def fetch_from_worldcup26():
             })
 
     print(f"[fetch] Got {len(finished)} finished group matches from worldcup26.ir")
-    live_game = None
+    live_games = []
     next_game = None
 
     upcoming.sort(key=lambda x: x["date"] or "")
@@ -326,22 +326,22 @@ def fetch_from_worldcup26():
     future_matches = [u for u in upcoming if not u["is_live"]]
 
     if live_matches:
-        live_game = live_matches[0]
+        live_games = live_matches[:2]
     if future_matches:
         next_game = future_matches[0]
 
     if next_game:
         print(f"[fetch] Next game: {short(next_game['home'])}-{short(next_game['away'])}")
-    if live_game:
-        print(f"[fetch] Live game in progress: {short(live_game['home'])}-{short(live_game['away'])}")
-    return finished, next_game, live_game
+    for lg in live_games:
+        print(f"[fetch] Live game in progress: {short(lg['home'])}-{short(lg['away'])}")
+    return finished, next_game, live_games
 
 
 def fetch_games():
     """
     Try football-data.org first (works in GitHub Actions).
     Fall back to worldcup26.ir (works locally).
-    Returns (finished_list, next_game_or_None, is_live).
+    Returns (finished_list, next_game_or_None, live_games_list).
     """
     from dotenv import load_dotenv
     load_dotenv()
@@ -349,8 +349,8 @@ def fetch_games():
     api_key = os.environ.get("FOOTBALL_DATA_API_KEY", "")
     if api_key:
         try:
-            finished, next_game, is_live = fetch_from_footballdata(api_key)
-            return finished, next_game, is_live
+            finished, next_game, live_games = fetch_from_footballdata(api_key)
+            return finished, next_game, live_games
         except Exception as e:
             print(f"  [WARN] football-data.org failed: {e}")
             print("  [WARN] Falling back to worldcup26.ir ...")
@@ -436,18 +436,24 @@ def build_ticker_text(result_strings):
         return ""
     return "RECENT RESULTS: " + " / ".join(result_strings)
 
-def build_next_game_text(next_game, live_game=None):
+def build_next_game_text(next_game, live_games=None):
     next_game_part = ""
     if next_game:
         next_game_part = f"{short(next_game['home'])}-{short(next_game['away'])} UP NEXT"
 
-    if live_game:
-        hs = live_game.get("home_score", 0)
-        as_ = live_game.get("away_score", 0)
-        live_part = f"LIVE: {short(live_game['home'])} {hs}-{as_} {short(live_game['away'])}"
-        if next_game_part:
-            return f"{next_game_part}|{live_part}"
-        return f"TBD UP NEXT|{live_part}"
+    if live_games:
+        live_parts = []
+        for lg in live_games:
+            hs = lg.get("home_score", 0)
+            as_ = lg.get("away_score", 0)
+            live_parts.append(f"LIVE: {short(lg['home'])} {hs}-{as_} {short(lg['away'])}")
+
+        if len(live_parts) >= 2:
+            return f"{live_parts[0]}|{live_parts[1]}"
+        elif len(live_parts) == 1:
+            if next_game_part:
+                return f"{next_game_part}|{live_parts[0]}"
+            return f"TBD UP NEXT|{live_parts[0]}"
 
     return next_game_part if next_game_part else None
 
@@ -505,10 +511,10 @@ def main():
     print(f"  {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     print(f"{'='*60}\n")
 
-    finished, next_game, live_game = fetch_games()
+    finished, next_game, live_games = fetch_games()
     print(f"[fetch] {len(finished)} finished group-stage matches found.\n")
 
-    next_game_text = build_next_game_text(next_game, live_game)
+    next_game_text = build_next_game_text(next_game, live_games)
     if next_game_text:
         print(f"[next]  {next_game_text}")
 
