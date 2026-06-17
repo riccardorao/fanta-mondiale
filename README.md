@@ -120,7 +120,7 @@ FOOTBALL_DATA_API_KEY="your_football_data_org_api_key"
 The repository includes a GitHub Actions workflow that automatically keeps the leaderboard updated without needing your computer active.
 
 ### 1. Synchronization Flow
-1. **GitHub Actions** runs every **5 minutes** during tournament match windows (12:00 to 02:00 CEST / 10:00 to 24:00 UTC).
+1. **GitHub Actions** runs every **5 minutes** during tournament hours (18:00 to 08:00 CEST / 16:00 to 06:00 UTC).
 2. It calls the `football-data.org` API to fetch completed and live match results.
 3. If new matches are finished, it updates `data/FIFAWC2026_Model.xlsx` in the cloud workspace.
 4. The workflow commits and pushes the updated model file back to the repository.
