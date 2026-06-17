@@ -79,6 +79,40 @@ FULL_NAMES = {
     "Trabona": "Tommaso Trabona",
 }
 
+# Mapping of manually-written variations to canonical top scorer names for reconciliation.
+SCORER_RECONCILIATION_MAP = {
+    # Add any variations here if they crop up. E.g.:
+    # "KYLIAN MBAPPE": "MBAPPE",
+    # "K. MBAPPE": "MBAPPE",
+}
+
+def reconcile_scorer_name(name):
+    if not name:
+        return ""
+    # 1. Clean whitespace and convert to uppercase
+    name = str(name).strip().upper()
+    
+    # 2. Check explicit mapping
+    if name in SCORER_RECONCILIATION_MAP:
+        return SCORER_RECONCILIATION_MAP[name]
+        
+    # 3. Simple automatic normalization: remove accents/diacritics
+    import unicodedata
+    name = "".join(
+        c for c in unicodedata.normalize("NFD", name)
+        if unicodedata.category(c) != "Mn"
+    )
+    
+    # Remove common prefixes like "K. ", "C. ", "L. " (initials)
+    import re
+    name = re.sub(r'^[A-Z]\.\s+', '', name)
+    
+    # Re-check mapping after normalization
+    if name in SCORER_RECONCILIATION_MAP:
+        return SCORER_RECONCILIATION_MAP[name]
+        
+    return name
+
 GH = {g: r for g, r in zip("ABCDEFGHIJKL", [4, 11, 18, 25, 32, 39, 46, 53, 60, 67, 74, 81])}
 
 # ---- Tournament structure (2026: 48 teams, 12 groups of 4) ----
@@ -238,7 +272,7 @@ def score_file(path, matches, positions, ko_truth=None, standings_truth=None, to
     # top scorer
     if topscorer_player_truth:
         pred_player = norm(ws.cell(44, ci("AI")).value)
-        if pred_player == topscorer_player_truth:
+        if reconcile_scorer_name(pred_player) == reconcile_scorer_name(topscorer_player_truth):
             bd["Top Scorer"] += POINTS["topscorer_player"]
 
     if topscorer_goals_truth is not None:
@@ -262,7 +296,8 @@ def score_file(path, matches, positions, ko_truth=None, standings_truth=None, to
         if s_norm == "PLAYER NAME":
             predicted_scorer = None
         else:
-            predicted_scorer = " ".join([w.capitalize() for w in str(predicted_scorer).strip().split()])
+            reconciled = reconcile_scorer_name(predicted_scorer)
+            predicted_scorer = " ".join([w.capitalize() for w in reconciled.split()]) if reconciled else None
     else:
         predicted_scorer = None
 
@@ -417,7 +452,7 @@ TEMPLATE = r"""<!DOCTYPE html>
   @keyframes blink{50%{opacity:.25}}
 
   header{text-align:center;margin-bottom:8px}
-  h1{font-family:'Press Start 2P',monospace;font-size:clamp(26px,7vw,50px);line-height:1.2;
+  h1{font-family:'Press Start 2P',monospace;font-size:clamp(18px,5.5vw,50px);line-height:1.2;
     color:var(--neon-yellow);letter-spacing:3px;font-weight:900;
     text-shadow:3px 3px 0 var(--neon-pink),6px 6px 0 var(--neon-cyan),0 0 24px rgba(255,232,0,.5);
     animation:glitchIn .6s ease-out}
@@ -531,8 +566,8 @@ TEMPLATE = r"""<!DOCTYPE html>
     <div class="stats" id="stats"></div>
   </header>
   <div class="tabs">
-    <button id="tab-leaderboard" class="tab-btn active" onclick="switchTab('leaderboard')">▶ LEADERBOARD</button>
-    <button id="tab-stats" class="tab-btn" onclick="switchTab('stats')">▷ STATISTICS</button>
+    <button id="tab-leaderboard" class="tab-btn active" onclick="switchTab('leaderboard')">LEADERBOARD</button>
+    <button id="tab-stats" class="tab-btn" onclick="switchTab('stats')">STATISTICS</button>
   </div>
   <div id="view-leaderboard">
     <div class="section-label">★ HIGH SCORE ★</div>
@@ -622,16 +657,16 @@ function switchTab(tab) {
   
   if (tab === 'leaderboard') {
     btnLeaderboard.classList.add('active');
-    btnLeaderboard.innerText = '▶ LEADERBOARD';
+    btnLeaderboard.innerText = 'LEADERBOARD';
     btnStats.classList.remove('active');
-    btnStats.innerText = '▷ STATISTICS';
+    btnStats.innerText = 'STATISTICS';
     viewLeaderboard.style.display = 'block';
     viewStats.style.display = 'none';
   } else {
     btnLeaderboard.classList.remove('active');
-    btnLeaderboard.innerText = '▷ LEADERBOARD';
+    btnLeaderboard.innerText = 'LEADERBOARD';
     btnStats.classList.add('active');
-    btnStats.innerText = '▶ STATISTICS';
+    btnStats.innerText = 'STATISTICS';
     viewLeaderboard.style.display = 'none';
     viewStats.style.display = 'block';
     
