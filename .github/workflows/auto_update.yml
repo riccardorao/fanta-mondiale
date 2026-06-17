@@ -1,0 +1,73 @@
+name: Auto-update Leaderboard
+
+on:
+  # Run every 30 minutes during World Cup match windows (10:00–24:00 UTC)
+  schedule:
+    - cron: '*/30 10-23 * * *'
+
+  # Also allow manual trigger from GitHub mobile app or website
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run (show changes without writing)'
+        type: boolean
+        default: false
+
+jobs:
+  update:
+    name: Fetch Results & Push Leaderboard
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Python dependencies
+        run: pip install openpyxl python-dotenv requests
+
+      - name: Copy Excel files from repo to expected path
+        run: |
+          mkdir -p ~/Desktop/FIFAWC2026/Pronostici
+          # Model and Pronostici files are committed to the repo under data/
+          if [ -d "data/Pronostici" ]; then
+            cp data/FIFAWC2026_Model.xlsx ~/Desktop/FIFAWC2026/FIFAWC2026_Model.xlsx
+            cp data/Pronostici/*.xlsx ~/Desktop/FIFAWC2026/Pronostici/
+            echo "Copied Excel files from data/ to Desktop path"
+          else
+            echo "No data/ directory found — Excel files must be present for scoring to work."
+            echo "See README_AUTO_UPDATE.md for setup instructions."
+            exit 1
+          fi
+
+      - name: Fetch results and update leaderboard
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+        run: |
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            python3 fetch_results.py --dry-run
+          else
+            python3 fetch_results.py
+          fi
+
+      - name: Commit updated Excel back to repo (if changed)
+        if: ${{ inputs.dry_run != 'true' }}
+        run: |
+          git config user.name "fantamondiale-bot"
+          git config user.email "bot@fantamondiale"
+          # Copy updated Excel back to repo
+          if [ -d "data" ]; then
+            cp ~/Desktop/FIFAWC2026/FIFAWC2026_Model.xlsx data/FIFAWC2026_Model.xlsx
+            git add data/FIFAWC2026_Model.xlsx
+            if git diff --cached --quiet; then
+              echo "No changes to commit."
+            else
+              git commit -m "Auto-update: match results $(date -u '+%Y-%m-%d %H:%M UTC')"
+              git push
+            fi
+          fi

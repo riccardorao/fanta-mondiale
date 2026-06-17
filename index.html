@@ -969,6 +969,15 @@
       document.getElementById('foot').innerHTML =
         `© FANTAMONDIALE 2026 - ALL RIGHTS RESERVED<br>UPDATED ${meta.generated || '--:--'}`;
 
+      // Auto-update ticker & HUD from Supabase fields set by fetch_results.py
+      if (meta.ticker_text) {
+        document.querySelector('.ticker span').textContent = meta.ticker_text;
+      }
+      if (meta.next_game_text) {
+        const hudItems = document.querySelectorAll('.hud-item.blink');
+        hudItems.forEach(el => { el.textContent = meta.next_game_text; });
+      }
+
       const podEl = document.getElementById('podium');
       const medal = ['🥇', '🥈', '🥉'];
       podEl.innerHTML = '';
