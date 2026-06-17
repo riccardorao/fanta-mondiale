@@ -15,13 +15,9 @@
   *{box-sizing:border-box;margin:0;padding:0;border-radius:0!important}
   body{
     font-family:'VT323',monospace;font-size:18px;
+    background:radial-gradient(circle at 50% 0%, #1a0033 0%, #0a0020 55%, #000 100%);
     color:var(--neon-green);min-height:100vh;padding:18px 14px 60px;
     position:relative;overflow-x:hidden;
-  }
-  body::after{
-    content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;
-    background:radial-gradient(ellipse at center,transparent 55%,rgba(0,0,0,.55) 100%);
-    animation:flicker 6s infinite;
   }
   @keyframes flicker{0%,100%{opacity:1}92%{opacity:1}93%{opacity:.82}94%{opacity:1}97%{opacity:1}98%{opacity:.88}}
   .wrap{max-width:1080px;margin:0 auto;position:relative}
