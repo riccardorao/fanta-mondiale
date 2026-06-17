@@ -81,9 +81,20 @@ FULL_NAMES = {
 
 # Mapping of manually-written variations to canonical top scorer names for reconciliation.
 SCORER_RECONCILIATION_MAP = {
-    # Add any variations here if they crop up. E.g.:
-    # "KYLIAN MBAPPE": "MBAPPE",
-    # "K. MBAPPE": "MBAPPE",
+    "KANE": "HARRY KANE",
+    "HAALAND": "ERLING HAALAND",
+    "VINI JR": "VINICIUS JR",
+    "VINICIUS": "VINICIUS JR",
+    "YAMAL": "LAMINE YAMAL",
+    "C. RONALDO": "CRISTIANO RONALDO",
+    "C RONALDO": "CRISTIANO RONALDO",
+    "RONALDO": "CRISTIANO RONALDO",
+    "LAUTARO EL FUTBOL MARTINEZ": "LAUTARO MARTINEZ",
+    "DEMBELE": "OUSMANE DEMBELE",
+    "MBAPPE": "KYLIAN MBAPPE",
+    "MBAPPÉ": "KYLIAN MBAPPE",
+    "MBAPPÈ": "KYLIAN MBAPPE",
+    "OLISE": "MICHAEL OLISE",
 }
 
 def reconcile_scorer_name(name):
@@ -337,7 +348,7 @@ def compute_leaderboard_data(model_path, pron_dir):
             })
 
     winner_counts = Counter(predicted_winners).most_common()
-    scorer_counts = Counter(predicted_scorers).most_common(5)
+    scorer_counts = Counter(predicted_scorers).most_common()
 
     stats_winners = [{"team": w, "count": count} for w, count in winner_counts]
     stats_scorers = [{"player": s, "count": count} for s, count in scorer_counts]
@@ -490,7 +501,7 @@ TEMPLATE = r"""<!DOCTYPE html>
   .r2{color:var(--silver);text-shadow:0 0 10px var(--silver);animation:flash 1.3s infinite}
   .r3{color:var(--bronze);text-shadow:0 0 10px var(--bronze);animation:flash 1.5s infinite}
 
-  .board{display:flex;flex-direction:column;gap:10px;margin-top:8px}
+  .board{display:flex;flex-direction:column;gap:12px;margin-top:8px}
   .row{background:rgba(5,0,20,0.6);overflow:hidden;
     border:2px solid var(--neon-cyan);box-shadow:0 0 0 3px var(--ink),0 0 0 5px var(--neon-pink),0 0 14px rgba(0,255,255,.3);
     opacity:0;transform:translateY(8px);animation:fade .5s forwards;transition:box-shadow .2s,background .2s}
@@ -574,10 +585,7 @@ TEMPLATE = r"""<!DOCTYPE html>
     <div class="podium" id="podium"></div>
     <div class="board" id="board"></div>
   </div>
-  <div id="view-stats" style="display: none;">
-    <div class="section-label">★ PREDICTION STATISTICS ★</div>
-    <div class="stats-container" id="stats-container"></div>
-  </div>
+  <div id="view-stats" style="display: none;"></div>
 
   <footer id="foot"></footer>
 </div>
@@ -677,7 +685,7 @@ function switchTab(tab) {
 }
 
 function renderStats(meta, totalParticipants) {
-  const container = document.getElementById('stats-container');
+  const container = document.getElementById('view-stats');
   if (!meta.stats || !meta.stats.winners || !meta.stats.scorers) {
     container.innerHTML = `<div class="state">NO STATISTICS UPLOADED YET</div>`;
     return;
@@ -691,58 +699,66 @@ function renderStats(meta, totalParticipants) {
   if (winners.length > 0) {
     const refCount = winners[0].count || 1;
     winnersHtml = `
-      <div class="stats-card">
-        <div class="stats-title">MOST PREDICTED ⭐️ WORLD CHAMPIONS ⭐️</div>
-        <div class="stats-scorers-list">
+      <div class="section-label">⭐️ WORLD CHAMPIONS ⭐️</div>
+      <div class="board">
     `;
     
     winners.forEach((w, i) => {
       const pct = Math.round((w.count / refCount) * 100);
       const flag = getFlagEmoji(w.team);
       const barColor = `hsl(${120 * (w.count / refCount)}, 100%, 50%)`;
+      const rankHtml = i < 3
+        ? `<span class="r${i + 1}">${RANK_LABEL[i]}</span>`
+        : String(i + 1).padStart(2, '0');
       winnersHtml += `
-        <div class="scorer-row">
-          <div class="scorer-rank">#${i+1}</div>
-          <div class="scorer-info">
-            <span class="scorer-name">${w.team} ${flag}</span>
-            <div class="scorer-bar-wrap">
-              <div class="scorer-bar" data-w="${pct}" style="background:${barColor}; box-shadow: 0 0 10px ${barColor}"></div>
+        <div class="row">
+          <div class="rmain" style="cursor: default;">
+            <div class="ball">⚽</div>
+            <div class="rank">${rankHtml}</div>
+            <div>
+              <div class="who">${w.team} ${flag}</div>
+              <div class="barwrap"><div class="bar" style="background:${barColor}" data-w="${pct}"></div></div>
             </div>
+            <div class="pts">${w.count}</div>
+            <div></div>
           </div>
-          <div class="scorer-votes">${w.count} ${w.count === 1 ? 'VOTE' : 'VOTES'}</div>
         </div>
       `;
     });
     
     winnersHtml += `
-        </div>
       </div>
     `;
   }
   
-  // Render Scorers (top 5, vertical list, no bars, vote count written)
+  // Render Scorers (all predicted, vertical list, no bars, vote count written)
   let scorersHtml = '';
   if (scorers.length > 0) {
     scorersHtml = `
-      <div class="stats-card">
-        <div class="stats-title">MOST PREDICTED ⚽️ TOP SCORERS ⚽️</div>
-        <div class="stats-scorers-list">
+      <div class="section-label">⚽️ TOP SCORERS ⚽️</div>
+      <div class="board">
     `;
     
-    scorers.slice(0, 5).forEach((s, i) => {
+    scorers.forEach((s, i) => {
+      const rankHtml = i < 3
+        ? `<span class="r${i + 1}">${RANK_LABEL[i]}</span>`
+        : String(i + 1).padStart(2, '0');
       scorersHtml += `
-        <div class="scorer-row no-bar">
-          <div class="scorer-rank">#${i+1}</div>
-          <div class="scorer-info">
-            <span class="scorer-name">${s.player}</span>
+        <div class="row">
+          <div class="rmain" style="cursor: default;">
+            <div class="ball">⚽</div>
+            <div class="rank">${rankHtml}</div>
+            <div>
+              <div class="who">${s.player}</div>
+            </div>
+            <div class="pts">${s.count}</div>
+            <div></div>
           </div>
-          <div class="scorer-votes">${s.count} ${s.count === 1 ? 'VOTE' : 'VOTES'}</div>
         </div>
       `;
     });
     
     scorersHtml += `
-        </div>
       </div>
     `;
   }
