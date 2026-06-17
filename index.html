@@ -741,8 +741,8 @@
 <body>
   <div class="wrap">
     <div class="hud">
-      <span class="hud-item">WELCOME BACK</span>
-      <span class="hud-item blink">NEXT GAME ENG-CRO</span>
+      <span class="hud-item">WELCOME</span>
+      <span class="hud-item" id="hud-right">GHA-PAN UP NEXT</span>
     </div>
     <header>
       <h1>FANTAMONDIALE</h1>
@@ -972,8 +972,15 @@
         document.querySelector('.ticker span').textContent = meta.ticker_text;
       }
       if (meta.next_game_text) {
-        const hudItems = document.querySelectorAll('.hud-item.blink');
-        hudItems.forEach(el => { el.textContent = meta.next_game_text; });
+        const hudRight = document.getElementById('hud-right');
+        if (hudRight) {
+          hudRight.textContent = meta.next_game_text;
+          if (meta.next_game_text.includes('LIVE:')) {
+            hudRight.classList.add('blink');
+          } else {
+            hudRight.classList.remove('blink');
+          }
+        }
       }
 
       const podEl = document.getElementById('podium');

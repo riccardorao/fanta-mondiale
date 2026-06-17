@@ -192,7 +192,7 @@ def _get_json(url, headers=None, timeout=20):
 def fetch_from_footballdata(api_key):
     """
     Fetch finished group matches from football-data.org.
-    Returns (finished_matches, next_game_dict_or_None).
+    Returns (finished_matches, next_game_dict_or_None, is_live).
     """
     print(f"[fetch] football-data.org → {FOOTBALLDATA_URL}")
     try:
@@ -227,33 +227,46 @@ def fetch_from_footballdata(api_key):
                 "home_score": int(hs), "away_score": int(as_),
             })
         else:
+            is_live = status in ("LIVE", "IN_PLAY", "PAUSED")
+            hs = m.get("score", {}).get("fullTime", {}).get("home") if is_live else None
+            as_ = m.get("score", {}).get("fullTime", {}).get("away") if is_live else None
             upcoming.append({
-                "home": home_xl, "away": away_xl,
+                "home": home_xl,
+                "away": away_xl,
                 "utc_date": m.get("utcDate", ""),
+                "is_live": is_live,
+                "home_score": int(hs) if (is_live and hs is not None) else 0,
+                "away_score": int(as_) if (is_live and as_ is not None) else 0,
             })
 
     print(f"[fetch] Got {len(finished)} finished group matches from football-data.org")
     next_game = None
-    if upcoming:
+    is_live = False
+
+    live_matches = [u for u in upcoming if u["is_live"]]
+    if live_matches:
+        live_matches.sort(key=lambda x: x["utc_date"] or "")
+        next_game = live_matches[0]
+        is_live = True
+    elif upcoming:
         upcoming.sort(key=lambda x: x["utc_date"] or "")
-        next_game = {
-            "home": upcoming[0]["home"],
-            "away": upcoming[0]["away"],
-            "date": upcoming[0]["utc_date"],
-        }
-        print(f"[fetch] Next game: {short(next_game['home'])}-{short(next_game['away'])}")
-    return finished, next_game
+        next_game = upcoming[0]
+        is_live = False
+
+    if next_game:
+        print(f"[fetch] Next game: {short(next_game['home'])}-{short(next_game['away'])} (Live: {is_live})")
+    return finished, next_game, is_live
 
 
 def fetch_from_worldcup26():
     """
     Fetch finished group matches from worldcup26.ir (local-only fallback).
-    Returns (finished_matches, next_game_dict_or_None).
+    Returns (finished_matches, next_game_dict_or_None, is_live).
     """
     print(f"[fetch] worldcup26.ir → {WORLDCUP26_URL}")
     data = _get_json(WORLDCUP26_URL, timeout=15)
     finished = []
-    next_game = None
+    upcoming = []
     for g in data.get("games", []):
         if g.get("type") != "group":
             continue
@@ -276,21 +289,51 @@ def fetch_from_worldcup26():
                 "home": home_xl, "away": away_xl,
                 "home_score": hs, "away_score": as_,
             })
-        elif next_game is None:
-            # First unfinished group match = next game
-            next_game = {"home": home_xl, "away": away_xl,
-                         "date": g.get("local_date", "")}
+        else:
+            hs = g.get("home_score")
+            as_ = g.get("away_score")
+            is_live = False
+            hs_val, as_val = 0, 0
+            if hs is not None and as_ is not None and str(hs).strip().lower() not in ("", "null", "none") and str(as_).strip().lower() not in ("", "null", "none"):
+                try:
+                    hs_val = int(hs)
+                    as_val = int(as_)
+                    is_live = True
+                except ValueError:
+                    pass
+            upcoming.append({
+                "home": home_xl,
+                "away": away_xl,
+                "date": g.get("local_date") or g.get("date") or g.get("utc_date") or "",
+                "is_live": is_live,
+                "home_score": hs_val,
+                "away_score": as_val,
+            })
+
     print(f"[fetch] Got {len(finished)} finished group matches from worldcup26.ir")
+    next_game = None
+    is_live = False
+
+    live_matches = [u for u in upcoming if u["is_live"]]
+    if live_matches:
+        live_matches.sort(key=lambda x: x["date"] or "")
+        next_game = live_matches[0]
+        is_live = True
+    elif upcoming:
+        upcoming.sort(key=lambda x: x["date"] or "")
+        next_game = upcoming[0]
+        is_live = False
+
     if next_game:
-        print(f"[fetch] Next game: {short(next_game['home'])}-{short(next_game['away'])}")
-    return finished, next_game
+        print(f"[fetch] Next game: {short(next_game['home'])}-{short(next_game['away'])} (Live: {is_live})")
+    return finished, next_game, is_live
 
 
 def fetch_games():
     """
     Try football-data.org first (works in GitHub Actions).
     Fall back to worldcup26.ir (works locally).
-    Returns (finished_list, next_game_or_None).
+    Returns (finished_list, next_game_or_None, is_live).
     """
     from dotenv import load_dotenv
     load_dotenv()
@@ -298,8 +341,8 @@ def fetch_games():
     api_key = os.environ.get("FOOTBALL_DATA_API_KEY", "")
     if api_key:
         try:
-            finished, next_game = fetch_from_footballdata(api_key)
-            return finished, next_game
+            finished, next_game, is_live = fetch_from_footballdata(api_key)
+            return finished, next_game, is_live
         except Exception as e:
             print(f"  [WARN] football-data.org failed: {e}")
             print("  [WARN] Falling back to worldcup26.ir ...")
@@ -385,10 +428,14 @@ def build_ticker_text(result_strings):
         return ""
     return "RECENT RESULTS: " + " / ".join(result_strings)
 
-def build_next_game_text(next_game):
+def build_next_game_text(next_game, is_live=False):
     if not next_game:
         return None
-    return f"NEXT GAME {short(next_game['home'])}-{short(next_game['away'])}"
+    if is_live:
+        hs = next_game.get("home_score", 0)
+        as_ = next_game.get("away_score", 0)
+        return f"LIVE: {short(next_game['home'])} {hs}-{as_} {short(next_game['away'])}"
+    return f"{short(next_game['home'])}-{short(next_game['away'])} UP NEXT"
 
 
 def push_meta_to_supabase(ticker_text, next_game_text=None):
@@ -444,10 +491,10 @@ def main():
     print(f"  {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     print(f"{'='*60}\n")
 
-    finished, next_game = fetch_games()
+    finished, next_game, is_live = fetch_games()
     print(f"[fetch] {len(finished)} finished group-stage matches found.\n")
 
-    next_game_text = build_next_game_text(next_game)
+    next_game_text = build_next_game_text(next_game, is_live)
     if next_game_text:
         print(f"[next]  {next_game_text}")
 
