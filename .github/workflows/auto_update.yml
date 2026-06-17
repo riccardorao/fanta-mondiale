@@ -1,9 +1,9 @@
 name: Auto-update Leaderboard
 
 on:
-  # Run every 5 minutes during World Cup match windows (10:00–24:00 UTC)
+  # Run every 5 minutes from 18:00 to 08:00 CEST (16:00 to 06:00 UTC)
   schedule:
-    - cron: '*/5 10-23 * * *'
+    - cron: '*/5 0-5,16-23 * * *'
 
   # Also allow manual trigger from GitHub mobile app or website
   workflow_dispatch:
@@ -17,6 +17,8 @@ jobs:
   update:
     name: Fetch Results & Push Leaderboard
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
     steps:
       - name: Checkout repository

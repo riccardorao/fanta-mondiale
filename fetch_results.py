@@ -76,12 +76,16 @@ FOOTBALLDATA_TEAM_MAP = {
     "Portugal":                         "PORTUGAL",
     "DR Congo":                         "DR CONGO",
     "Democratic Republic of Congo":     "DR CONGO",
+    "Congo DR":                         "DR CONGO",
     "Uzbekistan":                       "UZBEKISTAN",
     "Colombia":                         "COLOMBIA",
     "England":                          "ENGLAND",
     "Croatia":                          "CROATIA",
     "Ghana":                            "GHANA",
     "Panama":                           "PANAMA",
+    "South Korea":                      "SOUTH KOREA",
+    "Bosnia-Herzegovina":               "BOSNIA H.",
+    "Cape Verde Islands":               "CAPO VERDE",
 }
 
 # worldcup26.ir names (same keys, slightly different spellings)

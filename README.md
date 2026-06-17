@@ -2,196 +2,167 @@
 
 Live leaderboard powered by **Excel + Python + Supabase + Vercel**.
 
-**Live URL:** https://fantaid.vercel.app
+**Live URL:** [https://fantaid.vercel.app](https://fantaid.vercel.app)
 
 ---
 
-## How it works
+## Architecture & Pipeline
 
 ```
-┌──────────────────────┐
-│  Excel Files         │  ← Your source of truth
-│  (Desktop)           │     • Official results in Model.xlsx
-│  FIFAWC2026/         │     • Participant predictions in Pronostici/
-└──────────────────────┘
-          ↓ python3 push_to_supabase.py
-┌──────────────────────┐
-│  Supabase            │  ← Data tables
-│  • xl_leaderboard    │     (scores, rankings)
-│  • xl_leaderboard_   │
-│    meta              │
-└──────────────────────┘
-          ↓ REST API
-┌──────────────────────┐
-│  Vercel              │  ← Live website
-│  index.html          │     Reads from Supabase
-└──────────────────────┘
+              ┌────────────────────────────────────────────────────────┐
+              │                   Local Machine                        │
+              │  ~/Desktop/FIFAWC2026/                                 │
+              │  ├── FIFAWC2026_Model.xlsx (Official Results)          │
+              │  └── Pronostici/*.xlsx (Participant predictions)       │
+              └────────────────────────────────────────────────────────┘
+                                   │
+                                   │ Commit & Push to GitHub data/
+                                   ▼
+              ┌────────────────────────────────────────────────────────┐
+              │                   GitHub Repository                    │
+              │  fanta-mondiale/                                       │
+              │  ├── data/FIFAWC2026_Model.xlsx                        │
+              │  └── data/Pronostici/*.xlsx                            │
+              └────────────────────────────────────────────────────────┘
+                                   │
+                                   │ Auto-run (GitHub Actions)
+                                   ▼
+ ┌─────────────────────────────────────────────────────────────────────────┐
+ │                       GitHub Actions Runner                             │
+ │  • cron schedule: Every 5 mins between 18:00 and 08:00 CEST             │
+ │  • fetch_results.py checks football-data.org (Primary)                  │
+ │  • updates data/FIFAWC2026_Model.xlsx in-place                          │
+ │  • commits & pushes new results back to GitHub repository               │
+ │  • triggers push_to_supabase.py to recompute leaderboard                │
+ └─────────────────────────────────────────────────────────────────────────┘
+                                   │
+                                   │ REST API Upsert
+                                   ▼
+              ┌────────────────────────────────────────────────────────┐
+              │                   Supabase Database                    │
+              │  • xl_leaderboard (Participant scores & rankings)      │
+              │  • xl_leaderboard_meta (Metadata & marquee ticker)     │
+              └────────────────────────────────────────────────────────┘
+                                   │
+                                   │ REST API Fetch (Browser)
+                                   ▼
+              ┌────────────────────────────────────────────────────────┐
+              │                   Vercel Frontend                      │
+              │  • Serves static index.html                            │
+              │  • Renders responsive leaderboard & ticker live        │
+              └────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## Quick Start
-
-### 1. Install dependencies
-
-```bash
-pip install openpyxl
-```
-
-### 2. Set Supabase credentials (one time)
-
-Get your **Service Role Key** from Supabase Dashboard → Settings → API → `service_role secret`.
-
-Then in your shell (macOS/Linux/WSL):
-
-```bash
-export SUPABASE_URL="https://ecqieaselexhcqkwbtcy.supabase.co"
-export SUPABASE_SERVICE_KEY="sb_secret_..."
-```
-
-On **Windows (PowerShell)**:
-
-```powershell
-$env:SUPABASE_URL="https://ecqieaselexhcqkwbtcy.supabase.co"
-$env:SUPABASE_SERVICE_KEY="sb_secret_..."
-```
-
-### 3. Update the leaderboard
-
-After editing match results in `~/Desktop/FIFAWC2026/FIFAWC2026_Model.xlsx`:
-
-```bash
-python3 push_to_supabase.py
-```
-
-The live site updates within ~1 minute. ✅
-
----
-
-## File structure
-
-**Your machine:**
-
-```
-~/Desktop/FIFAWC2026/
-├── FIFAWC2026_Model.xlsx              ← Official results (edit this)
-├── FIFAWC2026_Leaderboard.html        ← Generated locally (optional)
-└── Pronostici/
-    ├── FIFAWC2026_RaoR.xlsx           ← Participant 1
-    ├── FIFAWC2026_Antonini.xlsx       ← Participant 2
-    └── ...more participants...
-```
-
-**This repo:**
+## File Structure
 
 ```
 fanta-mondiale/
-├── push_to_supabase.py                ← Run this after Excel updates
-├── generate_leaderboard.py            ← Scoring logic (imported)
-├── index.html                         ← Vercel frontend (deployed)
-├── supabase/migrations/               ← Database schema
-├── vercel.json                        ← Deployment config
-├── .env.example                       ← Credentials template
-└── README.md                          ← You are here
+├── .github/workflows/
+│   └── auto_update.yml       ← GitHub Actions scheduler & permissions setup
+├── data/
+│   ├── FIFAWC2026_Model.xlsx  ← Official results (synchronized with cloud)
+│   └── Pronostici/
+│       └── *.xlsx             ← Participant prediction sheets (committed once)
+├── fetch_results.py          ← Main API result fetcher & spreadsheet synchronizer
+├── generate_leaderboard.py    ← Core scoring algorithm & rules engine
+├── push_to_supabase.py        ← Leaderboard re-computation & database sync
+├── index.html                 ← Responsive HTML/CSS/JS frontend dashboard
+├── supabase/
+│   └── migrations/            ← Database SQL schema migrations
+├── vercel.json                ← Vercel deployment configuration
+├── .gitignore                 ← Git exclusion patterns (ignores local env/Desktop config)
+├── .env.example               ← Environment credentials template
+└── README.md                  ← Unified guide (you are here)
 ```
+
+---
+
+## Local Setup & Quick Start
+
+### 1. Install Dependencies
+Make sure you have Python 3 installed. Then, install the required packages:
+```bash
+pip install openpyxl python-dotenv requests
+```
+
+### 2. Set Up Local Credentials (One Time)
+Create a `.env` file in the root of the repository:
+```env
+SUPABASE_URL="https://ecqieaselexhcqkwbtcy.supabase.co"
+SUPABASE_SERVICE_KEY="your_supabase_service_role_key"
+FOOTBALL_DATA_API_KEY="your_football_data_org_api_key"
+```
+* **SUPABASE_SERVICE_KEY**: Obtain from your Supabase Dashboard → Settings → API → `service_role secret`.
+* **FOOTBALL_DATA_API_KEY**: Register for a free API key at [football-data.org](https://www.football-data.org/client/register) to fetch results.
+
+### 3. Run Manually
+* **Update results and sync with Supabase:**
+  ```bash
+  python3 fetch_results.py
+  ```
+  Options:
+  * `--dry-run`: Show matches that would be updated in Excel without modifying files.
+  * `--no-push`: Save results to Excel but skip re-scoring and uploading to Supabase.
+  * `--ticker-only`: Only regenerate the top ticker string with recent scores in Supabase.
+
+* **Recompute and push leaderboard only:**
+  ```bash
+  python3 push_to_supabase.py
+  ```
+
+---
+
+## Cloud Auto-Update (GitHub Actions)
+
+The repository includes a GitHub Actions workflow that automatically keeps the leaderboard updated without needing your computer active.
+
+### 1. Synchronization Flow
+1. **GitHub Actions** runs every **5 minutes** during tournament hours (18:00 to 08:00 CEST / 16:00 to 06:00 UTC).
+2. It calls the `football-data.org` API to fetch completed and live match results.
+3. If new matches are finished, it updates `data/FIFAWC2026_Model.xlsx` in the cloud workspace.
+4. The workflow commits and pushes the updated model file back to the repository.
+5. Finally, it triggers `push_to_supabase.py` to recompute scores for all participants and sync them to the live site.
+
+### 2. Manual Trigger
+You can force an immediate update at any time (e.g. right after a match ends):
+1. Go to your GitHub repository in your browser or the **GitHub mobile app**.
+2. Tap the **Actions** tab.
+3. Select the **"Auto-update Leaderboard"** workflow.
+4. Tap **Run workflow** -> **Run workflow**.
 
 ---
 
 ## Scoring Rules
 
-Each participant is scored on:
+Each participant's points are automatically calculated based on the following breakdown:
 
-- **Correct Score**: +5 per correct goal (up to +10 per match)
-- **Correct Outcome**: +10 per correct 1/X/2 result
-- **Group Positions**: +10 per correct final-table slot (once group completes)
-- **Knockouts**: 10–90 pts depending on round accuracy
-- **Final Standings**: 20–100 pts for correct top-4
-- **Top Scorer**: 80 pts for player + 20 pts for goal count
+* **Correct Score**: +5 points per correct team goal count (up to +10 points per match).
+* **Correct Outcome**: +10 points for the correct match outcome (1/X/2).
+* **Group Positions**: +10 points per correct final-table position slot per team (calculated once groups finish).
+* **Knockouts**: 10–90 points depending on the round accuracy.
+* **Final Standings**: 20–100 points for correct top-4 team predictions.
+* **Top Scorer**: 80 points for the correct player + 20 points for the correct goal count.
 
-Edit the `POINTS` dictionary in `generate_leaderboard.py` to change scoring.
+Scoring weights can be modified in the `POINTS` dictionary inside [generate_leaderboard.py](file:///Users/riccardorao/fanta-mondiale/fanta-mondiale/generate_leaderboard.py).
 
 ---
 
 ## Troubleshooting
 
-| Error | Fix |
+| Error / Warning | Cause & Resolution |
 | --- | --- |
-| `ModuleNotFoundError: No module named 'openpyxl'` | `pip install openpyxl` |
-| `ERROR: SUPABASE_SERVICE_KEY is not set` | Set the env var (see Quick Start step 2) |
-| `File not found: ~/Desktop/FIFAWC2026/...` | Check Excel file locations |
-| `Supabase HTTP 401` | Service key is invalid; get a fresh one from the dashboard |
-| `No such file or directory: /sessions/...` | Update `BASE` path in `generate_leaderboard.py` |
-
----
-
-## Deployment
-
-The repo is configured for **Vercel Static Deployment**:
-
-- **index.html** is served as your leaderboard  
-- Reads live Supabase data via REST API  
-- Redeploys automatically when you push to `main`
-
-No build step needed. The leaderboard updates when your Python script writes to Supabase.
-
----
-
-## Database Setup
-
-Supabase tables created by migrations:
-
-1. **`xl_leaderboard`** — participant scores + rankings
-2. **`xl_leaderboard_meta`** — tournament metadata (matches played, groups complete, etc.)
-
-Both tables have **public read RLS** (anyone can view).
-
-Apply migrations in Supabase SQL Editor:
-```bash
-supabase db push  # or run each .sql file in order
-```
-
----
-
-## Editing Scoring
-
-Edit `POINTS` dictionary in `generate_leaderboard.py`:
-
-```python
-POINTS = {
-    "score_per_team": 5,      # points per correct goal
-    "outcome": 10,            # points for correct 1/X/2
-    "position": 10,           # points per correct group slot
-    "r32_correct": 10,        # knockout accuracy
-    "r32_wrong": 5,           # etc...
-    ...
-}
-```
-
-Then re-run:
-
-```bash
-python3 push_to_supabase.py
-```
+| `[WARN] Unknown team: 'X' or 'Y' — add to FOOTBALLDATA_TEAM_MAP` | A team name in the API doesn't match the Excel spelling. Open [fetch_results.py](file:///Users/riccardorao/fanta-mondiale/fanta-mondiale/fetch_results.py) and update the `FOOTBALLDATA_TEAM_MAP` dictionary. |
+| `ERROR: SUPABASE_SERVICE_KEY is not set` | Ensure the environment variable is set in your shell or inside `.env`. |
+| `remote: Permission to ... denied to github-actions[bot]` | Ensure workflow permissions are set to `write` (this is configured in [.github/workflows/auto_update.yml](file:///Users/riccardorao/fanta-mondiale/fanta-mondiale/.github/workflows/auto_update.yml)). |
+| `ModuleNotFoundError: No module named 'openpyxl'` | Run `pip install openpyxl python-dotenv requests` to install Python dependencies. |
 
 ---
 
 ## Technical Stack
 
-| Component | Technology |
-| --- | --- |
-| Data source | Excel (openpyxl) |
-| Scoring engine | Python 3 |
-| Backend | Supabase (PostgreSQL) |
-| Frontend | Static HTML + Fetch API |
-| Hosting | Vercel |
-
----
-
-## Contact & Support
-
-For issues with the scripts or leaderboard, check that:
-
-1. Excel files are in `~/Desktop/FIFAWC2026/` with correct names
-2. Supabase credentials are set in your shell environment
-3. Python dependencies are installed (`pip install openpyxl`)
-4. Supabase migrations have been applied
+* **Scoring Engine**: Python 3 (`openpyxl`, `requests`)
+* **Database**: Supabase (PostgreSQL tables: `xl_leaderboard`, `xl_leaderboard_meta`)
+* **Frontend**: Vanilla HTML5 + Modern CSS + Fetch API
+* **Hosting**: Vercel (static deployment with automatic API sync)
