@@ -225,8 +225,8 @@ def main():
 def render_html(rows, meta):
     data_json = json.dumps(rows)
     meta_json = json.dumps(meta)
-    cats = ["Correct Score", "Correct Outcome", "Group Positions",
-            "Knockouts", "Final Standings", "Top Scorer"]
+    cats = ["group scores", "group outcomes", "group standings",
+            "knockout phase", "final standings", "top scorer"]
     cats_json = json.dumps(cats)
     return TEMPLATE.replace("__DATA__", data_json)\
                    .replace("__META__", meta_json)\
@@ -308,8 +308,8 @@ TEMPLATE = r"""<!DOCTYPE html>
     background:rgba(5,0,20,0.65);
     transform:translateY(20px);opacity:0;animation:rise .6s forwards}
   .pod .medal{font-size:38px;margin-bottom:6px}
-  .pod .pname{font-weight:400;font-size:16px;margin:6px 0;color:#fff}
-  .pod .ppts{font-family:'Press Start 2P',monospace;font-size:26px;letter-spacing:1px;font-weight:900;margin:8px 0;color:var(--neon-green);text-shadow:0 0 10px var(--neon-green)}
+  .pod .pname{font-weight:400;font-size:16px;margin:6px 0;color:#fff;text-transform:uppercase}
+  .pod .ppts{font-family:'Press Start 2P',monospace;font-size:26px;letter-spacing:1px;font-weight:900;margin:8px 0;color:var(--neon-green)}
   .pod .plabel{display:none}
   .pod-rank{font-family:'Press Start 2P',monospace;font-size:13px;margin-top:4px;letter-spacing:1px}
   @keyframes rise{to{transform:translateY(0);opacity:1}}
@@ -331,10 +331,10 @@ TEMPLATE = r"""<!DOCTYPE html>
   .row:hover .ball{opacity:1;animation:bob .5s ease-in-out infinite alternate}
   @keyframes bob{from{transform:translateY(0) rotate(0deg)}to{transform:translateY(-3px) rotate(20deg)}}
   .rank{font-family:'Press Start 2P',monospace;font-size:12px;color:var(--neon-green);text-align:center;text-shadow:0 0 6px var(--neon-green)}
-  .who{font-weight:400;font-size:17px;color:#fff}
+  .who{font-weight:400;font-size:17px;color:#fff;text-transform:uppercase}
   .barwrap{height:12px;background:#000;border:1px solid var(--neon-cyan);margin-top:7px;overflow:hidden;width:min(440px,44vw)}
   .bar{height:100%;width:0;transition:width 1.2s cubic-bezier(.2,.8,.2,1);box-shadow:0 0 10px currentColor}
-  .pts{font-family:'Press Start 2P',monospace;font-size:14px;font-weight:900;text-align:right;color:var(--neon-yellow);text-shadow:0 0 8px var(--neon-yellow)}
+  .pts{font-family:'Press Start 2P',monospace;font-size:14px;font-weight:900;text-align:right;color:var(--neon-yellow)}
   .chev{color:var(--neon-pink);transition:transform .25s;text-align:center;font-weight:900;font-size:12px;text-shadow:0 0 6px var(--neon-pink)}
   .row.open .chev{transform:rotate(180deg)}
   .detail{max-height:0;overflow:hidden;transition:max-height .35s ease}
@@ -379,6 +379,8 @@ TEMPLATE = r"""<!DOCTYPE html>
 const DATA = __DATA__;
 const META = __META__;
 const CATS = __CATS__;
+const CAT_KEYS = ["Correct Score", "Correct Outcome", "Group Positions",
+                  "Knockouts", "Final Standings", "Top Scorer"];
 const maxT = Math.max(1, META.max_possible || 1);
 const RANK_LABEL = ['1ST','2ND','3RD'];
 
@@ -407,8 +409,8 @@ function build(list){
   list.forEach((d,idx)=>{
     const row=document.createElement('div');
     row.className='row'; row.style.animationDelay=(idx*0.02)+'s';
-    const catsHtml = CATS.map(c=>{
-      const v=(d.bd&&d.bd[c])||0;
+    const catsHtml = CATS.map((c,i)=>{
+      const v=(d.bd&&d.bd[CAT_KEYS[i]])||0;
       return `<div class="cat ${v===0?'zero':''}"><div class="cl">${c}</div>
               <div class="cv">${v}</div></div>`;
     }).join('');
