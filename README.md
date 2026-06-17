@@ -1,153 +1,197 @@
-# Fanta Mondiale ⚽
+# Fantamondiale — FIFA World Cup 2026 Leaderboard
 
-A World Cup bracket prediction game ("Code World Cup Bracket" / *fantamondiale*) where users
-predict knockout-stage results, lock in their picks before kick-off, and climb a live leaderboard.
+Live leaderboard powered by **Excel + Python + Supabase + Vercel**.
 
-**Live:** https://fantaid.vercel.app
-
----
-
-## Tech Stack
-
-| Layer | Technology |
-| --- | --- |
-| Framework | [Next.js 14](https://nextjs.org/) (App Router) |
-| Language | TypeScript |
-| Styling | Tailwind CSS + `clsx` + `tailwind-merge` |
-| Icons | `lucide-react` |
-| Notifications | `react-hot-toast` |
-| Dates | `date-fns` |
-| Backend / Auth / DB | [Supabase](https://supabase.com/) (Postgres + Auth + RLS) |
-| Hosting | [Vercel](https://vercel.com/) |
+**Live URL:** https://fantaid.vercel.app
 
 ---
 
-## Prerequisites
+## How it works
 
-- **Node.js 20.9+** (LTS recommended)
-- **npm** (the repo ships a `package-lock.json`)
-- A **Supabase** account and project
-- A **Vercel** account (for deployment)
-- *(optional but recommended)* the [Supabase CLI](https://supabase.com/docs/guides/cli)
-  for running migrations locally
-
----
-
-## Getting Started (Local Development)
-
-### 1. Clone and install
-
-```bash
-git clone https://github.com/riccardorao/fanta-mondiale.git
-cd fanta-mondiale
-npm install
+```
+┌──────────────────────┐
+│  Excel Files         │  ← Your source of truth
+│  (Desktop)           │     • Official results in Model.xlsx
+│  FIFAWC2026/         │     • Participant predictions in Pronostici/
+└──────────────────────┘
+          ↓ python3 push_to_supabase.py
+┌──────────────────────┐
+│  Supabase            │  ← Data tables
+│  • xl_leaderboard    │     (scores, rankings)
+│  • xl_leaderboard_   │
+│    meta              │
+└──────────────────────┘
+          ↓ REST API
+┌──────────────────────┐
+│  Vercel              │  ← Live website
+│  index.html          │     Reads from Supabase
+└──────────────────────┘
 ```
 
-### 2. Configure environment variables
+---
 
-Copy the example file and fill in your Supabase credentials:
+## Quick Start
 
-```bash
-cp .env.example .env.local
-```
-
-| Variable | Where to find it | Exposed to browser? |
-| --- | --- | --- |
-| `NEXT_PUBLIC_SUPABASE_URL` | Supabase → Project Settings → API → Project URL | ✅ Yes |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase → Project Settings → API → `anon` `public` key | ✅ Yes |
-| `SUPABASE_SERVICE_ROLE_KEY` | Supabase → Project Settings → API → `service_role` key | ❌ **Never** |
-
-> ⚠️ **Security note**
-> The `service_role` key bypasses Row Level Security. It must **only** be used in
-> server-side code (Route Handlers, Server Actions, server components) and must **never**
-> be prefixed with `NEXT_PUBLIC_`. Keep `.env.local` out of version control (it is already
-> covered by `.gitignore`).
-
-### 3. Set up the database
-
-If you use the Supabase CLI:
+### 1. Install dependencies
 
 ```bash
-supabase link --project-ref <your-project-ref>
-supabase db push          # applies the migrations in /supabase
+pip install openpyxl
 ```
 
-Otherwise, open the Supabase SQL Editor and run the migration files found in the
-[`/supabase`](./supabase) directory in order.
+### 2. Set Supabase credentials (one time)
 
-### 4. Run the dev server
+Get your **Service Role Key** from Supabase Dashboard → Settings → API → `service_role secret`.
+
+Then in your shell (macOS/Linux/WSL):
 
 ```bash
-npm run dev
+export SUPABASE_URL="https://ecqieaselexhcqkwbtcy.supabase.co"
+export SUPABASE_SERVICE_KEY="sb_secret_..."
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
+On **Windows (PowerShell)**:
+
+```powershell
+$env:SUPABASE_URL="https://ecqieaselexhcqkwbtcy.supabase.co"
+$env:SUPABASE_SERVICE_KEY="sb_secret_..."
+```
+
+### 3. Update the leaderboard
+
+After editing match results in `~/Desktop/FIFAWC2026/FIFAWC2026_Model.xlsx`:
+
+```bash
+python3 push_to_supabase.py
+```
+
+The live site updates within ~1 minute. ✅
 
 ---
 
-## Available Scripts
+## File structure
 
-| Command | Description |
-| --- | --- |
-| `npm run dev` | Start the local development server |
-| `npm run build` | Create an optimised production build |
-| `npm run start` | Run the production build locally |
-| `npm run lint` | Run ESLint (`eslint-config-next`) |
+**Your machine:**
 
----
+```
+~/Desktop/FIFAWC2026/
+├── FIFAWC2026_Model.xlsx              ← Official results (edit this)
+├── FIFAWC2026_Leaderboard.html        ← Generated locally (optional)
+└── Pronostici/
+    ├── FIFAWC2026_RaoR.xlsx           ← Participant 1
+    ├── FIFAWC2026_Antonini.xlsx       ← Participant 2
+    └── ...more participants...
+```
 
-## Project Structure
+**This repo:**
 
 ```
 fanta-mondiale/
-├── .github/            # GitHub workflows / config
-├── src/                # Application source (App Router, components, lib)
-├── supabase/           # SQL migrations & schema (PLpgSQL)
-├── .env.example        # Template for required environment variables
-├── next.config.mjs     # Next.js configuration
-├── postcss.config.mjs  # PostCSS / Tailwind pipeline
-├── tailwind.config.ts  # Tailwind design tokens
-├── tsconfig.json       # TypeScript configuration
-└── vercel.json         # Vercel build/deploy configuration
+├── push_to_supabase.py                ← Run this after Excel updates
+├── generate_leaderboard.py            ← Scoring logic (imported)
+├── index.html                         ← Vercel frontend (deployed)
+├── supabase/migrations/               ← Database schema
+├── vercel.json                        ← Deployment config
+├── .env.example                       ← Credentials template
+└── README.md                          ← You are here
 ```
 
 ---
 
-## Deployment (Vercel)
+## Scoring Rules
 
-1. Push your branch to GitHub.
-2. In Vercel, **Import Project** and select the repository.
-3. Framework preset is auto-detected as **Next.js** (no override needed).
-4. Add the three environment variables above under
-   **Settings → Environment Variables** (set them for *Production*, *Preview*, and
-   *Development* as appropriate).
-5. Deploy. Every push to `main` triggers a production deploy; every PR gets a preview URL.
+Each participant is scored on:
 
-> Make sure the Supabase project's **Auth → URL Configuration** lists your Vercel
-> production domain and the `*.vercel.app` preview pattern as allowed redirect URLs,
-> otherwise auth callbacks will fail in preview/production.
+- **Correct Score**: +5 per correct goal (up to +10 per match)
+- **Correct Outcome**: +10 per correct 1/X/2 result
+- **Group Positions**: +10 per correct final-table slot (once group completes)
+- **Knockouts**: 10–90 pts depending on round accuracy
+- **Final Standings**: 20–100 pts for correct top-4
+- **Top Scorer**: 80 pts for player + 20 pts for goal count
 
----
-
-## Database & Security
-
-- Row Level Security (RLS) should be **enabled on every table** that holds user data.
-- Predictions should only be writable by their owner and only **before the relevant
-  match kick-off** (enforce with an RLS policy and/or a database `CHECK` / trigger, not
-  just in the UI).
-- The leaderboard is best served from a Postgres **view** or a scheduled function so
-  scoring logic lives in one place.
+Edit the `POINTS` dictionary in `generate_leaderboard.py` to change scoring.
 
 ---
 
-## Contributing
+## Troubleshooting
 
-Issues and pull requests are welcome. Please run `npm run lint` and `npm run build`
-before opening a PR.
+| Error | Fix |
+| --- | --- |
+| `ModuleNotFoundError: No module named 'openpyxl'` | `pip install openpyxl` |
+| `ERROR: SUPABASE_SERVICE_KEY is not set` | Set the env var (see Quick Start step 2) |
+| `File not found: ~/Desktop/FIFAWC2026/...` | Check Excel file locations |
+| `Supabase HTTP 401` | Service key is invalid; get a fresh one from the dashboard |
+| `No such file or directory: /sessions/...` | Update `BASE` path in `generate_leaderboard.py` |
 
 ---
 
-## License
+## Deployment
 
-_No license file is currently present._ Add a `LICENSE` (e.g. MIT) if you intend the
-project to be reused, or state "All rights reserved" if not.
+The repo is configured for **Vercel Static Deployment**:
+
+- **index.html** is served as your leaderboard  
+- Reads live Supabase data via REST API  
+- Redeploys automatically when you push to `main`
+
+No build step needed. The leaderboard updates when your Python script writes to Supabase.
+
+---
+
+## Database Setup
+
+Supabase tables created by migrations:
+
+1. **`xl_leaderboard`** — participant scores + rankings
+2. **`xl_leaderboard_meta`** — tournament metadata (matches played, groups complete, etc.)
+
+Both tables have **public read RLS** (anyone can view).
+
+Apply migrations in Supabase SQL Editor:
+```bash
+supabase db push  # or run each .sql file in order
+```
+
+---
+
+## Editing Scoring
+
+Edit `POINTS` dictionary in `generate_leaderboard.py`:
+
+```python
+POINTS = {
+    "score_per_team": 5,      # points per correct goal
+    "outcome": 10,            # points for correct 1/X/2
+    "position": 10,           # points per correct group slot
+    "r32_correct": 10,        # knockout accuracy
+    "r32_wrong": 5,           # etc...
+    ...
+}
+```
+
+Then re-run:
+
+```bash
+python3 push_to_supabase.py
+```
+
+---
+
+## Technical Stack
+
+| Component | Technology |
+| --- | --- |
+| Data source | Excel (openpyxl) |
+| Scoring engine | Python 3 |
+| Backend | Supabase (PostgreSQL) |
+| Frontend | Static HTML + Fetch API |
+| Hosting | Vercel |
+
+---
+
+## Contact & Support
+
+For issues with the scripts or leaderboard, check that:
+
+1. Excel files are in `~/Desktop/FIFAWC2026/` with correct names
+2. Supabase credentials are set in your shell environment
+3. Python dependencies are installed (`pip install openpyxl`)
+4. Supabase migrations have been applied

@@ -22,7 +22,9 @@ import os, glob, json, datetime
 import openpyxl
 from openpyxl.utils import column_index_from_string as ci
 
-BASE = "/sessions/vigilant-determined-mendel/mnt/FIFAWC2026"
+# Paths — relative to this script's directory (so you can run from anywhere)
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+BASE = os.path.expanduser("~/Desktop/FIFAWC2026")  # or set to SCRIPT_DIR for repo-based
 MODEL = os.path.join(BASE, "FIFAWC2026_Model.xlsx")
 PRON = os.path.join(BASE, "Pronostici")
 OUT = os.path.join(BASE, "FIFAWC2026_Leaderboard.html")
