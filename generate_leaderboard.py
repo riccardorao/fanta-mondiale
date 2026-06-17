@@ -240,110 +240,74 @@ TEMPLATE = r"""<!DOCTYPE html>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>FIFA WC 2026 · Fantamondiale Leaderboard</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rubik:wght@400;600;800;900&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
   :root{
-    --field:#2d8659;
-    --txt:#0f2a1a; --dim:#516a5a; --line:#0f2a1a;
-    --goldDark:#9c7a00; --silverDark:#5b6b63; --bronzeDark:#7a4a18;
+    --field:#00aa00;
+    --txt:#00ff00; --line:#00ff00; --shadow:#000;
   }
   *{box-sizing:border-box;margin:0;padding:0}
   body{
-    font-family:'Rubik',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
-    background:
-      repeating-linear-gradient(0deg, white 0, white 2px, transparent 2px, transparent 40px),
-      repeating-linear-gradient(90deg, white 0, white 2px, transparent 2px, transparent 60px),
-      var(--field);
-    color:var(--txt); min-height:100vh; padding:32px 16px 80px;
-    -webkit-font-smoothing:antialiased;
+    font-family:'Press Start 2P',monospace;
+    background:var(--field);
+    color:var(--txt);min-height:100vh;padding:20px 16px 60px;
+    text-shadow:2px 2px 0 var(--shadow);
   }
-  .wrap{max-width:1180px;margin:0 auto}
-  header{text-align:center;margin-bottom:36px;position:relative}
-  .kicker{font-weight:800;letter-spacing:.32em;font-size:12px;color:#0a4d2f;
-    text-transform:uppercase;margin-bottom:14px}
-  h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(32px,7vw,56px);line-height:1.2;
-    color:var(--txt);letter-spacing:2px;font-weight:900}
+  .wrap{max-width:1000px;margin:0 auto}
+  header{text-align:center;margin-bottom:30px;position:relative}
+  h1{font-size:clamp(24px,8vw,48px);line-height:1.1;
+    color:var(--txt);letter-spacing:2px;font-weight:900;text-shadow:3px 3px 0 var(--shadow)}
   .sub{display:none}
-  .stats{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:22px}
-  .pill{background:#fff;border:3px solid var(--line);border-radius:10px;
-    padding:9px 18px;font-size:13px;color:var(--dim);font-weight:700;box-shadow:3px 3px 0 var(--line)}
-  .pill b{color:#0a4d2f}
-
-  /* podium */
-  .podium{display:flex;gap:18px;justify-content:center;align-items:flex-end;
-    margin:40px 0 30px;flex-wrap:wrap}
-  .pod{flex:1;min-width:180px;max-width:280px;border-radius:14px;padding:26px 20px;
-    text-align:center;position:relative;border:3px solid var(--line);
-    background:#fff;box-shadow:5px 5px 0 var(--line);
-    transform:translateY(24px);opacity:0;animation:rise .7s forwards}
-  .pod .medal{font-size:40px;margin-bottom:6px}
-  .pod .pname{font-weight:800;font-size:18px;margin:6px 0;color:var(--txt)}
-  .pod .ppts{font-family:'Bebas Neue',sans-serif;font-size:36px;letter-spacing:1px;font-weight:900}
+  .stats{display:none}
+  .podium{display:flex;gap:20px;justify-content:center;align-items:flex-end;margin:30px 0 30px;flex-wrap:wrap}
+  .pod{flex:1;min-width:160px;max-width:200px;padding:16px 12px;text-align:center;
+    border:4px solid var(--line);background:var(--field);
+    transform:translateY(20px);opacity:0;animation:rise .6s forwards}
+  .pod .medal{font-size:36px;margin-bottom:4px}
+  .pod .pname{font-weight:900;font-size:10px;margin:4px 0;color:var(--txt);line-height:1.2}
+  .pod .ppts{font-size:28px;letter-spacing:1px;font-weight:900;margin:6px 0}
   .pod .plabel{display:none}
-  .pod.gold{background:linear-gradient(180deg,#fff6c7,#fff);border-color:var(--goldDark);
-    box-shadow:5px 5px 0 var(--goldDark);padding-top:34px}
-  .pod.gold .ppts{color:var(--goldDark)} .pod.silver .ppts{color:var(--silverDark)}
-  .pod.bronze .ppts{color:var(--bronzeDark)}
-  .pod.silver{background:linear-gradient(180deg,#eef2ef,#fff);border-color:var(--silverDark);
-    box-shadow:5px 5px 0 var(--silverDark)}
-  .pod.bronze{background:linear-gradient(180deg,#ffe3c2,#fff);border-color:var(--bronzeDark);
-    box-shadow:5px 5px 0 var(--bronzeDark)}
-  .pod.gold{order:2} .pod.silver{order:1} .pod.bronze{order:3}
-  .pod:nth-child(1){animation-delay:.15s}.pod:nth-child(2){animation-delay:.05s}
-  .pod:nth-child(3){animation-delay:.25s}
   @keyframes rise{to{transform:translateY(0);opacity:1}}
-  @media (max-width:699px){
-    .podium{flex-direction:column;align-items:stretch}
-    .pod{max-width:100%;padding-top:26px}
-    .pod.gold,.pod.silver,.pod.bronze{order:0}
-  }
-
-  /* list */
-  .board{display:flex;flex-direction:column;gap:12px;margin-top:10px}
-  .row{background:#fff;border:3px solid var(--line);border-radius:12px;
-    overflow:hidden;box-shadow:4px 4px 0 var(--line);
-    opacity:0;transform:translateY(10px);animation:fade .5s forwards}
+  .board{display:flex;flex-direction:column;gap:8px;margin-top:8px}
+  .row{background:var(--field);border:3px solid var(--line);overflow:hidden;
+    opacity:0;transform:translateY(8px);animation:fade .5s forwards}
   @keyframes fade{to{opacity:1;transform:none}}
-  .rmain{display:grid;grid-template-columns:56px 1fr auto 40px;align-items:center;
-    gap:14px;padding:16px 18px;cursor:pointer;transition:background .15s}
-  .rmain:hover{background:#fbf8e8}
-  .rank{font-family:'Bebas Neue',sans-serif;font-size:20px;font-weight:900;color:var(--dim);text-align:center}
-  .top1 .rank{color:var(--goldDark)} .top2 .rank{color:var(--silverDark)} .top3 .rank{color:var(--bronzeDark)}
-  .who{font-weight:800;font-size:17px;color:var(--txt)}
-  .barwrap{height:10px;background:#eef3ec;border:2px solid var(--line);border-radius:5px;margin-top:8px;overflow:hidden;width:min(480px,46vw)}
-  .bar{height:100%;background:linear-gradient(90deg,#dc2626 0%,#f59e0b 50%,#16a34a 100%);
-    width:0;transition:width 1.1s cubic-bezier(.2,.8,.2,1)}
-  .pts{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:.5px;font-weight:900;text-align:right;color:#0a4d2f}
-  .chev{color:var(--dim);transition:transform .25s;text-align:center;font-weight:900}
+  .rmain{display:grid;grid-template-columns:40px 1fr auto 32px;align-items:center;gap:10px;padding:12px 14px;cursor:pointer}
+  .rmain:hover{filter:brightness(1.2)}
+  .rank{font-size:14px;font-weight:900;color:var(--txt);text-align:center;text-shadow:1px 1px 0 var(--shadow)}
+  .who{font-weight:900;font-size:11px;color:var(--txt);text-shadow:1px 1px 0 var(--shadow)}
+  .barwrap{height:12px;background:var(--shadow);border:2px solid var(--line);margin-top:6px;overflow:hidden;width:min(380px,42vw)}
+  .bar{height:100%;width:0;transition:width 1.1s cubic-bezier(.2,.8,.2,1)}
+  .pts{font-size:14px;font-weight:900;text-align:right;color:var(--txt);text-shadow:1px 1px 0 var(--shadow)}
+  .chev{color:var(--txt);transition:transform .25s;text-align:center;font-weight:900;font-size:10px}
   .row.open .chev{transform:rotate(180deg)}
-  .detail{max-height:0;overflow:hidden;transition:max-height .35s ease;
-    border-top:0 solid transparent}
-  .row.open .detail{max-height:420px;border-top:3px solid var(--line)}
-  .cats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;padding:18px;background:#fbf8e8}
+  .detail{max-height:0;overflow:hidden;transition:max-height .35s ease}
+  .row.open .detail{max-height:380px}
+  .cats{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;padding:14px;background:var(--field);border-top:3px solid var(--line)}
   @media (min-width:700px){
     .cats{grid-template-columns:repeat(6,1fr)}
   }
-  .cat{background:#fff;border:2px solid var(--line);border-radius:8px;padding:12px}
-  .cat .cl{font-size:10.5px;color:var(--dim);text-transform:uppercase;letter-spacing:.06em;font-weight:700}
-  .cat .cv{font-family:'Bebas Neue',sans-serif;font-size:20px;margin-top:6px;color:#0a4d2f;letter-spacing:.5px}
-  .cat.zero{opacity:.45}
-  footer{text-align:center;color:var(--dim);font-size:12.5px;margin-top:44px;line-height:1.7;font-weight:600}
-  .search{display:block;margin:28px auto 6px;width:min(600px,90%);background:#fff;border:3px solid var(--line);
-    color:var(--txt);border-radius:10px;padding:14px 18px;font-size:16px;outline:none;font-weight:600;box-shadow:3px 3px 0 var(--line)}
-  .search::placeholder{color:#999}
-  .search:focus{border-color:#0a4d2f}
+  .cat{background:var(--field);border:2px solid var(--line);padding:10px;text-align:center}
+  .cat .cl{font-size:7px;color:var(--txt);text-transform:uppercase;letter-spacing:.04em;font-weight:700;text-shadow:.5px .5px 0 var(--shadow)}
+  .cat .cv{font-size:14px;margin-top:4px;color:var(--txt);font-weight:900;text-shadow:1px 1px 0 var(--shadow)}
+  .cat.zero{opacity:.4}
+  .ctx{padding:8px 14px;font-size:8px;color:var(--txt);background:var(--field);border-top:2px solid var(--line);text-shadow:.5px .5px 0 var(--shadow)}
+  footer{text-align:center;color:var(--txt);font-size:7px;margin-top:30px;line-height:1.5;text-shadow:.5px .5px 0 var(--shadow)}
+  .search{display:none}
+  @media (max-width:699px){
+    .podium{flex-direction:column;align-items:stretch;gap:14px}
+    .pod{max-width:100%}
+  }
 </style>
 </head>
 <body>
 <div class="wrap">
   <header>
-    <div class="kicker">Fantamondiale · World Cup 2026</div>
-    <h1>The Leaderboard</h1>
+    <h1>LEADERBOARD</h1>
     <div class="sub" id="sub"></div>
     <div class="stats" id="stats"></div>
   </header>
 
   <div class="podium" id="podium"></div>
-  <input class="search" id="search" placeholder="🔍 Search"/>
   <div class="board" id="board"></div>
 
   <footer id="foot"></footer>
@@ -355,23 +319,19 @@ const META = __META__;
 const CATS = __CATS__;
 const maxT = Math.max(1, META.max_possible || 1);
 
-// header meta
-document.getElementById('stats').innerHTML =
-  `<span class="pill">Updated <b>${META.generated}</b></span>`;
+// footer
 document.getElementById('foot').innerHTML =
-  `Auto-generated from the Pronostici folder · Truth from FIFAWC2026_Model.xlsx<br>`
-  + `Group scoring live · knockouts & standings activate as results are entered`;
+  `LIVE FROM SUPABASE · UPDATED ${META.generated}`;
 
 // podium (top 3)
 const podEl = document.getElementById('podium');
-const medal = ['🥇','🥈','🥉']; const cls=['gold','silver','bronze'];
+const medal = ['🥇','🥈','🥉'];
 DATA.slice(0,3).forEach((d,i)=>{
   const el=document.createElement('div');
-  el.className='pod '+cls[i];
+  el.className='pod';
   el.innerHTML=`<div class="medal">${medal[i]}</div>
     <div class="pname">${d.name}</div>
-    <div class="ppts">${d.total}</div>
-    <div class="plabel">points</div>`;
+    <div class="ppts">${d.total}</div>`;
   podEl.appendChild(el);
 });
 
@@ -379,32 +339,29 @@ DATA.slice(0,3).forEach((d,i)=>{
 const board=document.getElementById('board');
 function build(list){
   board.innerHTML='';
+  const maxScore = Math.max(...list.map(x => x.total || 0), 1);
   list.forEach((d,idx)=>{
-    const topcls = d.rank<=3 ? ('top'+d.rank) : '';
     const row=document.createElement('div');
-    row.className='row '+topcls; row.style.animationDelay=(idx*0.03)+'s';
+    row.className='row'; row.style.animationDelay=(idx*0.02)+'s';
     const catsHtml = CATS.map(c=>{
       const v=(d.bd&&d.bd[c])||0;
       return `<div class="cat ${v===0?'zero':''}"><div class="cl">${c}</div>
               <div class="cv">${v}</div></div>`;
     }).join('');
+    const pctScore = d.total / maxScore;
+    const barColor = `hsl(${120 * pctScore}, 100%, 50%)`;
+    const pctN = Math.round(100*d.total/maxT);
     row.innerHTML=`
       <div class="rmain">
         <div class="rank">${d.rank}</div>
         <div><div class="who">${d.name}</div>
-          <div class="barwrap"><div class="bar" data-w="${Math.round(100*d.total/maxT)}"></div></div>
-        </div>
+          <div class="barwrap"><div class="bar" style="background:${barColor}" data-w="${pctN}"></div></div></div>
         <div class="pts">${d.total}</div>
-        <div class="chev">▾</div>
+        <div class="chev">V</div>
       </div>
       <div class="detail">
         <div class="cats">${catsHtml}</div>
-        <div style="padding:0 18px 18px;font-size:12px;color:var(--dim)">
-          ${d.total} of ${META.tournament_max} tournament points
-          (${(100*d.total/META.tournament_max).toFixed(1)}%) ·
-          ${d.total} of ${META.max_possible} available so far
-          (${Math.round(100*d.total/META.max_possible)}%)
-        </div>
+        <div class="ctx">${d.total}/${META.max_possible||0} PTS · ${pctN}%</div>
       </div>`;
     row.querySelector('.rmain').onclick=()=>row.classList.toggle('open');
     board.appendChild(row);
@@ -414,12 +371,6 @@ function build(list){
   });
 }
 build(DATA);
-
-// search
-document.getElementById('search').oninput=e=>{
-  const q=e.target.value.toLowerCase();
-  build(DATA.filter(d=>d.name.toLowerCase().includes(q)));
-};
 </script>
 </body>
 </html>"""
