@@ -62,7 +62,7 @@ FULL_NAMES = {
     "Martinoli": "Francesco Martinoli",
     "Mastrorilli": "Marco Mastrorilli",
     "Parravicini": "Pierpaolo Parravicini",
-    "Piergallini": "Eugenio Piergallini",             # first name unknown
+    "Piergallini": "Cecilia Trittoni",             # first name unknown
     "Polletta": "Matteo Polletta",
     "Priandi": "Bobby Priandi",
     "RaoR": "Riccardo Rao",
