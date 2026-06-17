@@ -53,9 +53,9 @@ jobs:
           FOOTBALL_DATA_API_KEY: ${{ secrets.FOOTBALL_DATA_API_KEY }}
         run: |
           if [ "${{ inputs.dry_run }}" = "true" ]; then
-            python3 fetch_results.py --dry-run
+            python3 scripts/fetch_results.py --dry-run
           else
-            python3 fetch_results.py
+            python3 scripts/fetch_results.py
           fi
 
       - name: Commit updated Excel back to repo (if changed)

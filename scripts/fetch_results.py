@@ -20,8 +20,13 @@ import os, sys, json, urllib.request, urllib.error, argparse, datetime, subproce
 # ─── Paths ────────────────────────────────────────────────────────────────────
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 BASE_DESKTOP = os.path.expanduser("~/Desktop/FIFAWC2026")
-BASE = BASE_DESKTOP if os.path.exists(BASE_DESKTOP) else SCRIPT_DIR
-MODEL = os.path.join(BASE, "FIFAWC2026_Model.xlsx")
+
+if os.path.exists(BASE_DESKTOP):
+    MODEL = os.path.join(BASE_DESKTOP, "FIFAWC2026_Model.xlsx")
+else:
+    # Fallback to the committed files in the repository's data/ folder
+    PROJECT_ROOT = os.path.dirname(SCRIPT_DIR)
+    MODEL = os.path.join(PROJECT_ROOT, "data", "FIFAWC2026_Model.xlsx")
 
 # ─── API endpoints ────────────────────────────────────────────────────────────
 FOOTBALLDATA_URL = "https://api.football-data.org/v4/competitions/WC/matches"

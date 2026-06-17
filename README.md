@@ -65,9 +65,10 @@ fanta-mondiale/
 │   ├── FIFAWC2026_Model.xlsx  ← Official results (synchronized with cloud)
 │   └── Pronostici/
 │       └── *.xlsx             ← Participant prediction sheets (committed once)
-├── fetch_results.py          ← Main API result fetcher & spreadsheet synchronizer
-├── generate_leaderboard.py    ← Core scoring algorithm & rules engine
-├── push_to_supabase.py        ← Leaderboard re-computation & database sync
+├── scripts/
+│   ├── fetch_results.py       ← Main API result fetcher & spreadsheet synchronizer
+│   ├── generate_leaderboard.py ← Core scoring algorithm & rules engine
+│   └── push_to_supabase.py    ← Leaderboard re-computation & database sync
 ├── index.html                 ← Responsive HTML/CSS/JS frontend dashboard
 ├── supabase/
 │   └── migrations/            ← Database SQL schema migrations
@@ -100,7 +101,7 @@ FOOTBALL_DATA_API_KEY="your_football_data_org_api_key"
 ### 3. Run Manually
 * **Update results and sync with Supabase:**
   ```bash
-  python3 fetch_results.py
+  python3 scripts/fetch_results.py
   ```
   Options:
   * `--dry-run`: Show matches that would be updated in Excel without modifying files.
@@ -109,7 +110,7 @@ FOOTBALL_DATA_API_KEY="your_football_data_org_api_key"
 
 * **Recompute and push leaderboard only:**
   ```bash
-  python3 push_to_supabase.py
+  python3 scripts/push_to_supabase.py
   ```
 
 ---
@@ -123,7 +124,7 @@ The repository includes a GitHub Actions workflow that automatically keeps the l
 2. It calls the `football-data.org` API to fetch completed and live match results.
 3. If new matches are finished, it updates `data/FIFAWC2026_Model.xlsx` in the cloud workspace.
 4. The workflow commits and pushes the updated model file back to the repository.
-5. Finally, it triggers `push_to_supabase.py` to recompute scores for all participants and sync them to the live site.
+5. Finally, it triggers `scripts/push_to_supabase.py` to recompute scores for all participants and sync them to the live site.
 
 ### 2. Manual Trigger
 You can force an immediate update at any time (e.g. right after a match ends):
@@ -145,7 +146,7 @@ Each participant's points are automatically calculated based on the following br
 * **Final Standings**: 20–100 points for correct top-4 team predictions.
 * **Top Scorer**: 80 points for the correct player + 20 points for the correct goal count.
 
-Scoring weights can be modified in the `POINTS` dictionary inside [generate_leaderboard.py](file:///Users/riccardorao/fanta-mondiale/fanta-mondiale/generate_leaderboard.py).
+Scoring weights can be modified in the `POINTS` dictionary inside [generate_leaderboard.py](file:///Users/riccardorao/fanta-mondiale/fanta-mondiale/scripts/generate_leaderboard.py).
 
 ---
 
@@ -153,7 +154,7 @@ Scoring weights can be modified in the `POINTS` dictionary inside [generate_lead
 
 | Error / Warning | Cause & Resolution |
 | --- | --- |
-| `[WARN] Unknown team: 'X' or 'Y' — add to FOOTBALLDATA_TEAM_MAP` | A team name in the API doesn't match the Excel spelling. Open [fetch_results.py](file:///Users/riccardorao/fanta-mondiale/fanta-mondiale/fetch_results.py) and update the `FOOTBALLDATA_TEAM_MAP` dictionary. |
+| `[WARN] Unknown team: 'X' or 'Y' — add to FOOTBALLDATA_TEAM_MAP` | A team name in the API doesn't match the Excel spelling. Open [fetch_results.py](file:///Users/riccardorao/fanta-mondiale/fanta-mondiale/scripts/fetch_results.py) and update the `FOOTBALLDATA_TEAM_MAP` dictionary. |
 | `ERROR: SUPABASE_SERVICE_KEY is not set` | Ensure the environment variable is set in your shell or inside `.env`. |
 | `remote: Permission to ... denied to github-actions[bot]` | Ensure workflow permissions are set to `write` (this is configured in [.github/workflows/auto_update.yml](file:///Users/riccardorao/fanta-mondiale/fanta-mondiale/.github/workflows/auto_update.yml)). |
 | `ModuleNotFoundError: No module named 'openpyxl'` | Run `pip install openpyxl python-dotenv requests` to install Python dependencies. |

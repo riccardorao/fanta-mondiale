@@ -27,10 +27,18 @@ from openpyxl.utils import column_index_from_string as ci
 # Paths — relative to this script's directory (so you can run from anywhere)
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 BASE_DESKTOP = os.path.expanduser("~/Desktop/FIFAWC2026")
-BASE = BASE_DESKTOP if os.path.exists(BASE_DESKTOP) else SCRIPT_DIR
-MODEL = os.path.join(BASE, "FIFAWC2026_Model.xlsx")
-PRON = os.path.join(BASE, "Pronostici")
-OUT = os.path.join(BASE, "FIFAWC2026_Leaderboard.html")
+
+if os.path.exists(BASE_DESKTOP):
+    MODEL = os.path.join(BASE_DESKTOP, "FIFAWC2026_Model.xlsx")
+    PRON = os.path.join(BASE_DESKTOP, "Pronostici")
+    OUT = os.path.join(BASE_DESKTOP, "FIFAWC2026_Leaderboard.html")
+else:
+    # Fallback to the committed files in the repository's data/ folder
+    PROJECT_ROOT = os.path.dirname(SCRIPT_DIR)
+    DATA_DIR = os.path.join(PROJECT_ROOT, "data")
+    MODEL = os.path.join(DATA_DIR, "FIFAWC2026_Model.xlsx")
+    PRON = os.path.join(DATA_DIR, "Pronostici")
+    OUT = os.path.join(PROJECT_ROOT, "FIFAWC2026_Leaderboard.html")
 
 # -------------------------------------------------------------- POINTS (edit) --
 POINTS = {
