@@ -11,7 +11,7 @@ USAGE
 1. Create a `.env` file in this directory with your Supabase credentials:
 
    SUPABASE_URL=https://ecqieaselexhcqkwbtcy.supabase.co
-   SUPABASE_SERVICE_KEY=sb_secret_...
+   SUPABASE_SERVICE_KEY="sb_secret_apB4kMbtgI92_mKD7Tx3pA_8U3FXrxV"
 
    (Find SERVICE_KEY in Supabase → Project Settings → API → service_role secret.)
    The .env file is in .gitignore and will never be committed.
