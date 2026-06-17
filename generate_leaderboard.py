@@ -168,8 +168,10 @@ def score_file(path, matches, positions):
         for r, true_team in slots.items():
             if norm(ws.cell(r, ci("G")).value) == true_team:
                 bd["Group Positions"] += POINTS["position"]
+    # predicted winner from cell AJ35
+    predicted_winner = norm(ws.cell(35, ci("AJ")).value)
     total = sum(bd.values())
-    return total, bd
+    return total, bd, predicted_winner
 
 
 def main():
@@ -182,10 +184,10 @@ def main():
         name = os.path.basename(f).replace("FIFAWC2026_", "").replace(".xlsx", "")
         display = FULL_NAMES.get(name, name)
         try:
-            total, bd = score_file(f, matches, positions)
-            rows.append({"name": display, "key": name, "total": total, "bd": bd})
+            total, bd, predicted_winner = score_file(f, matches, positions)
+            rows.append({"name": display, "key": name, "total": total, "bd": bd, "predicted_winner": predicted_winner})
         except Exception as ex:
-            rows.append({"name": display, "key": name, "total": -1, "bd": {}, "error": str(ex)})
+            rows.append({"name": display, "key": name, "total": -1, "bd": {}, "error": str(ex), "predicted_winner": None})
 
     # ---- maximum points ANYONE could have earned up to the current round ----
     # Each played group match: max = 2*score_per_team (perfect score) + outcome.
@@ -345,7 +347,8 @@ TEMPLATE = r"""<!DOCTYPE html>
   .cat .cl{font-size:14px;color:#fff;font-weight:400;line-height:1.2}
   .cat .cv{font-size:18px;margin-top:6px;color:var(--neon-green);font-weight:700;text-shadow:none}
   .cat.zero{opacity:.35}
-  .ctx{padding:10px 16px;font-size:14px;color:var(--neon-cyan);background:rgba(0,0,0,0.4)}
+  .ctx{display:flex;justify-content:space-between;align-items:center;padding:10px 16px;font-size:14px;color:var(--neon-cyan);background:rgba(0,0,0,0.4)}
+  .ctx-winner{font-family:'Press Start 2P',monospace;font-size:11px;text-align:right}
   footer{text-align:center;color:var(--neon-cyan);font-size:13px;margin-top:36px;line-height:1.6;text-shadow:0 0 6px var(--neon-cyan)}
   @media (max-width:699px){
     .podium{flex-direction:column;align-items:stretch;gap:14px}
@@ -383,6 +386,21 @@ const CAT_KEYS = ["Correct Score", "Correct Outcome", "Group Positions",
                   "Knockouts", "Final Standings", "Top Scorer"];
 const maxT = Math.max(1, META.max_possible || 1);
 const RANK_LABEL = ['1ST','2ND','3RD'];
+
+const COUNTRY_FLAGS = {
+  'Argentina': '🇦🇷', 'Australia': '🇦🇺', 'Belgium': '🇧🇪', 'Brazil': '🇧🇷', 'Canada': '🇨🇦',
+  'Croatia': '🇭🇷', 'Denmark': '🇩🇰', 'Ecuador': '🇪🇨', 'England': '🏴󠁧󠁢󠁥󠁮󠁧󠁿', 'France': '🇫🇷',
+  'Germany': '🇩🇪', 'Ghana': '🇬🇭', 'Iran': '🇮🇷', 'Japan': '🇯🇵', 'Mexico': '🇲🇽',
+  'Morocco': '🇲🇦', 'Netherlands': '🇳🇱', 'Poland': '🇵🇱', 'Portugal': '🇵🇹', 'Qatar': '🇶🇦',
+  'Saudi Arabia': '🇸🇦', 'Senegal': '🇸🇳', 'South Korea': '🇰🇷', 'Spain': '🇪🇸', 'Switzerland': '🇨🇭',
+  'Tunisia': '🇹🇳', 'USA': '🇺🇸', 'Uruguay': '🇺🇾', 'Wales': '🏴󠁧󠁢󠁷󠁬󠁳󠁿', 'Costa Rica': '🇨🇷',
+  'Cameroon': '🇨🇲', 'Serbia': '🇷🇸', 'Hungary': '🇭🇺', 'Italy': '🇮🇹', 'Greece': '🇬🇷',
+  'Czech Republic': '🇨🇿', 'Sweden': '🇸🇪', 'Norway': '🇳🇴', 'Finland': '🇫🇮', 'Israel': '🇮🇱'
+};
+
+function getFlagEmoji(country) {
+  return COUNTRY_FLAGS[country] || '🌍';
+}
 
 // footer
 document.getElementById('foot').innerHTML =
@@ -431,7 +449,10 @@ function build(list){
       </div>
       <div class="detail">
         <div class="cats">${catsHtml}</div>
-        <div class="ctx">${d.total}/${META.max_possible||0} PTS · ${pctN}%</div>
+        <div class="ctx">
+          <div>${d.total}/${META.max_possible||0} PTS · ${pctN}%</div>
+          <div class="ctx-winner">${d.predicted_winner ? getFlagEmoji(d.predicted_winner) + ' ' + d.predicted_winner : ''}</div>
+        </div>
       </div>`;
     row.querySelector('.rmain').onclick=()=>row.classList.toggle('open');
     board.appendChild(row);

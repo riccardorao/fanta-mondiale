@@ -104,7 +104,8 @@
   .cat .cl{font-size:18px;color:#fff;font-weight:400;text-transform:uppercase;line-height:1.2}
   .cat .cv{font-size:26px;margin-top:6px;color:var(--neon-green);font-weight:700;text-shadow:none}
   .cat.zero{opacity:.35}
-  .ctx{padding:10px 16px;font-size:14px;color:var(--neon-cyan);background:rgba(0,0,0,0.4)}
+  .ctx{display:flex;justify-content:space-between;align-items:center;padding:10px 16px;font-size:14px;color:var(--neon-cyan);background:rgba(0,0,0,0.4)}
+  .ctx-winner{font-family:'Press Start 2P',monospace;font-size:11px;text-align:right}
 
   .search{display:block;margin:26px auto 4px;width:100%;background:rgba(5,0,20,0.7);
     border:2px solid var(--neon-cyan);box-shadow:0 0 0 3px var(--ink),0 0 0 5px var(--neon-pink),0 0 16px rgba(0,255,255,.4);
@@ -135,17 +136,17 @@
 <body>
 <div class="wrap">
   <div class="hud">
-    <span class="hud-item">CREDIT 01</span>
-    <span class="hud-item blink">1P READY</span>
-    <span class="hud-item">STAGE 1</span>
+    <span class="hud-item">WELCOME BACK</span>
+    <span class="hud-item blink">NEXT GAME POR-COD</span>
+    <span class="hud-item">INSERT COIN</span>
   </div>
   <header>
     <h1>LEADERBOARD</h1>
-    <div class="ticker"><span>⚽ WELCOME TO THE FANTAMONDIALE ARENA ⚽ INSERT COIN TO CONTINUE ⚽ MAY THE BEST PREDICTOR WIN ⚽ GOOD LUCK PLAYER ⚽</span></div>
+    <div class="ticker"><span>RECENT RESULTS // AUSTRIA 3-1 JORDAN // ARGENTINA 3-0 ALGERIA // IRAQ 1-4 NORWAY // FRANCE 3-1 SENEGAL // IRAN 2-2 NEW ZEALAND // SAUDI ARABIA 1-1 URUGUAY</span></div>
     <div class="sub" id="sub"></div>
     <div class="stats" id="stats"></div>
   </header>
-  <div class="section-label">HIGH SCORE</div>
+  <div class="section-label">HIGHEST SCORES</div>
   <div class="podium" id="podium"></div>
   <input class="search" id="search" placeholder="🔍 SEARCH PLAYER" style="display:none"/>
   <div class="board" id="board"><div class="state">LOADING...</div></div>
@@ -162,6 +163,66 @@ const CATS = [
 ];
 const RANK_LABEL = ['1ST','2ND','3RD'];
 const headers = { apikey: SUPABASE_KEY, Authorization: "Bearer " + SUPABASE_KEY };
+
+const COUNTRY_FLAGS = {
+  'Algeria': '🇩🇿',
+  'Argentina': '🇦🇷',
+  'Australia': '🇦🇺',
+  'Austria': '🇦🇹',
+  'Belgium': '🇧🇪',
+  'Bosnia H.': '🇧🇦',
+  'Brazil': '🇧🇷',
+  'Canada': '🇨🇦',
+  'Capo Verde': '🇨🇻',
+  'Colombia': '🇨🇴',
+  'Congo DR': '🇨🇩',
+  'Costa Rica': '🇨🇷',
+  'Croatia': '🇭🇷',
+  'Curaçao': '🇨🇼',
+  'Czechia': '🇨🇿',
+  'Ecuador': '🇪🇨',
+  'Egypt': '🇪🇬',
+  'England': '🏴󠁧󠁢󠁥󠁮󠁧󠁿',
+  'France': '🇫🇷',
+  'Germany': '🇩🇪',
+  'Ghana': '🇬🇭',
+  'Haiti': '🇭🇹',
+  'Iran': '🇮🇷',
+  'Iraq': '🇮🇶',
+  'Ivory Coast': '🇨🇮',
+  'Japan': '🇯🇵',
+  'Jordan': '🇯🇴',
+  'Mexico': '🇲🇽',
+  'Morocco': '🇲🇦',
+  'Netherlands': '🇳🇱',
+  'New Zealand': '🇳🇿',
+  'Norway': '🇳🇴',
+  'Panama': '🇵🇦',
+  'Paraguay': '🇵🇾',
+  'Portugal': '🇵🇹',
+  'Qatar': '🇶🇦',
+  'Saudi Arabia': '🇸🇦',
+  'Scotland': '🏴󠁧󠁢󠁳󠁣󠁴󠁿',
+  'Senegal': '🇸🇳',
+  'South Africa': '🇿🇦',
+  'South Korea': '🇰🇷',
+  'Spain': '🇪🇸',
+  'Sweden': '🇸🇪',
+  'Switzerland': '🇨🇭',
+  'Tunisia': '🇹🇳',
+  'Turkey': '🇹🇷',
+  'Uruguay': '🇺🇾',
+  'USA': '🇺🇸',
+  'Uzbekistan': '🇺🇿'
+};
+
+function getFlagEmoji(country) {
+  return COUNTRY_FLAGS[country] || '🌍';
+}
+
+function getWinner(data) {
+  return data.predicted_winner || null;
+}
 
 async function load(){
   try{
@@ -209,7 +270,7 @@ function render(rows, meta){
         return `<div class="cat ${v===0?'zero':''}"><div class="cl">${label}</div><div class="cv">${v}</div></div>`;
       }).join('');
       let barColor;
-      const hue = pctN * 1.5;
+      const hue = pctN * 1.25
       barColor = `hsl(${hue}, 100%, 50%)`;
       const rankHtml = d.rank<=3
         ? `<span class="r${d.rank}">${RANK_LABEL[d.rank-1]}</span>`
@@ -224,7 +285,10 @@ function render(rows, meta){
           <div class="chev">▾</div>
         </div>
         <div class="detail"><div class="cats">${cats}</div>
-          <div class="ctx">${d.total}/${meta.max_possible||0} PTS · ${Math.round(pctN)}%</div>
+          <div class="ctx">
+            <div>${d.total}/${meta.max_possible||0} PTS · ${Math.round(pctN)}%</div>
+            <div class="ctx-winner">${getWinner(d) ? getFlagEmoji(getWinner(d)) + ' ' + getWinner(d) : ''}</div>
+          </div>
         </div>`;
       row.querySelector('.rmain').onclick=()=>row.classList.toggle('open');
       board.appendChild(row);
