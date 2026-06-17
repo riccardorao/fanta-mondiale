@@ -13,8 +13,9 @@ SCORING (per the agreed rules):
   GROUP STAGE (per played match, i.e. both goals present in the Model):
     - Correct Score : +5 for EACH team whose exact goals match (perfect = 10)
     - Correct 1X2   : +10 if the result sign matches (independent, stacks)
-  GROUP POSITIONS: +10 per correct final-table slot, ONLY once a group's
-    standings are fully entered in the Model (all 4 slots in col G).
+  GROUP POSITIONS: +10 per correct final-table slot, ONLY once ALL 72
+    group-stage matches have been played (gated tournament-wide, not
+    per-group) and that group's standings are fully entered (col G).
   KNOCKOUTS / FINAL STANDINGS / TOP SCORER: auto-activate when their truth
     cells are populated in the Model (gated; 0 until then).
 """
@@ -122,8 +123,8 @@ def is_num(v):
 
 def read_truth(ws):
     """Returns truth dict: played matches, completed group standings."""
-    matches = []   # (row, gh, ga, outcome)
-    positions = {} # group -> {row: team}  (only if all 4 slots present)
+    matches = []       # (row, gh, ga, outcome)
+    raw_positions = {} # group -> {row: team}  (only if all 4 slots present)
     for g, base in GH.items():
         for i in range(1, 7):
             r = base + i
@@ -137,7 +138,11 @@ def read_truth(ws):
             if t:
                 slots[r] = t
         if len(slots) == 4:          # group standings finalised
-            positions[g] = slots
+            raw_positions[g] = slots
+    # Group positions only count once the ENTIRE group stage is played —
+    # partial standings (predicted, not yet locked in) don't score early.
+    group_stage_complete = len(matches) == GROUP_MATCHES_TOTAL
+    positions = raw_positions if group_stage_complete else {}
     return matches, positions
 
 
@@ -250,32 +255,32 @@ TEMPLATE = r"""<!DOCTYPE html>
     color:var(--txt); min-height:100vh; padding:32px 16px 80px;
     -webkit-font-smoothing:antialiased;
   }
-  .wrap{max-width:920px;margin:0 auto}
-  header{text-align:center;margin-bottom:34px;position:relative}
-  .kicker{letter-spacing:.42em;font-size:11px;color:var(--accent);
-    text-transform:uppercase;font-weight:700;margin-bottom:10px}
-  h1{font-size:clamp(30px,6vw,52px);font-weight:900;line-height:1.02;
+  .wrap{max-width:1180px;margin:0 auto}
+  header{text-align:center;margin-bottom:36px;position:relative}
+  .kicker{letter-spacing:.42em;font-size:13px;color:var(--accent);
+    text-transform:uppercase;font-weight:700;margin-bottom:12px}
+  h1{font-size:clamp(38px,7vw,64px);font-weight:900;line-height:1.02;
     background:linear-gradient(120deg,#fff 10%,var(--gold) 55%,#ffb84a 90%);
     -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
     filter:drop-shadow(0 6px 24px #ffd24a22)}
-  .sub{color:var(--dim);margin-top:12px;font-size:14px}
-  .stats{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:20px}
+  .sub{color:var(--dim);margin-top:14px;font-size:16px}
+  .stats{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:22px}
   .pill{background:var(--card);border:1px solid var(--line);border-radius:999px;
-    padding:8px 16px;font-size:12.5px;color:var(--dim)}
+    padding:10px 20px;font-size:14px;color:var(--dim)}
   .pill b{color:var(--txt)}
 
   /* podium */
-  .podium{display:flex;gap:14px;justify-content:center;align-items:flex-end;
-    margin:36px 0 30px;flex-wrap:wrap}
-  .pod{flex:1;min-width:150px;max-width:230px;border-radius:18px;padding:20px 16px;
+  .podium{display:flex;gap:18px;justify-content:center;align-items:flex-end;
+    margin:40px 0 30px;flex-wrap:wrap}
+  .pod{flex:1;min-width:180px;max-width:280px;border-radius:20px;padding:26px 20px;
     text-align:center;position:relative;border:1px solid var(--line);
     background:linear-gradient(180deg,var(--card2),var(--card));
     transform:translateY(24px);opacity:0;animation:rise .7s forwards}
-  .pod .medal{font-size:30px;margin-bottom:4px}
-  .pod .pname{font-weight:800;font-size:18px;margin:4px 0}
-  .pod .ppts{font-size:30px;font-weight:900;letter-spacing:-1px}
-  .pod .plabel{font-size:11px;color:var(--dim);text-transform:uppercase;letter-spacing:.12em}
-  .pod.gold{border-color:#ffd24a55;box-shadow:0 24px 60px -22px #ffd24a66;padding-top:30px}
+  .pod .medal{font-size:38px;margin-bottom:6px}
+  .pod .pname{font-weight:800;font-size:21px;margin:6px 0}
+  .pod .ppts{font-size:36px;font-weight:900;letter-spacing:-1px}
+  .pod .plabel{font-size:12.5px;color:var(--dim);text-transform:uppercase;letter-spacing:.12em}
+  .pod.gold{border-color:#ffd24a55;box-shadow:0 24px 60px -22px #ffd24a66;padding-top:36px}
   .pod.gold .ppts{color:var(--gold)} .pod.silver .ppts{color:var(--silver)}
   .pod.bronze .ppts{color:var(--bronze)}
   .pod.gold{order:2} .pod.silver{order:1} .pod.bronze{order:3}
@@ -284,36 +289,38 @@ TEMPLATE = r"""<!DOCTYPE html>
   @keyframes rise{to{transform:translateY(0);opacity:1}}
 
   /* list */
-  .board{display:flex;flex-direction:column;gap:9px;margin-top:8px}
-  .row{background:var(--card);border:1px solid var(--line);border-radius:14px;
+  .board{display:flex;flex-direction:column;gap:11px;margin-top:10px}
+  .row{background:var(--card);border:1px solid var(--line);border-radius:16px;
     overflow:hidden;opacity:0;transform:translateY(10px);animation:fade .5s forwards}
   @keyframes fade{to{opacity:1;transform:none}}
-  .rmain{display:grid;grid-template-columns:54px 1fr auto 40px;align-items:center;
-    gap:12px;padding:14px 16px;cursor:pointer;transition:background .2s}
+  .rmain{display:grid;grid-template-columns:60px 1fr auto 44px;align-items:center;
+    gap:14px;padding:18px 20px;cursor:pointer;transition:background .2s}
   .rmain:hover{background:var(--card2)}
-  .rank{font-weight:900;font-size:20px;color:var(--dim);text-align:center}
+  .rank{font-weight:900;font-size:24px;color:var(--dim);text-align:center}
   .top1 .rank{color:var(--gold)} .top2 .rank{color:var(--silver)} .top3 .rank{color:var(--bronze)}
-  .who{font-weight:700;font-size:16px}
-  .barwrap{height:7px;background:#0e1426;border-radius:6px;margin-top:7px;overflow:hidden;width:min(420px,46vw)}
+  .who{font-weight:700;font-size:18px}
+  .barwrap{height:8px;background:#0e1426;border-radius:6px;margin-top:8px;overflow:hidden;width:min(480px,46vw)}
   .bar{height:100%;border-radius:6px;background:linear-gradient(90deg,var(--accent),var(--accent2));
     width:0;transition:width 1.1s cubic-bezier(.2,.8,.2,1)}
   .top1 .bar{background:linear-gradient(90deg,var(--gold),#ffb347)}
-  .pts{font-weight:900;font-size:22px;text-align:right}
+  .pts{font-weight:900;font-size:26px;text-align:right}
   .chev{color:var(--dim);transition:transform .25s;text-align:center}
   .row.open .chev{transform:rotate(180deg)}
   .detail{max-height:0;overflow:hidden;transition:max-height .35s ease;
     border-top:1px solid transparent}
-  .row.open .detail{max-height:320px;border-top-color:var(--line)}
-  .cats{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
-    gap:10px;padding:16px}
-  .cat{background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:12px}
-  .cat .cl{font-size:11px;color:var(--dim);text-transform:uppercase;letter-spacing:.08em}
-  .cat .cv{font-size:20px;font-weight:800;margin-top:3px}
+  .row.open .detail{max-height:420px;border-top-color:var(--line)}
+  .cats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:20px}
+  @media (min-width:700px){
+    .cats{grid-template-columns:repeat(6,1fr)}
+  }
+  .cat{background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:14px}
+  .cat .cl{font-size:12px;color:var(--dim);text-transform:uppercase;letter-spacing:.08em}
+  .cat .cv{font-size:24px;font-weight:800;margin-top:5px}
   .cat.zero{opacity:.4}
-  footer{text-align:center;color:var(--dim);font-size:12px;margin-top:40px;line-height:1.7}
-  .search{display:block;margin:24px auto 4px;width:min(360px,90%);background:var(--card);
-    border:1px solid var(--line);color:var(--txt);border-radius:999px;padding:11px 18px;
-    font-size:14px;outline:none}
+  footer{text-align:center;color:var(--dim);font-size:13px;margin-top:44px;line-height:1.7}
+  .search{display:block;margin:28px auto 6px;width:min(420px,90%);background:var(--card);
+    border:1px solid var(--line);color:var(--txt);border-radius:999px;padding:13px 20px;
+    font-size:15px;outline:none}
   .search:focus{border-color:var(--accent)}
 </style>
 </head>
