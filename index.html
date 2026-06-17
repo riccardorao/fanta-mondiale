@@ -414,7 +414,7 @@
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 10px;
-      padding: 16px;
+      padding: 16px 16px 4px;
       background: rgba(0, 0, 0, 0.4)
     }
 
@@ -456,7 +456,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 10px 16px;
+      padding: 4px 16px 14px;
       font-size: 14px;
       color: var(--neon-cyan);
       background: rgba(0, 0, 0, 0.4)
@@ -655,14 +655,14 @@
       'Uzbekistan': '🇺🇿'
     };
 
+    function getWinner(data) {
+      return data.predicted_winner || null;
+    }
+
     function getFlagEmoji(country) {
       if (!country) return '🌍';
       const match = Object.keys(COUNTRY_FLAGS).find(k => k.toLowerCase() === country.toLowerCase());
       return match ? COUNTRY_FLAGS[match] : '🌍';
-    }
-
-    function getWinner(data) {
-      return data.predicted_winner || null;
     }
 
     async function load() {
@@ -684,7 +684,7 @@
     function render(rows, meta) {
       const maxBar = Math.max(1, meta.max_possible || 1);
       document.getElementById('foot').innerHTML =
-        `© FANTAMONDIALE 2026 - ALL RIGHTS RESERVED // UPDATED ${meta.generated || '--:--'}`;
+        `© FANTAMONDIALE 2026 - ALL RIGHTS RESERVED \n UPDATED ${meta.generated || '--:--'}`;
 
       const podEl = document.getElementById('podium');
       const medal = ['🥇', '🥈', '🥉'];
@@ -728,7 +728,7 @@
         <div class="detail"><div class="cats">${cats}</div>
           <div class="ctx">
             <div>${d.total}/${meta.max_possible || 0} PTS · ${Math.round(pctN)}%</div>
-            <div class="ctx-winner">${getWinner(d) ? getFlagEmoji(getWinner(d)) + ' ' + getWinner(d) : ''}</div>
+            <div class="ctx-winner">${getWinner(d) ? 'WORLD CHAMPIONS: ' + getWinner(d) + ' ' + getFlagEmoji(getWinner(d)) : ''}</div>
           </div>
         </div>`;
           row.querySelector('.rmain').onclick = () => row.classList.toggle('open');

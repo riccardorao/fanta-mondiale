@@ -444,13 +444,13 @@ TEMPLATE = r"""<!DOCTYPE html>
   .row.open .chev{transform:rotate(180deg)}
   .detail{max-height:0;overflow:hidden;transition:max-height .35s ease}
   .row.open .detail{max-height:420px;border-top:2px solid var(--neon-cyan)}
-  .cats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;padding:16px;background:rgba(0,0,0,0.4)}
+  .cats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;padding:16px 16px 4px;background:rgba(0,0,0,0.4)}
   @media (min-width:700px){.cats{grid-template-columns:repeat(6,1fr)}}
   .cat{background:rgba(5,0,20,0.7);border:1px solid var(--neon-cyan);box-shadow:0 0 0 2px var(--ink),0 0 0 3px var(--neon-pink);padding:10px;text-align:center}
   .cat .cl{font-size:14px;color:#fff;font-weight:400;line-height:1.2}
   .cat .cv{font-size:18px;margin-top:6px;color:var(--neon-green);font-weight:700;text-shadow:none}
   .cat.zero{opacity:.35}
-  .ctx{display:flex;justify-content:space-between;align-items:center;padding:10px 16px;font-size:14px;color:var(--neon-cyan);background:rgba(0,0,0,0.4)}
+  .ctx{display:flex;justify-content:space-between;align-items:center;padding:4px 16px 14px;font-size:14px;color:var(--neon-cyan);background:rgba(0,0,0,0.4)}
   .ctx-winner{text-align:right}
   footer{text-align:center;color:var(--neon-cyan);font-size:13px;margin-top:36px;line-height:1.6;text-shadow:0 0 6px var(--neon-cyan)}
   @media (max-width:699px){
@@ -597,7 +597,7 @@ function build(list){
         <div class="cats">${catsHtml}</div>
         <div class="ctx">
           <div>${d.total}/${META.max_possible||0} PTS · ${pctN}%</div>
-          <div class="ctx-winner">${d.predicted_winner ? getFlagEmoji(d.predicted_winner) + ' ' + d.predicted_winner : ''}</div>
+          <div class="ctx-winner">${d.predicted_winner ? 'WORLD CHAMPIONS: ' + d.predicted_winner + ' ' + getFlagEmoji(d.predicted_winner) : ''}</div>
         </div>
       </div>`;
     row.querySelector('.rmain').onclick=()=>row.classList.toggle('open');
