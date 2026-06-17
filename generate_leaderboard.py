@@ -451,7 +451,7 @@ TEMPLATE = r"""<!DOCTYPE html>
   .cat .cv{font-size:18px;margin-top:6px;color:var(--neon-green);font-weight:700;text-shadow:none}
   .cat.zero{opacity:.35}
   .ctx{display:flex;justify-content:space-between;align-items:center;padding:10px 16px;font-size:14px;color:var(--neon-cyan);background:rgba(0,0,0,0.4)}
-  .ctx-winner{font-family:'Press Start 2P',monospace;font-size:11px;text-align:right}
+  .ctx-winner{text-align:right}
   footer{text-align:center;color:var(--neon-cyan);font-size:13px;margin-top:36px;line-height:1.6;text-shadow:0 0 6px var(--neon-cyan)}
   @media (max-width:699px){
     .podium{flex-direction:column;align-items:stretch;gap:14px}
@@ -491,18 +491,61 @@ const maxT = Math.max(1, META.max_possible || 1);
 const RANK_LABEL = ['1ST','2ND','3RD'];
 
 const COUNTRY_FLAGS = {
-  'Argentina': '🇦🇷', 'Australia': '🇦🇺', 'Belgium': '🇧🇪', 'Brazil': '🇧🇷', 'Canada': '🇨🇦',
-  'Croatia': '🇭🇷', 'Denmark': '🇩🇰', 'Ecuador': '🇪🇨', 'England': '🏴󠁧󠁢󠁥󠁮󠁧󠁿', 'France': '🇫🇷',
-  'Germany': '🇩🇪', 'Ghana': '🇬🇭', 'Iran': '🇮🇷', 'Japan': '🇯🇵', 'Mexico': '🇲🇽',
-  'Morocco': '🇲🇦', 'Netherlands': '🇳🇱', 'Poland': '🇵🇱', 'Portugal': '🇵🇹', 'Qatar': '🇶🇦',
-  'Saudi Arabia': '🇸🇦', 'Senegal': '🇸🇳', 'South Korea': '🇰🇷', 'Spain': '🇪🇸', 'Switzerland': '🇨🇭',
-  'Tunisia': '🇹🇳', 'USA': '🇺🇸', 'Uruguay': '🇺🇾', 'Wales': '🏴󠁧󠁢󠁷󠁬󠁳󠁿', 'Costa Rica': '🇨🇷',
-  'Cameroon': '🇨🇲', 'Serbia': '🇷🇸', 'Hungary': '🇭🇺', 'Italy': '🇮🇹', 'Greece': '🇬🇷',
-  'Czech Republic': '🇨🇿', 'Sweden': '🇸🇪', 'Norway': '🇳🇴', 'Finland': '🇫🇮', 'Israel': '🇮🇱'
+  'Algeria': '🇩🇿',
+  'Argentina': '🇦🇷',
+  'Australia': '🇦🇺',
+  'Austria': '🇦🇹',
+  'Belgium': '🇧🇪',
+  'Bosnia H.': '🇧🇦',
+  'Brazil': '🇧🇷',
+  'Canada': '🇨🇦',
+  'Capo Verde': '🇨🇻',
+  'Colombia': '🇨🇴',
+  'Congo DR': '🇨🇩',
+  'Costa Rica': '🇨🇷',
+  'Croatia': '🇭🇷',
+  'Curaçao': '🇨🇼',
+  'Czechia': '🇨🇿',
+  'Ecuador': '🇪🇨',
+  'Egypt': '🇪🇬',
+  'England': '🏴󠁧󠁢󠁥󠁮󠁧󠁿',
+  'France': '🇫🇷',
+  'Germany': '🇩🇪',
+  'Ghana': '🇬🇭',
+  'Haiti': '🇭🇹',
+  'Iran': '🇮🇷',
+  'Iraq': '🇮🇶',
+  'Ivory Coast': '🇨🇮',
+  'Japan': '🇯🇵',
+  'Jordan': '🇯🇴',
+  'Mexico': '🇲🇽',
+  'Morocco': '🇲🇦',
+  'Netherlands': '🇳🇱',
+  'New Zealand': '🇳🇿',
+  'Norway': '🇳🇴',
+  'Panama': '🇵🇦',
+  'Paraguay': '🇵🇾',
+  'Portugal': '🇵🇹',
+  'Qatar': '🇶🇦',
+  'Saudi Arabia': '🇸🇦',
+  'Scotland': '🏴󠁧󠁢󠁳󠁣󠁴󠁿',
+  'Senegal': '🇸🇳',
+  'South Africa': '🇿🇦',
+  'South Korea': '🇰🇷',
+  'Spain': '🇪🇸',
+  'Sweden': '🇸🇪',
+  'Switzerland': '🇨🇭',
+  'Tunisia': '🇹🇳',
+  'Turkey': '🇹🇷',
+  'Uruguay': '🇺🇾',
+  'USA': '🇺🇸',
+  'Uzbekistan': '🇺🇿'
 };
 
 function getFlagEmoji(country) {
-  return COUNTRY_FLAGS[country] || '🌍';
+  if (!country) return '🌍';
+  const match = Object.keys(COUNTRY_FLAGS).find(k => k.toLowerCase() === country.toLowerCase());
+  return match ? COUNTRY_FLAGS[match] : '🌍';
 }
 
 // footer
