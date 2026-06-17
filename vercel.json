@@ -1,8 +1,10 @@
 {
-  "framework": "nextjs",
-  "regions": ["lhr1"],
-  "github": {
-    "silent": false,
-    "autoAlias": true
-  }
+  "framework": null,
+  "buildCommand": null,
+  "installCommand": null,
+  "outputDirectory": ".",
+  "cleanUrls": true,
+  "headers": [
+    { "source": "/(.*)", "headers": [ { "key": "Cache-Control", "value": "public, max-age=60" } ] }
+  ]
 }
