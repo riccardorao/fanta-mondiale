@@ -458,7 +458,7 @@ def build_next_game_text(next_game, live_games=None):
     return next_game_part if next_game_part else None
 
 
-def push_meta_to_supabase(ticker_text, next_game_text=None):
+def push_meta_to_supabase(ticker_text=None, next_game_text=None):
     """Update ticker_text (and optionally next_game_text) in Supabase."""
     from dotenv import load_dotenv
     load_dotenv()
@@ -469,9 +469,15 @@ def push_meta_to_supabase(ticker_text, next_game_text=None):
         print("[supabase] Skipping: SUPABASE_SERVICE_KEY not set.")
         return
 
-    payload = {"ticker_text": ticker_text}
-    if next_game_text:
+    payload = {}
+    if ticker_text is not None:
+        payload["ticker_text"] = ticker_text
+    if next_game_text is not None:
         payload["next_game_text"] = next_game_text
+
+    if not payload:
+        print("[supabase] Nothing to update.")
+        return
 
     url = f"{url_base}/rest/v1/xl_leaderboard_meta?id=eq.1"
     body = json.dumps(payload).encode()
@@ -518,39 +524,56 @@ def main():
     if next_game_text:
         print(f"[next]  {next_game_text}")
 
-    if not finished:
-        print("[fetch] Nothing to do.")
-        return
-
     if args.ticker_only:
-        # Build ticker most-recent first
-        strs = [
-            f"{display(m['home']).upper()} {m['home_score']}-{m['away_score']} {display(m['away']).upper()}"
-            for m in finished
-        ]
-        strs.reverse()  # most recent first
-        ticker = build_ticker_text(strs[:5])
-        print(f"[ticker] {ticker}")
-        push_meta_to_supabase(ticker, next_game_text)
+        ticker = None
+        if finished:
+            strs = [
+                f"{display(m['home']).upper()} {m['home_score']}-{m['away_score']} {display(m['away']).upper()}"
+                for m in finished
+            ]
+            strs.reverse()  # most recent first
+            ticker = build_ticker_text(strs[:5])
+            print(f"[ticker] {ticker}")
+        else:
+            print("[ticker] No finished matches found. Skip ticker text generation.")
+
+        if not args.no_push:
+            push_meta_to_supabase(ticker, next_game_text)
+        else:
+            print("[skip] Skip pushing metadata (--no-push)")
         return
 
-    updated, result_strings = update_excel(finished, dry_run=args.dry_run)
+    updated = 0
+    result_strings = []
+    if finished:
+        updated, result_strings = update_excel(finished, dry_run=args.dry_run)
+    else:
+        print("[excel] No finished matches found. Skip Excel update.")
 
     if args.dry_run:
         print("\n[dry-run] Done. No files written.")
         return
 
-    if result_strings and not args.no_push:
+    ticker = None
+    if finished and result_strings:
         # Reverse for most-recent first, keep last 5
-        result_strings.reverse()
-        ticker = build_ticker_text(result_strings[:5])
+        res_copy = list(result_strings)
+        res_copy.reverse()
+        ticker = build_ticker_text(res_copy[:5])
         print(f"\n[ticker] {ticker}")
-        push_meta_to_supabase(ticker, next_game_text)
 
     if not args.no_push:
-        run_subprocess("push_to_supabase.py")
+        # Update ticker + next game in Supabase
+        push_meta_to_supabase(ticker, next_game_text)
+        
+        # Trigger leaderboard re-computation ONLY if a match actually transitioned to finished in Excel
+        if updated > 0:
+            print("\n[automation] Match completed and Excel updated. Re-computing leaderboard...")
+            run_subprocess("push_to_supabase.py")
+        else:
+            print("\n[automation] No new games completed (updated = 0). Leaderboard re-computation skipped.")
     else:
-        print("\n[skip] Skipping push_to_supabase.py (--no-push)")
+        print("\n[skip] Skipping push_to_supabase.py and metadata updates (--no-push)")
 
     print("\n[done] All updates complete.")
 
