@@ -96,7 +96,6 @@
   .ball{font-size:14px;text-align:center;opacity:0;transition:opacity .2s}
   .row:hover .ball{opacity:1;animation:bob .5s ease-in-out infinite alternate}
   @keyframes bob{from{transform:translateY(0) rotate(0deg)}to{transform:translateY(-3px) rotate(20deg)}}
-  .rank{font-family:'Press Start 2P',monospace;font-size:12px;color:var(--neon-green);text-align:center;text-shadow:0 0 6px var(--neon-green)}
   .who{font-family:'Press Start 2P',monospace;font-size:10px;color:var(--neon-cyan);text-transform:uppercase;letter-spacing:1px}
   .barwrap{height:12px;background:#000;border:1px solid var(--neon-cyan);margin-top:7px;overflow:hidden;width:min(440px,44vw)}
   .bar{height:100%;width:0;transition:width 1.2s cubic-bezier(.2,.8,.2,1);box-shadow:0 0 10px currentColor}
@@ -108,8 +107,8 @@
   .cats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;padding:16px;background:rgba(0,0,0,0.4)}
   @media (min-width:700px){.cats{grid-template-columns:repeat(6,1fr)}}
   .cat{background:rgba(5,0,20,0.7);border:1px solid var(--neon-cyan);box-shadow:0 0 0 2px var(--ink),0 0 0 3px var(--neon-pink);padding:10px;text-align:center}
-  .cat .cl{font-size:14px;color:#fff;font-weight:400;text-transform:uppercase;line-height:1.2}
-  .cat .cv{font-size:18px;margin-top:6px;color:var(--neon-green);font-weight:700;text-shadow:none}
+  .cat .cl{font-size:26px;color:#fff;font-weight:400;text-transform:uppercase;line-height:1.2}
+  .cat .cv{font-size:26px;margin-top:6px;color:var(--neon-green);font-weight:700;text-shadow:none}
   .cat.zero{opacity:.35}
   .ctx{padding:10px 16px;font-size:14px;color:var(--neon-cyan);background:rgba(0,0,0,0.4)}
 
@@ -204,7 +203,7 @@ function render(rows, meta){
         const v=d[k]||0;
         return `<div class="cat ${v===0?'zero':''}"><div class="cl">${label}</div><div class="cv">${v}</div></div>`;
       }).join('');
-      const barColor = `hsl(${meta.max_possible * pctScore}, 100%, 50%)`;
+      const barColor = `hsl(${0.7 * meta.max_possible * pctScore}, 100%, 50%)`;
       const rankHtml = d.rank<=3
         ? `<span class="r${d.rank}">${RANK_LABEL[d.rank-1]}</span>`
         : d.rank;
