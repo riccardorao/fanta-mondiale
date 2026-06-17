@@ -745,18 +745,17 @@
       <span class="hud-item blink">NEXT GAME POR-COD</span>
     </div>
     <header>
-      <h1>LEADERBOARD</h1>
+      <h1>FANTAMONDIALE</h1>
       <div class="ticker"><span>RECENT RESULTS // AUSTRIA 3-1 JORDAN // ARGENTINA 3-0 ALGERIA // IRAQ 1-4 NORWAY //
           FRANCE 3-1 SENEGAL // IRAN 2-2 NEW ZEALAND // SAUDI ARABIA 1-1 URUGUAY</span></div>
       <div class="sub" id="sub"></div>
       <div class="stats" id="stats"></div>
     </header>
     <div class="tabs">
-      <button id="tab-leaderboard" class="tab-btn active" onclick="switchTab('leaderboard')">▶ LEADERBOARD</button>
-      <button id="tab-stats" class="tab-btn" onclick="switchTab('stats')">▷ STATISTICS</button>
+      <button id="tab-leaderboard" class="tab-btn active" onclick="switchTab('leaderboard')">LEADERBOARD</button>
+      <button id="tab-stats" class="tab-btn" onclick="switchTab('stats')">STATISTICS</button>
     </div>
     <div id="view-leaderboard">
-      <div class="section-label">HIGHEST SCORES</div>
       <div class="podium" id="podium"></div>
       <input class="search" id="search" placeholder="🔍 SEARCH PLAYER" style="display:none" />
       <div class="board" id="board">
@@ -764,7 +763,6 @@
       </div>
     </div>
     <div id="view-stats" style="display: none;">
-      <div class="section-label">★ PREDICTION STATISTICS ★</div>
       <div class="stats-container" id="stats-container"></div>
     </div>
     <footer id="foot"></footer>
@@ -864,7 +862,7 @@
       const btnStats = document.getElementById('tab-stats');
       const viewLeaderboard = document.getElementById('view-leaderboard');
       const viewStats = document.getElementById('view-stats');
-      
+
       if (tab === 'leaderboard') {
         btnLeaderboard.classList.add('active');
         btnLeaderboard.innerText = '▶ LEADERBOARD';
@@ -879,7 +877,7 @@
         btnStats.innerText = '▶ STATISTICS';
         viewLeaderboard.style.display = 'none';
         viewStats.style.display = 'block';
-        
+
         setTimeout(() => {
           document.querySelectorAll('.scorer-bar').forEach(b => b.style.width = b.dataset.w + '%');
         }, 50);
@@ -892,10 +890,10 @@
         container.innerHTML = `<div class="state">NO STATISTICS UPLOADED YET</div>`;
         return;
       }
-      
+
       const winners = meta.stats.winners || [];
       const scorers = meta.stats.scorers || [];
-      
+
       // Render Winners
       let winnersHtml = '';
       if (winners.length > 0) {
@@ -904,9 +902,9 @@
             <div class="stats-title">★ MOST PREDICTED CHAMPIONS ★</div>
             <div class="stats-grid-winners">
         `;
-        
+
         winners.slice(0, 3).forEach((w, i) => {
-          const rankLabel = RANK_LABEL[i] || `${i+1}TH`;
+          const rankLabel = RANK_LABEL[i] || `${i + 1}TH`;
           const flag = getFlagEmoji(w.team);
           winnersHtml += `
             <div class="winner-box">
@@ -917,13 +915,13 @@
             </div>
           `;
         });
-        
+
         winnersHtml += `
             </div>
           </div>
         `;
       }
-      
+
       // Render Scorers
       let scorersHtml = '';
       if (scorers.length > 0) {
@@ -932,12 +930,12 @@
             <div class="stats-title">★ MOST PREDICTED TOP SCORERS ★</div>
             <div class="stats-scorers-list">
         `;
-        
+
         scorers.slice(0, 5).forEach((s, i) => {
           const pct = Math.round((s.count / totalParticipants) * 100);
           scorersHtml += `
             <div class="scorer-row">
-              <div class="scorer-rank">#${i+1}</div>
+              <div class="scorer-rank">#${i + 1}</div>
               <div class="scorer-info">
                 <span class="scorer-name">${s.player}</span>
                 <div class="scorer-bar-wrap">
@@ -948,13 +946,13 @@
             </div>
           `;
         });
-        
+
         scorersHtml += `
             </div>
           </div>
         `;
       }
-      
+
       container.innerHTML = winnersHtml + scorersHtml;
     }
 
