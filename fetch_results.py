@@ -246,22 +246,23 @@ def fetch_from_footballdata(api_key):
             })
 
     print(f"[fetch] Got {len(finished)} finished group matches from football-data.org")
+    live_game = None
     next_game = None
-    is_live = False
 
+    upcoming.sort(key=lambda x: x["utc_date"] or "")
     live_matches = [u for u in upcoming if u["is_live"]]
+    future_matches = [u for u in upcoming if not u["is_live"]]
+
     if live_matches:
-        live_matches.sort(key=lambda x: x["utc_date"] or "")
-        next_game = live_matches[0]
-        is_live = True
-    elif upcoming:
-        upcoming.sort(key=lambda x: x["utc_date"] or "")
-        next_game = upcoming[0]
-        is_live = False
+        live_game = live_matches[0]
+    if future_matches:
+        next_game = future_matches[0]
 
     if next_game:
-        print(f"[fetch] Next game: {short(next_game['home'])}-{short(next_game['away'])} (Live: {is_live})")
-    return finished, next_game, is_live
+        print(f"[fetch] Next game: {short(next_game['home'])}-{short(next_game['away'])}")
+    if live_game:
+        print(f"[fetch] Live game in progress: {short(live_game['home'])}-{short(live_game['away'])}")
+    return finished, next_game, live_game
 
 
 def fetch_from_worldcup26():
@@ -317,22 +318,23 @@ def fetch_from_worldcup26():
             })
 
     print(f"[fetch] Got {len(finished)} finished group matches from worldcup26.ir")
+    live_game = None
     next_game = None
-    is_live = False
 
+    upcoming.sort(key=lambda x: x["date"] or "")
     live_matches = [u for u in upcoming if u["is_live"]]
+    future_matches = [u for u in upcoming if not u["is_live"]]
+
     if live_matches:
-        live_matches.sort(key=lambda x: x["date"] or "")
-        next_game = live_matches[0]
-        is_live = True
-    elif upcoming:
-        upcoming.sort(key=lambda x: x["date"] or "")
-        next_game = upcoming[0]
-        is_live = False
+        live_game = live_matches[0]
+    if future_matches:
+        next_game = future_matches[0]
 
     if next_game:
-        print(f"[fetch] Next game: {short(next_game['home'])}-{short(next_game['away'])} (Live: {is_live})")
-    return finished, next_game, is_live
+        print(f"[fetch] Next game: {short(next_game['home'])}-{short(next_game['away'])}")
+    if live_game:
+        print(f"[fetch] Live game in progress: {short(live_game['home'])}-{short(live_game['away'])}")
+    return finished, next_game, live_game
 
 
 def fetch_games():
@@ -434,14 +436,20 @@ def build_ticker_text(result_strings):
         return ""
     return "RECENT RESULTS: " + " / ".join(result_strings)
 
-def build_next_game_text(next_game, is_live=False):
-    if not next_game:
-        return None
-    if is_live:
-        hs = next_game.get("home_score", 0)
-        as_ = next_game.get("away_score", 0)
-        return f"LIVE: {short(next_game['home'])} {hs}-{as_} {short(next_game['away'])}"
-    return f"{short(next_game['home'])}-{short(next_game['away'])} UP NEXT"
+def build_next_game_text(next_game, live_game=None):
+    next_game_part = ""
+    if next_game:
+        next_game_part = f"{short(next_game['home'])}-{short(next_game['away'])} UP NEXT"
+
+    if live_game:
+        hs = live_game.get("home_score", 0)
+        as_ = live_game.get("away_score", 0)
+        live_part = f"LIVE: {short(live_game['home'])} {hs}-{as_} {short(live_game['away'])}"
+        if next_game_part:
+            return f"{next_game_part}|{live_part}"
+        return f"TBD UP NEXT|{live_part}"
+
+    return next_game_part if next_game_part else None
 
 
 def push_meta_to_supabase(ticker_text, next_game_text=None):
@@ -497,10 +505,10 @@ def main():
     print(f"  {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     print(f"{'='*60}\n")
 
-    finished, next_game, is_live = fetch_games()
+    finished, next_game, live_game = fetch_games()
     print(f"[fetch] {len(finished)} finished group-stage matches found.\n")
 
-    next_game_text = build_next_game_text(next_game, is_live)
+    next_game_text = build_next_game_text(next_game, live_game)
     if next_game_text:
         print(f"[next]  {next_game_text}")
 

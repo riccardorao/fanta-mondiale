@@ -97,7 +97,7 @@
     }
 
     .hud-item.blink {
-      animation: blink 1s steps(2) infinite
+      animation: blink 2s steps(2) infinite
     }
 
     @keyframes blink {
@@ -975,18 +975,19 @@
         const hudLeft = document.getElementById('hud-left');
         const hudRight = document.getElementById('hud-right');
         if (hudLeft && hudRight) {
-          if (meta.next_game_text.includes('LIVE:')) {
-            const scorePart = meta.next_game_text.replace('LIVE:', '').trim();
-            hudLeft.textContent = scorePart;
-            hudLeft.classList.add('blink');
+          const parts = meta.next_game_text.split('|');
+          if (parts.length === 2) {
+            const scorePart = parts[1].replace('LIVE:', '').trim();
+            hudLeft.textContent = parts[0];
+            hudLeft.classList.remove('blink');
 
-            hudRight.textContent = 'LIVE';
+            hudRight.textContent = scorePart;
             hudRight.classList.add('blink');
           } else {
             hudLeft.textContent = 'WELCOME BACK';
             hudLeft.classList.remove('blink');
 
-            hudRight.textContent = meta.next_game_text;
+            hudRight.textContent = parts[0];
             hudRight.classList.remove('blink');
           }
         }
