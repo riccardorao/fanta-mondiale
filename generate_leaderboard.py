@@ -20,6 +20,7 @@ SCORING (per the agreed rules):
     cells are populated in the Model (gated; 0 until then).
 """
 import os, glob, json, datetime
+from collections import Counter
 import openpyxl
 from openpyxl.utils import column_index_from_string as ci
 
@@ -236,7 +237,7 @@ def score_file(path, matches, positions, ko_truth=None, standings_truth=None, to
 
     # top scorer
     if topscorer_player_truth:
-        pred_player = norm(ws.cell(44, ci("AJ")).value)
+        pred_player = norm(ws.cell(44, ci("AI")).value)
         if pred_player == topscorer_player_truth:
             bd["Top Scorer"] += POINTS["topscorer_player"]
 
@@ -251,8 +252,22 @@ def score_file(path, matches, positions, ko_truth=None, standings_truth=None, to
 
     # predicted winner from cell AJ35
     predicted_winner = norm(ws.cell(35, ci("AJ")).value)
+    if predicted_winner == "WINNER":
+        predicted_winner = None
+
+    # predicted top scorer from cell AI44
+    predicted_scorer = ws.cell(44, ci("AI")).value
+    if predicted_scorer:
+        s_norm = norm(predicted_scorer)
+        if s_norm == "PLAYER NAME":
+            predicted_scorer = None
+        else:
+            predicted_scorer = " ".join([w.capitalize() for w in str(predicted_scorer).strip().split()])
+    else:
+        predicted_scorer = None
+
     total = sum(bd.values())
-    return total, bd, predicted_winner
+    return total, bd, predicted_winner, predicted_scorer
 
 
 def compute_leaderboard_data(model_path, pron_dir):
@@ -262,23 +277,35 @@ def compute_leaderboard_data(model_path, pron_dir):
     matches, positions, ko_truth, standings_truth, topscorer_player_truth, topscorer_goals_truth = read_truth(wsM)
 
     rows = []
+    predicted_winners = []
+    predicted_scorers = []
     for f in sorted(glob.glob(os.path.join(pron_dir, "FIFAWC2026_*.xlsx"))):
         name = os.path.basename(f).replace("FIFAWC2026_", "").replace(".xlsx", "")
         display = FULL_NAMES.get(name, name)
         try:
-            total, bd, predicted_winner = score_file(
+            total, bd, pred_w, pred_s = score_file(
                 f, matches, positions, ko_truth, standings_truth, 
                 topscorer_player_truth, topscorer_goals_truth
             )
             rows.append({
                 "name": display, "key": name, "total": total, "bd": bd, 
-                "predicted_winner": predicted_winner
+                "predicted_winner": pred_w
             })
+            if pred_w:
+                predicted_winners.append(pred_w)
+            if pred_s:
+                predicted_scorers.append(pred_s)
         except Exception as ex:
             rows.append({
                 "name": display, "key": name, "total": -1, "bd": {}, 
                 "error": str(ex), "predicted_winner": None
             })
+
+    winner_counts = Counter(predicted_winners).most_common(5)
+    scorer_counts = Counter(predicted_scorers).most_common(5)
+
+    stats_winners = [{"team": w, "count": count} for w, count in winner_counts]
+    stats_scorers = [{"player": s, "count": count} for s, count in scorer_counts]
 
     # ---- maximum points ANYONE could have earned up to the current round ----
     max_possible = len(matches) * (2 * POINTS["score_per_team"] + POINTS["outcome"])
@@ -308,9 +335,13 @@ def compute_leaderboard_data(model_path, pron_dir):
         "matches_played": len(matches),
         "groups_complete": len(positions),
         "participants": len(rows),
-        "max_total": max((r["total"] for r in rows), default=0) or 1,
+        "max_total": max((r["total"] for r in rows if r["total"] >= 0), default=0) or 1,
         "max_possible": max_possible,
         "tournament_max": tournament_max(POINTS),
+        "stats": {
+            "winners": stats_winners,
+            "scorers": stats_scorers
+        }
     }
     return rows, meta
 
@@ -351,6 +382,7 @@ TEMPLATE = r"""<!DOCTYPE html>
     --gold:#FFD700; --silver:#C0C0C0; --bronze:#CD7F32;
     --ink:#050014;
   }
+  html{background:#000}
   *{box-sizing:border-box;margin:0;padding:0;border-radius:0!important}
   body{
     font-family:'VT323',monospace;font-size:18px;
@@ -413,7 +445,7 @@ TEMPLATE = r"""<!DOCTYPE html>
     background:rgba(5,0,20,0.65);
     transform:translateY(20px);opacity:0;animation:rise .6s forwards}
   .pod .medal{font-size:38px;margin-bottom:6px}
-  .pod .pname{font-family:'Press Start 2P',monospace;font-size:10px;color:var(--neon-cyan);text-transform:uppercase;letter-spacing:1px;margin:6px 0}
+  .pod .pname{font-family:'Press Start 2P',monospace;font-size:clamp(12px, 3.2vw, 16px);color:var(--neon-cyan);text-transform:uppercase;letter-spacing:1px;margin:6px 0;line-height:1.3}
   .pod .ppts{font-family:'Press Start 2P',monospace;font-size:26px;letter-spacing:1px;font-weight:900;margin:8px 0;color:var(--neon-green)}
   .pod .plabel{display:none}
   .pod-rank{font-family:'Press Start 2P',monospace;font-size:13px;margin-top:4px;letter-spacing:1px}
@@ -459,6 +491,30 @@ TEMPLATE = r"""<!DOCTYPE html>
     .ball{display:none}
     .rmain{grid-template-columns:40px 1fr auto 28px}
   }
+  /* Tabs */
+  .tabs{display:flex;justify-content:center;gap:20px;margin:20px 0}
+  .tab-btn{font-family:'Press Start 2P',monospace;font-size:12px;background:rgba(5,0,20,0.7);color:var(--neon-cyan);border:2px solid var(--neon-cyan);padding:10px 20px;cursor:pointer;transition:all .2s;text-shadow:0 0 5px var(--neon-cyan);box-shadow:0 0 0 2px var(--ink),0 0 0 4px var(--neon-pink)}
+  .tab-btn:hover{color:var(--neon-green);border-color:var(--neon-green);text-shadow:0 0 5px var(--neon-green);box-shadow:0 0 0 2px var(--ink),0 0 0 4px var(--neon-green)}
+  .tab-btn.active{color:var(--neon-yellow);border-color:var(--neon-yellow);text-shadow:0 0 8px var(--neon-yellow);box-shadow:0 0 0 2px var(--ink),0 0 0 4px var(--neon-yellow),0 0 15px rgba(255,232,0,.4)}
+
+  /* Stats Panel */
+  .stats-container{display:flex;flex-direction:column;gap:30px;margin-top:20px}
+  .stats-card{background:rgba(5,0,20,0.65);border:2px solid var(--neon-cyan);box-shadow:0 0 0 3px var(--ink),0 0 0 5px var(--neon-pink),0 0 16px rgba(0,255,255,0.35);padding:24px 20px}
+  .stats-title{font-family:'Press Start 2P',monospace;font-size:14px;color:var(--neon-yellow);text-shadow:0 0 8px var(--neon-yellow);text-align:center;margin-bottom:24px;letter-spacing:1px}
+  .stats-grid-winners{display:flex;justify-content:center;gap:16px;flex-wrap:wrap}
+  .winner-box{flex:1;min-width:150px;max-width:220px;border:1px solid var(--neon-cyan);background:rgba(0,0,0,0.4);padding:16px 10px;text-align:center}
+  .winner-box .w-rank{font-family:'Press Start 2P',monospace;font-size:11px;color:var(--neon-pink);margin-bottom:8px}
+  .winner-box .w-flag{font-size:44px;margin-bottom:8px}
+  .winner-box .w-team{font-family:'Press Start 2P',monospace;font-size:11px;color:var(--neon-cyan);text-transform:uppercase;margin-bottom:6px}
+  .winner-box .w-count{font-size:18px;color:var(--neon-green);font-weight:bold}
+  .stats-scorers-list{display:flex;flex-direction:column;gap:12px;max-width:600px;margin:0 auto}
+  .scorer-row{display:grid;grid-template-columns:30px 1fr auto;align-items:center;gap:12px;background:rgba(0,0,0,0.3);border:1px solid var(--neon-cyan);padding:10px 16px}
+  .scorer-rank{font-family:'Press Start 2P',monospace;font-size:11px;color:var(--neon-pink)}
+  .scorer-info{display:flex;flex-direction:column}
+  .scorer-name{font-family:'Press Start 2P',monospace;font-size:10px;color:var(--neon-cyan);text-transform:uppercase}
+  .scorer-bar-wrap{height:8px;background:#000;border:1px solid var(--neon-cyan);margin-top:6px;width:100%}
+  .scorer-bar{height:100%;background:var(--neon-green);box-shadow:0 0 8px var(--neon-green);width:0;transition:width 1s ease-out}
+  .scorer-votes{font-family:'Press Start 2P',monospace;font-size:11px;color:var(--neon-yellow);text-align:right}
 </style>
 </head>
 <body>
@@ -474,9 +530,19 @@ TEMPLATE = r"""<!DOCTYPE html>
     <div class="sub" id="sub"></div>
     <div class="stats" id="stats"></div>
   </header>
-  <div class="section-label">★ HIGH SCORE ★</div>
-  <div class="podium" id="podium"></div>
-  <div class="board" id="board"></div>
+  <div class="tabs">
+    <button id="tab-leaderboard" class="tab-btn active" onclick="switchTab('leaderboard')">▶ LEADERBOARD</button>
+    <button id="tab-stats" class="tab-btn" onclick="switchTab('stats')">▷ STATISTICS</button>
+  </div>
+  <div id="view-leaderboard">
+    <div class="section-label">★ HIGH SCORE ★</div>
+    <div class="podium" id="podium"></div>
+    <div class="board" id="board"></div>
+  </div>
+  <div id="view-stats" style="display: none;">
+    <div class="section-label">★ PREDICTION STATISTICS ★</div>
+    <div class="stats-container" id="stats-container"></div>
+  </div>
 
   <footer id="foot"></footer>
 </div>
@@ -548,9 +614,108 @@ function getFlagEmoji(country) {
   return match ? COUNTRY_FLAGS[match] : '🌍';
 }
 
+function switchTab(tab) {
+  const btnLeaderboard = document.getElementById('tab-leaderboard');
+  const btnStats = document.getElementById('tab-stats');
+  const viewLeaderboard = document.getElementById('view-leaderboard');
+  const viewStats = document.getElementById('view-stats');
+  
+  if (tab === 'leaderboard') {
+    btnLeaderboard.classList.add('active');
+    btnLeaderboard.innerText = '▶ LEADERBOARD';
+    btnStats.classList.remove('active');
+    btnStats.innerText = '▷ STATISTICS';
+    viewLeaderboard.style.display = 'block';
+    viewStats.style.display = 'none';
+  } else {
+    btnLeaderboard.classList.remove('active');
+    btnLeaderboard.innerText = '▷ LEADERBOARD';
+    btnStats.classList.add('active');
+    btnStats.innerText = '▶ STATISTICS';
+    viewLeaderboard.style.display = 'none';
+    viewStats.style.display = 'block';
+    
+    setTimeout(() => {
+      document.querySelectorAll('.scorer-bar').forEach(b => b.style.width = b.dataset.w + '%');
+    }, 50);
+  }
+}
+
+function renderStats(meta, totalParticipants) {
+  const container = document.getElementById('stats-container');
+  if (!meta.stats || !meta.stats.winners || !meta.stats.scorers) {
+    container.innerHTML = `<div class="state">NO STATISTICS UPLOADED YET</div>`;
+    return;
+  }
+  
+  const winners = meta.stats.winners || [];
+  const scorers = meta.stats.scorers || [];
+  
+  // Render Winners
+  let winnersHtml = '';
+  if (winners.length > 0) {
+    winnersHtml = `
+      <div class="stats-card">
+        <div class="stats-title">★ MOST PREDICTED CHAMPIONS ★</div>
+        <div class="stats-grid-winners">
+    `;
+    
+    winners.slice(0, 3).forEach((w, i) => {
+      const rankLabel = RANK_LABEL[i] || `${i+1}TH`;
+      const flag = getFlagEmoji(w.team);
+      winnersHtml += `
+        <div class="winner-box">
+          <div class="w-rank">${rankLabel}</div>
+          <div class="w-flag">${flag}</div>
+          <div class="w-team">${w.team}</div>
+          <div class="w-count">${w.count} ${w.count === 1 ? 'VOTE' : 'VOTES'}</div>
+        </div>
+      `;
+    });
+    
+    winnersHtml += `
+        </div>
+      </div>
+    `;
+  }
+  
+  // Render Scorers
+  let scorersHtml = '';
+  if (scorers.length > 0) {
+    scorersHtml = `
+      <div class="stats-card">
+        <div class="stats-title">★ MOST PREDICTED TOP SCORERS ★</div>
+        <div class="stats-scorers-list">
+    `;
+    
+    scorers.slice(0, 5).forEach((s, i) => {
+      const pct = Math.round((s.count / totalParticipants) * 100);
+      scorersHtml += `
+        <div class="scorer-row">
+          <div class="scorer-rank">#${i+1}</div>
+          <div class="scorer-info">
+            <span class="scorer-name">${s.player}</span>
+            <div class="scorer-bar-wrap">
+              <div class="scorer-bar" data-w="${pct}"></div>
+            </div>
+          </div>
+          <div class="scorer-votes">${s.count} ${s.count === 1 ? 'VOTE' : 'VOTES'} (${pct}%)</div>
+        </div>
+      `;
+    });
+    
+    scorersHtml += `
+        </div>
+      </div>
+    `;
+  }
+  
+  container.innerHTML = winnersHtml + scorersHtml;
+}
+
 // footer
 document.getElementById('foot').innerHTML =
-  `LIVE FROM SUPABASE · UPDATED ${META.generated}`;
+  `© FANTAMONDIALE 2026 - ALL RIGHTS RESERVED<br>UPDATED ${META.generated}`;
 
 // podium (top 3)
 const podEl = document.getElementById('podium');
@@ -608,6 +773,7 @@ function build(list){
   });
 }
 build(DATA);
+renderStats(META, DATA.length);
 </script>
 </body>
 </html>"""
