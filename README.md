@@ -1,8 +1,8 @@
-# Fantamondiale — FIFA World Cup 2026 Leaderboard
+# TOTOMONDIALE — FIFA World Cup 2026 Leaderboard
 
 Live leaderboard powered by **Excel + Python + Supabase + Vercel**.
 
-**Live URL:** [https://fantaid.vercel.app](https://fantaid.vercel.app)
+**Live URL:** [https://toto-mondiale-26.vercel.app](https://toto-mondiale-26.vercel.app)
 
 ---
 
