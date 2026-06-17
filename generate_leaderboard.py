@@ -240,65 +240,61 @@ TEMPLATE = r"""<!DOCTYPE html>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>FIFA WC 2026 · Fantamondiale Leaderboard</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;500;600;700;800;900&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
   :root{
-    --bg:#0a4d2f;
-    --accent:#00ff00;
-    --txt:#ffffff;
-    --dim:#a8d5ba;
-    --border:#00ff00;
+    --field:#00aa00;
+    --txt:#00ff00; --line:#00ff00; --shadow:#000;
   }
   *{box-sizing:border-box;margin:0;padding:0}
-  html{background:#000}
   body{
-    font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
-    background:linear-gradient(135deg,var(--bg) 0%,#0d5f39 100%);
-    color:var(--txt);min-height:100vh;padding:40px 20px 60px;
+    font-family:'Press Start 2P',monospace;
+    background:var(--field);
+    color:var(--txt);min-height:100vh;padding:20px 16px 60px;
+    text-shadow:2px 2px 0 var(--shadow);
   }
-  .wrap{max-width:1100px;margin:0 auto}
-  header{text-align:center;margin-bottom:40px;position:relative}
-  h1{font-family:'Press Start 2P',monospace;font-size:clamp(28px,6vw,52px);line-height:1.1;
-    color:var(--accent);letter-spacing:3px;font-weight:900;
-    text-shadow:0 0 20px var(--accent),2px 2px 0 #000;margin-bottom:12px}
+  .wrap{max-width:1000px;margin:0 auto}
+  header{text-align:center;margin-bottom:30px;position:relative}
+  h1{font-size:clamp(24px,8vw,48px);line-height:1.1;
+    color:var(--txt);letter-spacing:2px;font-weight:900;text-shadow:3px 3px 0 var(--shadow)}
   .sub{display:none}
   .stats{display:none}
-  .podium{display:flex;gap:24px;justify-content:center;align-items:flex-end;margin:50px 0 40px;flex-wrap:wrap}
-  .pod{flex:1;min-width:180px;max-width:240px;padding:24px 20px;text-align:center;
-    border:2px solid var(--border);background:rgba(10,77,47,0.6);backdrop-filter:blur(8px);
-    border-radius:8px;transform:translateY(30px);opacity:0;animation:rise .7s ease-out forwards}
-  .pod .medal{font-size:44px;margin-bottom:8px}
-  .pod .pname{font-weight:700;font-size:14px;margin:8px 0;color:var(--dim);letter-spacing:0.5px}
-  .pod .ppts{font-family:'Press Start 2P',monospace;font-size:32px;letter-spacing:2px;font-weight:900;margin:12px 0;color:var(--accent);text-shadow:0 0 10px var(--accent)}
+  .podium{display:flex;gap:20px;justify-content:center;align-items:flex-end;margin:30px 0 30px;flex-wrap:wrap}
+  .pod{flex:1;min-width:160px;max-width:200px;padding:16px 12px;text-align:center;
+    border:4px solid var(--line);background:var(--field);
+    transform:translateY(20px);opacity:0;animation:rise .6s forwards}
+  .pod .medal{font-size:36px;margin-bottom:4px}
+  .pod .pname{font-weight:900;font-size:10px;margin:4px 0;color:var(--txt);line-height:1.2}
+  .pod .ppts{font-size:28px;letter-spacing:1px;font-weight:900;margin:6px 0}
   .pod .plabel{display:none}
   @keyframes rise{to{transform:translateY(0);opacity:1}}
-  .board{display:flex;flex-direction:column;gap:12px;margin-top:12px}
-  .row{background:rgba(10,77,47,0.4);border:2px solid var(--border);border-radius:8px;overflow:hidden;
-    opacity:0;transform:translateY(12px);animation:fade .5s ease-out forwards;transition:background .2s}
-  .row:hover{background:rgba(10,77,47,0.6)}
+  .board{display:flex;flex-direction:column;gap:8px;margin-top:8px}
+  .row{background:var(--field);border:3px solid var(--line);overflow:hidden;
+    opacity:0;transform:translateY(8px);animation:fade .5s forwards}
   @keyframes fade{to{opacity:1;transform:none}}
-  .rmain{display:grid;grid-template-columns:48px 1fr auto 36px;align-items:center;gap:16px;padding:16px 20px;cursor:pointer;transition:background .2s}
-  .rank{font-family:'Press Start 2P',monospace;font-size:16px;font-weight:900;color:var(--accent);text-align:center;text-shadow:0 0 8px var(--accent)}
-  .who{font-weight:600;font-size:15px;color:var(--txt)}
-  .barwrap{height:14px;background:rgba(0,0,0,0.4);border:1px solid var(--border);border-radius:4px;margin-top:8px;overflow:hidden;width:min(500px,48vw)}
-  .bar{height:100%;width:0;transition:width 1.2s cubic-bezier(.25,.8,.25,1);box-shadow:0 0 12px currentColor}
-  .pts{font-family:'Press Start 2P',monospace;font-size:16px;font-weight:900;text-align:right;color:var(--accent);text-shadow:0 0 8px var(--accent)}
-  .chev{color:var(--accent);transition:transform .25s;text-align:center;font-weight:700;font-size:12px;opacity:0.7}
+  .rmain{display:grid;grid-template-columns:40px 1fr auto 32px;align-items:center;gap:10px;padding:12px 14px;cursor:pointer}
+  .rmain:hover{filter:brightness(1.2)}
+  .rank{font-size:14px;font-weight:900;color:var(--txt);text-align:center;text-shadow:1px 1px 0 var(--shadow)}
+  .who{font-weight:900;font-size:11px;color:var(--txt);text-shadow:1px 1px 0 var(--shadow)}
+  .barwrap{height:12px;background:var(--shadow);border:2px solid var(--line);margin-top:6px;overflow:hidden;width:min(380px,42vw)}
+  .bar{height:100%;width:0;transition:width 1.1s cubic-bezier(.2,.8,.2,1)}
+  .pts{font-size:14px;font-weight:900;text-align:right;color:var(--txt);text-shadow:1px 1px 0 var(--shadow)}
+  .chev{color:var(--txt);transition:transform .25s;text-align:center;font-weight:900;font-size:10px}
   .row.open .chev{transform:rotate(180deg)}
   .detail{max-height:0;overflow:hidden;transition:max-height .35s ease}
-  .row.open .detail{max-height:400px}
-  .cats{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;padding:20px;background:rgba(0,0,0,0.3);border-top:2px solid var(--border)}
+  .row.open .detail{max-height:380px}
+  .cats{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;padding:14px;background:var(--field);border-top:3px solid var(--line)}
   @media (min-width:700px){
     .cats{grid-template-columns:repeat(6,1fr)}
   }
-  .cat{background:rgba(10,77,47,0.5);border:1px solid var(--border);border-radius:6px;padding:14px;text-align:center;transition:background .2s}
-  .cat:hover{background:rgba(10,77,47,0.8)}
-  .cat .cl{font-size:9px;color:var(--dim);text-transform:uppercase;letter-spacing:1px;font-weight:600;margin-bottom:6px;display:block}
-  .cat .cv{font-family:'Press Start 2P',monospace;font-size:16px;color:var(--accent);font-weight:900;text-shadow:0 0 6px var(--accent)}
-  .cat.zero{opacity:.3}
-  .ctx{padding:12px 20px;font-size:11px;color:var(--dim);background:rgba(0,0,0,0.3);border-top:1px solid var(--border);letter-spacing:0.3px}
-  footer{text-align:center;color:var(--dim);font-size:11px;margin-top:40px;line-height:1.6;letter-spacing:0.5px;font-weight:500}
+  .cat{background:var(--field);border:2px solid var(--line);padding:10px;text-align:center}
+  .cat .cl{font-size:7px;color:var(--txt);text-transform:uppercase;letter-spacing:.04em;font-weight:700;text-shadow:.5px .5px 0 var(--shadow)}
+  .cat .cv{font-size:14px;margin-top:4px;color:var(--txt);font-weight:900;text-shadow:1px 1px 0 var(--shadow)}
+  .cat.zero{opacity:.4}
+  .ctx{padding:8px 14px;font-size:8px;color:var(--txt);background:var(--field);border-top:2px solid var(--line);text-shadow:.5px .5px 0 var(--shadow)}
+  footer{text-align:center;color:var(--txt);font-size:7px;margin-top:30px;line-height:1.5;text-shadow:.5px .5px 0 var(--shadow)}
+  .search{display:none}
   @media (max-width:699px){
-    .podium{flex-direction:column;align-items:stretch;gap:16px}
+    .podium{flex-direction:column;align-items:stretch;gap:14px}
     .pod{max-width:100%}
   }
 </style>
@@ -323,44 +319,56 @@ const META = __META__;
 const CATS = __CATS__;
 const maxT = Math.max(1, META.max_possible || 1);
 
-document.getElementById('foot').innerHTML = `LIVE · UPDATED ${META.generated} · ${META.participants||0} PLAYERS`;
+// footer
+document.getElementById('foot').innerHTML =
+  `LIVE FROM SUPABASE · UPDATED ${META.generated}`;
 
+// podium (top 3)
 const podEl = document.getElementById('podium');
-const medal=['🥇','🥈','🥉'];
-podEl.innerHTML='';
+const medal = ['🥇','🥈','🥉'];
 DATA.slice(0,3).forEach((d,i)=>{
-  const el=document.createElement('div'); el.className='pod';
-  el.innerHTML=`<div class="medal">${medal[i]}</div><div class="pname">${d.name}</div><div class="ppts">${d.total}</div>`;
+  const el=document.createElement('div');
+  el.className='pod';
+  el.innerHTML=`<div class="medal">${medal[i]}</div>
+    <div class="pname">${d.name}</div>
+    <div class="ppts">${d.total}</div>`;
   podEl.appendChild(el);
 });
 
+// full board
 const board=document.getElementById('board');
 function build(list){
   board.innerHTML='';
   const maxScore = Math.max(...list.map(x => x.total || 0), 1);
   list.forEach((d,idx)=>{
-    const row=document.createElement('div'); row.className='row'; row.style.animationDelay=(idx*0.03)+'s';
-    const pctN = Math.round(100*d.total/maxT);
-    const pctScore = d.total / maxScore;
-    const hue = Math.round(120 * pctScore);
-    const barColor = `hsl(${hue}, 100%, 50%)`;
-    const cats=CATS.map(([k,label])=>{
-      const v=d[k]||0;
-      return `<div class="cat ${v===0?'zero':''}"><span class="cl">${label}</span><div class="cv">${v}</div></div>`;
+    const row=document.createElement('div');
+    row.className='row'; row.style.animationDelay=(idx*0.02)+'s';
+    const catsHtml = CATS.map(c=>{
+      const v=(d.bd&&d.bd[c])||0;
+      return `<div class="cat ${v===0?'zero':''}"><div class="cl">${c}</div>
+              <div class="cv">${v}</div></div>`;
     }).join('');
+    const pctScore = d.total / maxScore;
+    const barColor = `hsl(${120 * pctScore}, 100%, 50%)`;
+    const pctN = Math.round(100*d.total/maxT);
     row.innerHTML=`
       <div class="rmain">
         <div class="rank">${d.rank}</div>
         <div><div class="who">${d.name}</div>
           <div class="barwrap"><div class="bar" style="background:${barColor}" data-w="${pctN}"></div></div></div>
         <div class="pts">${d.total}</div>
-        <div class="chev">▸</div>
+        <div class="chev">V</div>
       </div>
-      <div class="detail"><div class="cats">${cats}</div><div class="ctx">${d.total} / ${META.max_possible||0} · ${pctN}%</div></div>`;
+      <div class="detail">
+        <div class="cats">${catsHtml}</div>
+        <div class="ctx">${d.total}/${META.max_possible||0} PTS · ${pctN}%</div>
+      </div>`;
     row.querySelector('.rmain').onclick=()=>row.classList.toggle('open');
     board.appendChild(row);
   });
-  requestAnimationFrame(()=>document.querySelectorAll('.bar').forEach(b=>b.style.width=b.dataset.w+'%'));
+  requestAnimationFrame(()=>{
+    document.querySelectorAll('.bar').forEach(b=>b.style.width=b.dataset.w+'%');
+  });
 }
 build(DATA);
 </script>
