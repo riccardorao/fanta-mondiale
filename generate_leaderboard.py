@@ -240,33 +240,33 @@ TEMPLATE = r"""<!DOCTYPE html>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>FIFA WC 2026 · Fantamondiale Leaderboard</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Rubik:wght@400;600;800;900&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rubik:wght@400;600;800;900&display=swap');
   :root{
-    --field:#e7f5dd; --field2:#d7ecc4; --ink:#0f2a1a; --card:#ffffff; --card2:#fff8dc;
-    --gold:#ffcc00; --goldDark:#9c7a00; --silver:#c8d2cc; --silverDark:#5b6b63;
-    --bronze:#cd7f32; --bronzeDark:#7a4a18;
-    --green:#1f9d4d; --green2:#127a38;
+    --field:#2d8659;
     --txt:#0f2a1a; --dim:#516a5a; --line:#0f2a1a;
-    --accent:#1f9d4d; --accent2:#ffcc00;
+    --goldDark:#9c7a00; --silverDark:#5b6b63; --bronzeDark:#7a4a18;
   }
   *{box-sizing:border-box;margin:0;padding:0}
   body{
     font-family:'Rubik',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
-    background:repeating-linear-gradient(90deg,var(--field) 0 64px,var(--field2) 64px 128px);
+    background:
+      repeating-linear-gradient(0deg, white 0, white 2px, transparent 2px, transparent 40px),
+      repeating-linear-gradient(90deg, white 0, white 2px, transparent 2px, transparent 60px),
+      var(--field);
     color:var(--txt); min-height:100vh; padding:32px 16px 80px;
     -webkit-font-smoothing:antialiased;
   }
   .wrap{max-width:1180px;margin:0 auto}
   header{text-align:center;margin-bottom:36px;position:relative}
-  .kicker{font-weight:800;letter-spacing:.32em;font-size:12px;color:var(--green2);
+  .kicker{font-weight:800;letter-spacing:.32em;font-size:12px;color:#0a4d2f;
     text-transform:uppercase;margin-bottom:14px}
-  h1{font-family:'Press Start 2P',monospace;font-size:clamp(18px,5.2vw,40px);line-height:1.4;
-    color:var(--gold);text-shadow:3px 3px 0 var(--ink);letter-spacing:1px}
-  .sub{color:var(--dim);margin-top:16px;font-size:15px;font-weight:600}
+  h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(32px,7vw,56px);line-height:1.2;
+    color:var(--txt);letter-spacing:2px;font-weight:900}
+  .sub{display:none}
   .stats{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:22px}
   .pill{background:#fff;border:3px solid var(--line);border-radius:10px;
     padding:9px 18px;font-size:13px;color:var(--dim);font-weight:700;box-shadow:3px 3px 0 var(--line)}
-  .pill b{color:var(--green2)}
+  .pill b{color:#0a4d2f}
 
   /* podium */
   .podium{display:flex;gap:18px;justify-content:center;align-items:flex-end;
@@ -276,9 +276,9 @@ TEMPLATE = r"""<!DOCTYPE html>
     background:#fff;box-shadow:5px 5px 0 var(--line);
     transform:translateY(24px);opacity:0;animation:rise .7s forwards}
   .pod .medal{font-size:40px;margin-bottom:6px}
-  .pod .pname{font-weight:800;font-size:18px;margin:6px 0;color:var(--ink)}
-  .pod .ppts{font-family:'Press Start 2P',monospace;font-size:26px;letter-spacing:-1px}
-  .pod .plabel{font-size:11px;color:var(--dim);text-transform:uppercase;letter-spacing:.12em;font-weight:700}
+  .pod .pname{font-weight:800;font-size:18px;margin:6px 0;color:var(--txt)}
+  .pod .ppts{font-family:'Bebas Neue',sans-serif;font-size:36px;letter-spacing:1px;font-weight:900}
+  .pod .plabel{display:none}
   .pod.gold{background:linear-gradient(180deg,#fff6c7,#fff);border-color:var(--goldDark);
     box-shadow:5px 5px 0 var(--goldDark);padding-top:34px}
   .pod.gold .ppts{color:var(--goldDark)} .pod.silver .ppts{color:var(--silverDark)}
@@ -306,14 +306,13 @@ TEMPLATE = r"""<!DOCTYPE html>
   .rmain{display:grid;grid-template-columns:56px 1fr auto 40px;align-items:center;
     gap:14px;padding:16px 18px;cursor:pointer;transition:background .15s}
   .rmain:hover{background:#fbf8e8}
-  .rank{font-family:'Press Start 2P',monospace;font-size:18px;color:var(--dim);text-align:center}
+  .rank{font-family:'Bebas Neue',sans-serif;font-size:20px;font-weight:900;color:var(--dim);text-align:center}
   .top1 .rank{color:var(--goldDark)} .top2 .rank{color:var(--silverDark)} .top3 .rank{color:var(--bronzeDark)}
-  .who{font-weight:800;font-size:17px;color:var(--ink)}
+  .who{font-weight:800;font-size:17px;color:var(--txt)}
   .barwrap{height:10px;background:#eef3ec;border:2px solid var(--line);border-radius:5px;margin-top:8px;overflow:hidden;width:min(480px,46vw)}
-  .bar{height:100%;background:linear-gradient(90deg,var(--green),var(--gold));
+  .bar{height:100%;background:linear-gradient(90deg,#dc2626 0%,#f59e0b 50%,#16a34a 100%);
     width:0;transition:width 1.1s cubic-bezier(.2,.8,.2,1)}
-  .top1 .bar{background:linear-gradient(90deg,var(--gold),#ffe27a)}
-  .pts{font-family:'Press Start 2P',monospace;font-size:18px;text-align:right;color:var(--green2)}
+  .pts{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:.5px;font-weight:900;text-align:right;color:#0a4d2f}
   .chev{color:var(--dim);transition:transform .25s;text-align:center;font-weight:900}
   .row.open .chev{transform:rotate(180deg)}
   .detail{max-height:0;overflow:hidden;transition:max-height .35s ease;
@@ -325,13 +324,13 @@ TEMPLATE = r"""<!DOCTYPE html>
   }
   .cat{background:#fff;border:2px solid var(--line);border-radius:8px;padding:12px}
   .cat .cl{font-size:10.5px;color:var(--dim);text-transform:uppercase;letter-spacing:.06em;font-weight:700}
-  .cat .cv{font-family:'Press Start 2P',monospace;font-size:17px;margin-top:6px;color:var(--green2)}
+  .cat .cv{font-family:'Bebas Neue',sans-serif;font-size:20px;margin-top:6px;color:#0a4d2f;letter-spacing:.5px}
   .cat.zero{opacity:.45}
   footer{text-align:center;color:var(--dim);font-size:12.5px;margin-top:44px;line-height:1.7;font-weight:600}
-  .search{display:block;margin:28px auto 6px;width:min(420px,90%);background:#fff;
-    border:3px solid var(--line);color:var(--ink);border-radius:10px;padding:12px 18px;
-    font-size:15px;outline:none;font-weight:600;box-shadow:3px 3px 0 var(--line)}
-  .search:focus{border-color:var(--green)}
+  .search{display:block;margin:28px auto 6px;width:min(600px,90%);background:#fff;border:3px solid var(--line);
+    color:var(--txt);border-radius:10px;padding:14px 18px;font-size:16px;outline:none;font-weight:600;box-shadow:3px 3px 0 var(--line)}
+  .search::placeholder{color:#999}
+  .search:focus{border-color:#0a4d2f}
 </style>
 </head>
 <body>
@@ -344,7 +343,7 @@ TEMPLATE = r"""<!DOCTYPE html>
   </header>
 
   <div class="podium" id="podium"></div>
-  <input class="search" id="search" placeholder="Search a participant…"/>
+  <input class="search" id="search" placeholder="🔍 Search"/>
   <div class="board" id="board"></div>
 
   <footer id="foot"></footer>
@@ -357,14 +356,8 @@ const CATS = __CATS__;
 const maxT = Math.max(1, META.max_possible || 1);
 
 // header meta
-document.getElementById('sub').textContent =
-  `${META.participants} participants · ${META.matches_played} group matches scored · `
-  + `${META.groups_complete} groups finalised`;
 document.getElementById('stats').innerHTML =
-  `<span class="pill">Updated <b>${META.generated}</b></span>`
-  + `<span class="pill">Leader <b>${DATA[0]?DATA[0].total:0}</b> / ${META.max_possible} so far</span>`
-  + `<span class="pill">Tournament max <b>${META.tournament_max}</b> pts</span>`
-  + `<span class="pill"><b>${META.participants}</b> playing</span>`;
+  `<span class="pill">Updated <b>${META.generated}</b></span>`;
 document.getElementById('foot').innerHTML =
   `Auto-generated from the Pronostici folder · Truth from FIFAWC2026_Model.xlsx<br>`
   + `Group scoring live · knockouts & standings activate as results are entered`;
@@ -376,7 +369,6 @@ DATA.slice(0,3).forEach((d,i)=>{
   const el=document.createElement('div');
   el.className='pod '+cls[i];
   el.innerHTML=`<div class="medal">${medal[i]}</div>
-    <div class="plabel">#${d.rank}</div>
     <div class="pname">${d.name}</div>
     <div class="ppts">${d.total}</div>
     <div class="plabel">points</div>`;
@@ -407,7 +399,7 @@ function build(list){
       </div>
       <div class="detail">
         <div class="cats">${catsHtml}</div>
-        <div style="padding:0 16px 16px;font-size:12px;color:var(--dim)">
+        <div style="padding:0 18px 18px;font-size:12px;color:var(--dim)">
           ${d.total} of ${META.tournament_max} tournament points
           (${(100*d.total/META.tournament_max).toFixed(1)}%) ·
           ${d.total} of ${META.max_possible} available so far
