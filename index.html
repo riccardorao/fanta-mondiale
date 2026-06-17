@@ -74,7 +74,7 @@
     background:rgba(5,0,20,0.65);
     transform:translateY(20px);opacity:0;animation:rise .6s forwards}
   .pod .medal{font-size:38px;margin-bottom:6px}
-  .pod .pname{font-family:'Press Start 2P',monospace;font-size:10px;color:var(--neon-cyan);text-transform:uppercase;letter-spacing:1px;margin:6px 0}
+  .pod .pname{font-family:'Press Start 2P',monospace;font-size:13px;color:var(--neon-cyan);text-transform:uppercase;letter-spacing:1px;margin:6px 0}
   .pod .ppts{font-family:'Press Start 2P',monospace;font-size:26px;letter-spacing:1px;font-weight:900;margin:8px 0;color:var(--neon-green)}
   .pod .plabel{display:none}
   .pod-rank{font-family:'Press Start 2P',monospace;font-size:13px;margin-top:4px;letter-spacing:1px}
@@ -108,12 +108,12 @@
   .cats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;padding:16px;background:rgba(0,0,0,0.4)}
   @media (min-width:700px){.cats{grid-template-columns:repeat(6,1fr)}}
   .cat{background:rgba(5,0,20,0.7);border:1px solid var(--neon-cyan);box-shadow:0 0 0 2px var(--ink),0 0 0 3px var(--neon-pink);padding:10px;text-align:center}
-  .cat .cl{font-size:14px;color:#fff;font-weight:400;line-height:1.2}
+  .cat .cl{font-size:14px;color:#fff;font-weight:400;text-transform:uppercase;line-height:1.2}
   .cat .cv{font-size:18px;margin-top:6px;color:var(--neon-green);font-weight:700;text-shadow:none}
   .cat.zero{opacity:.35}
   .ctx{padding:10px 16px;font-size:14px;color:var(--neon-cyan);background:rgba(0,0,0,0.4)}
 
-  .search{display:block;margin:26px auto 4px;width:min(600px,90%);background:rgba(5,0,20,0.7);
+  .search{display:block;margin:26px auto 4px;width:100%;background:rgba(5,0,20,0.7);
     border:2px solid var(--neon-cyan);box-shadow:0 0 0 3px var(--ink),0 0 0 5px var(--neon-pink),0 0 16px rgba(0,255,255,.4);
     color:var(--neon-green);padding:12px 16px;font-family:'VT323',monospace;font-size:18px;outline:none}
   .search:focus{box-shadow:0 0 0 3px var(--ink),0 0 0 5px var(--neon-green),0 0 22px rgba(57,255,20,.55)}
@@ -137,11 +137,11 @@
   </div>
   <header>
     <h1>LEADERBOARD</h1>
-    <div class="ticker"><span>★ WELCOME TO THE FANTAMONDIALE ARENA ★ INSERT COIN TO CONTINUE ★ MAY THE BEST PREDICTOR WIN ★ GOOD LUCK PLAYER ★</span></div>
+    <div class="ticker"><span>⭐️ WELCOME TO THE FANTAMONDIALE ARENA ⭐️ INSERT COIN TO CONTINUE ⭐️ MAY THE BEST PREDICTOR WIN ⭐️ GOOD LUCK PLAYER ⭐️</span></div>
     <div class="sub" id="sub"></div>
     <div class="stats" id="stats"></div>
   </header>
-  <div class="section-label">★ HIGH SCORE ★</div>
+  <div class="section-label">⭐️ HIGH SCORE ⭐️</div>
   <div class="podium" id="podium"></div>
   <input class="search" id="search" placeholder="🔍 SEARCH PLAYER" style="display:none"/>
   <div class="board" id="board"><div class="state">LOADING...</div></div>
@@ -152,9 +152,9 @@
 const SUPABASE_URL = "https://ecqieaselexhcqkwbtcy.supabase.co";
 const SUPABASE_KEY = "sb_publishable_EjucVbOgT36P_4e7D0eBYg_GwxS0Mgf";
 const CATS = [
-  ["correct_score","group scores"],["correct_outcome","group outcomes"],
-  ["group_positions","group standings"],["knockouts","knockout phase"],
-  ["final_standings","final standings"],["top_scorer","top scorer"]
+  ["correct_score","Group Scores"],["correct_outcome","Group Outcomes"],
+  ["group_positions","Group Standings"],["knockouts","Knockout Phase"],
+  ["final_standings","Final Standings"],["top_scorer","Top Scorer"]
 ];
 const RANK_LABEL = ['1ST','2ND','3RD'];
 const headers = { apikey: SUPABASE_KEY, Authorization: "Bearer " + SUPABASE_KEY };
@@ -178,7 +178,7 @@ async function load(){
 function render(rows, meta){
   const maxBar = Math.max(1, meta.max_possible || 1);
   document.getElementById('foot').innerHTML =
-    `LIVE FROM SUPABASE · UPDATED ${meta.generated||'--:--'}`;
+    `UPDATED ${meta.generated||'--:--'}`;
 
   const podEl = document.getElementById('podium');
   const medal=['🥇','🥈','🥉'];
@@ -204,7 +204,7 @@ function render(rows, meta){
         const v=d[k]||0;
         return `<div class="cat ${v===0?'zero':''}"><div class="cl">${label}</div><div class="cv">${v}</div></div>`;
       }).join('');
-      const barColor = `hsl(${120 * pctScore}, 100%, 50%)`;
+      const barColor = `hsl(${meta.max_possible * pctScore}, 100%, 50%)`;
       const rankHtml = d.rank<=3
         ? `<span class="r${d.rank}">${RANK_LABEL[d.rank-1]}</span>`
         : d.rank;
