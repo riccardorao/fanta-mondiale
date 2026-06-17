@@ -13,7 +13,7 @@ SECURITY DEFINER
 SET search_path = public
 AS $$
   SELECT COALESCE(
-    NOW() < scheduled_at,
+    clock_timestamp() < scheduled_at,
     TRUE  -- NULL scheduled_at → allow writes until explicitly scheduled
   )
   FROM public.matches

@@ -44,29 +44,9 @@ if not SERVICE_KEY:
 
 
 def compute():
-    import openpyxl
-    wbM = openpyxl.load_workbook(gen.MODEL, data_only=True)
-    matches, positions = gen.read_truth(wbM["Bracket"])
-    max_possible = max(1,
-        len(matches) * (2 * gen.POINTS["score_per_team"] + gen.POINTS["outcome"])
-        + len(positions) * 4 * gen.POINTS["position"])
-    rows = []
-    for f in sorted(glob.glob(os.path.join(gen.PRON, "FIFAWC2026_*.xlsx"))):
-        name = os.path.basename(f).replace("FIFAWC2026_", "").replace(".xlsx", "")
-        total, bd = gen.score_file(f, matches, positions)
-        rows.append({"key": name, "name": gen.FULL_NAMES.get(name, name),
-                     "total": total, "bd": bd})
-    rows.sort(key=lambda x: -x["total"])
-    rank = 0; prev = None
-    for i, r in enumerate(rows):
-        if r["total"] != prev:
-            rank = i + 1; prev = r["total"]
-        r["rank"] = rank
-    meta = {"id": 1,
-            "generated": datetime.datetime.now().strftime("%d %b %Y, %H:%M"),
-            "matches_played": len(matches), "groups_complete": len(positions),
-            "participants": len(rows), "max_possible": max_possible,
-            "tournament_max": gen.tournament_max(gen.POINTS)}
+    rows, meta = gen.compute_leaderboard_data(gen.MODEL, gen.PRON)
+    meta["id"] = 1
+    meta.pop("max_total", None)
     return rows, meta
 
 
@@ -94,6 +74,7 @@ def main():
         "correct_score": r["bd"]["Correct Score"], "correct_outcome": r["bd"]["Correct Outcome"],
         "group_positions": r["bd"]["Group Positions"], "knockouts": r["bd"]["Knockouts"],
         "final_standings": r["bd"]["Final Standings"], "top_scorer": r["bd"]["Top Scorer"],
+        "predicted_winner": r["predicted_winner"],
     } for r in rows]
 
     upsert("xl_leaderboard", db_rows, "key")

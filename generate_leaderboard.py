@@ -25,7 +25,8 @@ from openpyxl.utils import column_index_from_string as ci
 
 # Paths — relative to this script's directory (so you can run from anywhere)
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-BASE = os.path.expanduser("~/Desktop/FIFAWC2026")  # or set to SCRIPT_DIR for repo-based
+BASE_DESKTOP = os.path.expanduser("~/Desktop/FIFAWC2026")
+BASE = BASE_DESKTOP if os.path.exists(BASE_DESKTOP) else SCRIPT_DIR
 MODEL = os.path.join(BASE, "FIFAWC2026_Model.xlsx")
 PRON = os.path.join(BASE, "Pronostici")
 OUT = os.path.join(BASE, "FIFAWC2026_Leaderboard.html")
@@ -84,6 +85,21 @@ N_GROUPS = 12
 GROUP_MATCHES_TOTAL = 72          # 12 groups x C(4,2)=6
 KO_SLOTS = {"r32": 32, "r16": 16, "qf": 8, "sf": 4, "final": 2}  # teams reaching each round
 
+KO_ROUNDS = {
+    "r32": {"col": 11, "rows": [5, 6, 9, 10, 13, 14, 17, 18, 21, 22, 25, 26, 29, 30, 33, 34, 37, 38, 41, 42, 45, 46, 49, 50, 53, 54, 57, 58, 61, 62, 65, 66]},
+    "r16": {"col": 16, "rows": [7, 8, 15, 16, 23, 24, 31, 32, 39, 40, 47, 48, 55, 56, 63, 64]},
+    "qf": {"col": 21, "rows": [11, 12, 27, 28, 43, 44, 59, 60]},
+    "sf": {"col": 26, "rows": [19, 20, 51, 52]},
+    "final": {"col": 31, "rows": [35, 36]},
+}
+
+STANDINGS_MAP = {
+    35: "standing_1st",
+    36: "standing_2nd",
+    37: "standing_3rd",
+    38: "standing_4th",
+}
+
 
 def tournament_max(P):
     """Maximum points achievable across the WHOLE tournament (best case)."""
@@ -122,7 +138,7 @@ def is_num(v):
 
 
 def read_truth(ws):
-    """Returns truth dict: played matches, completed group standings."""
+    """Returns truth: matches, group standings, knockout rounds truth, standings truth, top scorer truth."""
     matches = []       # (row, gh, ga, outcome)
     raw_positions = {} # group -> {row: team}  (only if all 4 slots present)
     for g, base in GH.items():
@@ -143,10 +159,38 @@ def read_truth(ws):
     # partial standings (predicted, not yet locked in) don't score early.
     group_stage_complete = len(matches) == GROUP_MATCHES_TOTAL
     positions = raw_positions if group_stage_complete else {}
-    return matches, positions
+
+    ko_truth = {}
+    standings_truth = {}
+    topscorer_player_truth = None
+    topscorer_goals_truth = None
+
+    if group_stage_complete:
+        # Extract knockout truth (only non-empty cells count)
+        for round_name, info in KO_ROUNDS.items():
+            col = info["col"]
+            ko_truth[round_name] = {}
+            for r in info["rows"]:
+                val = norm(ws.cell(r, col).value)
+                if val:
+                    ko_truth[round_name][r] = val
+
+        # Extract standings truth
+        for r in STANDINGS_MAP.keys():
+            val = norm(ws.cell(r, ci("AJ")).value)
+            if val:
+                standings_truth[r] = val
+
+        # Extract top scorer truth
+        topscorer_player_truth = norm(ws.cell(44, ci("AJ")).value)
+        topscorer_goals_truth = ws.cell(44, ci("AK")).value
+        if topscorer_goals_truth is not None and not is_num(topscorer_goals_truth):
+            topscorer_goals_truth = None
+
+    return matches, positions, ko_truth, standings_truth, topscorer_player_truth, topscorer_goals_truth
 
 
-def score_file(path, matches, positions):
+def score_file(path, matches, positions, ko_truth=None, standings_truth=None, topscorer_player_truth=None, topscorer_goals_truth=None):
     wb = openpyxl.load_workbook(path, data_only=True)
     ws = wb["Bracket"] if "Bracket" in wb.sheetnames else wb.active
     bd = {"Correct Score": 0, "Correct Outcome": 0, "Group Positions": 0,
@@ -168,33 +212,87 @@ def score_file(path, matches, positions):
         for r, true_team in slots.items():
             if norm(ws.cell(r, ci("G")).value) == true_team:
                 bd["Group Positions"] += POINTS["position"]
+
+    # knockouts (gated by populated model truth)
+    if ko_truth:
+        for round_name, truth_slots in ko_truth.items():
+            col = KO_ROUNDS[round_name]["col"]
+            correct_key = f"{round_name}_correct"
+            wrong_key = f"{round_name}_wrong"
+            for r, true_team in truth_slots.items():
+                pred_team = norm(ws.cell(r, col).value)
+                if pred_team == true_team:
+                    bd["Knockouts"] += POINTS[correct_key]
+                else:
+                    bd["Knockouts"] += POINTS[wrong_key]
+
+    # final standings
+    if standings_truth:
+        for r, true_team in standings_truth.items():
+            pred_team = norm(ws.cell(r, ci("AJ")).value)
+            if pred_team == true_team:
+                key = STANDINGS_MAP[r]
+                bd["Final Standings"] += POINTS[key]
+
+    # top scorer
+    if topscorer_player_truth:
+        pred_player = norm(ws.cell(44, ci("AJ")).value)
+        if pred_player == topscorer_player_truth:
+            bd["Top Scorer"] += POINTS["topscorer_player"]
+
+    if topscorer_goals_truth is not None:
+        pred_goals = ws.cell(44, ci("AK")).value
+        if pred_goals is not None:
+            try:
+                if float(pred_goals) == float(topscorer_goals_truth):
+                    bd["Top Scorer"] += POINTS["topscorer_goals"]
+            except (TypeError, ValueError):
+                pass
+
     # predicted winner from cell AJ35
     predicted_winner = norm(ws.cell(35, ci("AJ")).value)
     total = sum(bd.values())
     return total, bd, predicted_winner
 
 
-def main():
-    wbM = openpyxl.load_workbook(MODEL, data_only=True)
-    wsM = wbM["Bracket"]
-    matches, positions = read_truth(wsM)
+def compute_leaderboard_data(model_path, pron_dir):
+    """Loads model, extracts truth, scores files, and computes ranks + metadata."""
+    wbM = openpyxl.load_workbook(model_path, data_only=True)
+    wsM = wbM["Bracket"] if "Bracket" in wbM.sheetnames else wbM.active
+    matches, positions, ko_truth, standings_truth, topscorer_player_truth, topscorer_goals_truth = read_truth(wsM)
 
     rows = []
-    for f in sorted(glob.glob(os.path.join(PRON, "FIFAWC2026_*.xlsx"))):
+    for f in sorted(glob.glob(os.path.join(pron_dir, "FIFAWC2026_*.xlsx"))):
         name = os.path.basename(f).replace("FIFAWC2026_", "").replace(".xlsx", "")
         display = FULL_NAMES.get(name, name)
         try:
-            total, bd, predicted_winner = score_file(f, matches, positions)
-            rows.append({"name": display, "key": name, "total": total, "bd": bd, "predicted_winner": predicted_winner})
+            total, bd, predicted_winner = score_file(
+                f, matches, positions, ko_truth, standings_truth, 
+                topscorer_player_truth, topscorer_goals_truth
+            )
+            rows.append({
+                "name": display, "key": name, "total": total, "bd": bd, 
+                "predicted_winner": predicted_winner
+            })
         except Exception as ex:
-            rows.append({"name": display, "key": name, "total": -1, "bd": {}, "error": str(ex), "predicted_winner": None})
+            rows.append({
+                "name": display, "key": name, "total": -1, "bd": {}, 
+                "error": str(ex), "predicted_winner": None
+            })
 
     # ---- maximum points ANYONE could have earned up to the current round ----
-    # Each played group match: max = 2*score_per_team (perfect score) + outcome.
     max_possible = len(matches) * (2 * POINTS["score_per_team"] + POINTS["outcome"])
-    # Completed-group standings: 4 slots * position points per finalised group.
     max_possible += len(positions) * 4 * POINTS["position"]
-    # (knockouts/standings/top-scorer add here automatically once activated)
+    for round_name, truth_slots in ko_truth.items():
+        max_possible += len(truth_slots) * POINTS[f"{round_name}_correct"]
+    for r in standings_truth.keys():
+        key = STANDINGS_MAP[r]
+        max_possible += POINTS[key]
+    if topscorer_player_truth:
+        max_possible += POINTS["topscorer_player"]
+    if topscorer_goals_truth is not None:
+        max_possible += POINTS["topscorer_goals"]
+
     max_possible = max(max_possible, 1)
 
     rows.sort(key=lambda x: -x["total"])
@@ -214,6 +312,11 @@ def main():
         "max_possible": max_possible,
         "tournament_max": tournament_max(POINTS),
     }
+    return rows, meta
+
+
+def main():
+    rows, meta = compute_leaderboard_data(MODEL, PRON)
     html = render_html(rows, meta)
     with open(OUT, "w", encoding="utf-8") as fh:
         fh.write(html)
