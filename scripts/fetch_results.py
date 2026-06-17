@@ -308,13 +308,12 @@ def fetch_from_worldcup26():
         else:
             hs = g.get("home_score")
             as_ = g.get("away_score")
-            is_live = False
+            is_live = str(g.get("time_elapsed", "")).strip().lower() == "live"
             hs_val, as_val = 0, 0
             if hs is not None and as_ is not None and str(hs).strip().lower() not in ("", "null", "none") and str(as_).strip().lower() not in ("", "null", "none"):
                 try:
                     hs_val = int(hs)
                     as_val = int(as_)
-                    is_live = True
                 except ValueError:
                     pass
             upcoming.append({
