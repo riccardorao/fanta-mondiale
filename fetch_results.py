@@ -228,8 +228,14 @@ def fetch_from_footballdata(api_key):
             })
         else:
             is_live = status in ("LIVE", "IN_PLAY", "PAUSED")
-            hs = m.get("score", {}).get("fullTime", {}).get("home") if is_live else None
-            as_ = m.get("score", {}).get("fullTime", {}).get("away") if is_live else None
+            hs, as_ = None, None
+            if is_live:
+                score_obj = m.get("score", {})
+                for time_key in ("fullTime", "regularTime", "halfTime"):
+                    hs = score_obj.get(time_key, {}).get("home")
+                    as_ = score_obj.get(time_key, {}).get("away")
+                    if hs is not None and as_ is not None:
+                        break
             upcoming.append({
                 "home": home_xl,
                 "away": away_xl,

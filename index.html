@@ -741,7 +741,7 @@
 <body>
   <div class="wrap">
     <div class="hud">
-      <span class="hud-item">WELCOME</span>
+      <span class="hud-item" id="hud-left">WELCOME BACK</span>
       <span class="hud-item" id="hud-right">GHA-PAN UP NEXT</span>
     </div>
     <header>
@@ -972,12 +972,21 @@
         document.querySelector('.ticker span').textContent = meta.ticker_text;
       }
       if (meta.next_game_text) {
+        const hudLeft = document.getElementById('hud-left');
         const hudRight = document.getElementById('hud-right');
-        if (hudRight) {
-          hudRight.textContent = meta.next_game_text;
+        if (hudLeft && hudRight) {
           if (meta.next_game_text.includes('LIVE:')) {
+            const scorePart = meta.next_game_text.replace('LIVE:', '').trim();
+            hudLeft.textContent = scorePart;
+            hudLeft.classList.add('blink');
+
+            hudRight.textContent = 'LIVE';
             hudRight.classList.add('blink');
           } else {
+            hudLeft.textContent = 'WELCOME BACK';
+            hudLeft.classList.remove('blink');
+
+            hudRight.textContent = meta.next_game_text;
             hudRight.classList.remove('blink');
           }
         }
