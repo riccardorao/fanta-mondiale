@@ -8,14 +8,13 @@ logic in generate_leaderboard.py) and UPSERTS the results into the public tables
 
 USAGE
 -----
-1. Set your Supabase SERVICE ROLE key as an environment variable (one time per shell).
-   The service key is secret — never paste it into a file or share it.
+1. Create a `.env` file in this directory with your Supabase credentials:
 
-   macOS / Linux:
-       export SUPABASE_URL="https://ecqieaselexhcqkwbtcy.supabase.co"
-       export SUPABASE_SERVICE_KEY="sb_secret_iKpFsiFQKoyM1iXh5pRlLQ_WlAPFjUb"
+   SUPABASE_URL=https://ecqieaselexhcqkwbtcy.supabase.co
+   SUPABASE_SERVICE_KEY=sb_secret_...
 
-   (Find it in Supabase → Project Settings → API → service_role secret.)
+   (Find SERVICE_KEY in Supabase → Project Settings → API → service_role secret.)
+   The .env file is in .gitignore and will never be committed.
 
 2. Run:
        python3 push_to_supabase.py
@@ -24,6 +23,10 @@ Re-run this any time after updating results in FIFAWC2026_Model.xlsx or adding a
 new file to Pronostici/. The live leaderboard updates within ~a minute.
 """
 import os, sys, json, glob, datetime, urllib.request, urllib.error
+from dotenv import load_dotenv
+
+# Load secrets from .env file (not committed to repo for security)
+load_dotenv()
 
 # Reuse all scoring logic from the generator (must sit next to this file)
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
