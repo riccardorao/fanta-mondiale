@@ -22,12 +22,6 @@
     color:var(--neon-green);min-height:100vh;padding:18px 14px 60px;
     position:relative;overflow-x:hidden;
   }
-  /* CRT scanline + flicker overlay */
-  body::before{
-    content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;
-    background:repeating-linear-gradient(0deg,rgba(0,0,0,.25) 0px,rgba(0,0,0,.25) 1px,transparent 1px,transparent 3px);
-    mix-blend-mode:overlay;
-  }
   body::after{
     content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;
     background:radial-gradient(ellipse at center,transparent 55%,rgba(0,0,0,.55) 100%);
@@ -130,9 +124,9 @@
   @media (max-width:699px){
     .podium{flex-direction:column;align-items:stretch;gap:14px}
     .pod{max-width:100%}
-    .rmain{grid-template-columns:26px 140px 1fr auto;gap:6px;padding:10px 8px}
-    .who{max-width:140px}
-    .barwrap{width:140px;height:9px;margin-top:4px}
+    .rmain{grid-template-columns:26px 165px 1fr auto;gap:6px;padding:10px 8px}
+    .who{max-width:250px}
+    .barwrap{width:250px;height:9px;margin-top:4px}
     .pts{min-width:32px}
     .chev{margin-left:-1px}
   }
@@ -215,7 +209,7 @@ function render(rows, meta){
         return `<div class="cat ${v===0?'zero':''}"><div class="cl">${label}</div><div class="cv">${v}</div></div>`;
       }).join('');
       let barColor;
-      const hue = pctN * 1.2;
+      const hue = pctN * 1.5;
       barColor = `hsl(${hue}, 100%, 50%)`;
       const rankHtml = d.rank<=3
         ? `<span class="r${d.rank}">${RANK_LABEL[d.rank-1]}</span>`
