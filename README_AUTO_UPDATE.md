@@ -6,7 +6,7 @@ Actions can update the leaderboard in the cloud — with no Mac needed.
 ## How it works
 
 ```
-worldcup26.ir API (free, no key)
+football-data.org API (primary, key req) OR worldcup26.ir API (local fallback)
         ↓  every 30 min
 fetch_results.py (GitHub Actions cloud)
         ↓
@@ -45,12 +45,14 @@ git push
 > **Note**: The `.xlsx` files are binary but git handles them fine. They're
 > about 50-200KB each, well within GitHub's limits.
 
-### Step 2: Add Supabase secrets to GitHub
+### Step 2: Add secrets to GitHub
 
 1. Go to your GitHub repo → **Settings** → **Secrets and variables** → **Actions**
-2. Add these two secrets:
+2. Add these three secrets:
    - `SUPABASE_URL` — your Supabase project URL (e.g., `https://ecqieaselexhcqkwbtcy.supabase.co`)
    - `SUPABASE_SERVICE_KEY` — your service role key (from Supabase → Project Settings → API)
+   - `FOOTBALL_DATA_API_KEY` — your free football-data.org API key (from https://www.football-data.org/client/register)
+     *(Note: This key is required for cloud execution as worldcup26.ir blocks GitHub Actions cloud IPs)*
 
 ### Step 3: Verify the workflow runs
 
@@ -74,8 +76,7 @@ That's it — scores update within 1 minute on the live website.
 
 ## How to update results when a new matchday happens
 
-New results are picked up automatically every 30 minutes. The API at
-`worldcup26.ir` updates within minutes of a match ending.
+New results are picked up automatically every 30 minutes. The API updates within minutes of a match ending.
 
 If you want to force an immediate update (e.g., right after a match):
 1. Trigger the workflow manually from GitHub (see above)
