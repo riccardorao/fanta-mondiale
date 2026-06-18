@@ -43,7 +43,7 @@
       "B": [
         {
           "home": "CANADA",
-          "away": "BOSNIA H.",
+          "away": "BOSNIA",
           "home_score": 2,
           "away_score": 0
         },
@@ -55,7 +55,7 @@
         },
         {
           "home": "SWITZERLAND",
-          "away": "BOSNIA H.",
+          "away": "BOSNIA",
           "home_score": 1,
           "away_score": 1
         },
@@ -72,7 +72,7 @@
           "away_score": 1
         },
         {
-          "home": "BOSNIA H.",
+          "home": "BOSNIA",
           "away": "QATAR",
           "home_score": 2,
           "away_score": 1
@@ -157,7 +157,7 @@
       "E": [
         {
           "home": "GERMANY",
-          "away": "CURA\u00c7AO",
+          "away": "CURACAO",
           "home_score": 5,
           "away_score": 1
         },
@@ -175,12 +175,12 @@
         },
         {
           "home": "ECUADOR",
-          "away": "CURA\u00c7AO",
+          "away": "CURACAO",
           "home_score": 2,
           "away_score": 0
         },
         {
-          "home": "CURA\u00c7AO",
+          "home": "CURACAO",
           "away": "IVORY COAST",
           "home_score": 0,
           "away_score": 2
@@ -271,7 +271,7 @@
       "H": [
         {
           "home": "SPAIN",
-          "away": "CAPO VERDE",
+          "away": "CAPE VERDE",
           "home_score": 3,
           "away_score": 0
         },
@@ -289,12 +289,12 @@
         },
         {
           "home": "URUGUAY",
-          "away": "CAPO VERDE",
+          "away": "CAPE VERDE",
           "home_score": 2,
           "away_score": 0
         },
         {
-          "home": "CAPO VERDE",
+          "home": "CAPE VERDE",
           "away": "SAUDI ARABIA",
           "home_score": 1,
           "away_score": 2
@@ -385,7 +385,7 @@
       "K": [
         {
           "home": "PORTUGAL",
-          "away": "DR CONGO",
+          "away": "CONGO DR",
           "home_score": 3,
           "away_score": 0
         },
@@ -403,7 +403,7 @@
         },
         {
           "home": "COLOMBIA",
-          "away": "DR CONGO",
+          "away": "CONGO DR",
           "home_score": 2,
           "away_score": 1
         },
@@ -414,7 +414,7 @@
           "away_score": 2
         },
         {
-          "home": "DR CONGO",
+          "home": "CONGO DR",
           "away": "UZBEKISTAN",
           "home_score": 2,
           "away_score": 1
@@ -469,7 +469,7 @@
       "B": [
         "SWITZERLAND",
         "CANADA",
-        "BOSNIA H.",
+        "BOSNIA",
         "QATAR"
       ],
       "C": [
@@ -488,7 +488,7 @@
         "GERMANY",
         "ECUADOR",
         "IVORY COAST",
-        "CURA\u00c7AO"
+        "CURACAO"
       ],
       "F": [
         "JAPAN",
@@ -506,7 +506,7 @@
         "SPAIN",
         "URUGUAY",
         "SAUDI ARABIA",
-        "CAPO VERDE"
+        "CAPE VERDE"
       ],
       "I": [
         "FRANCE",
@@ -523,7 +523,7 @@
       "K": [
         "PORTUGAL",
         "COLOMBIA",
-        "DR CONGO",
+        "CONGO DR",
         "UZBEKISTAN"
       ],
       "L": [
@@ -548,7 +548,7 @@
         "SPAIN",
         "AUSTRIA",
         "TURKEY",
-        "BOSNIA H.",
+        "BOSNIA",
         "BELGIUM",
         "SOUTH KOREA",
         "BRAZIL",
@@ -661,7 +661,7 @@
       "B": [
         {
           "home": "CANADA",
-          "away": "BOSNIA H.",
+          "away": "BOSNIA",
           "home_score": 0,
           "away_score": 0
         },
@@ -673,7 +673,7 @@
         },
         {
           "home": "SWITZERLAND",
-          "away": "BOSNIA H.",
+          "away": "BOSNIA",
           "home_score": 3,
           "away_score": 1
         },
@@ -690,7 +690,7 @@
           "away_score": 1
         },
         {
-          "home": "BOSNIA H.",
+          "home": "BOSNIA",
           "away": "QATAR",
           "home_score": 2,
           "away_score": 0
@@ -775,7 +775,7 @@
       "E": [
         {
           "home": "GERMANY",
-          "away": "CURA\u00c7AO",
+          "away": "CURACAO",
           "home_score": 8,
           "away_score": 0
         },
@@ -793,12 +793,12 @@
         },
         {
           "home": "ECUADOR",
-          "away": "CURA\u00c7AO",
+          "away": "CURACAO",
           "home_score": 4,
           "away_score": 1
         },
         {
-          "home": "CURA\u00c7AO",
+          "home": "CURACAO",
           "away": "IVORY COAST",
           "home_score": 1,
           "away_score": 5
@@ -889,7 +889,7 @@
       "H": [
         {
           "home": "SPAIN",
-          "away": "CAPO VERDE",
+          "away": "CAPE VERDE",
           "home_score": 7,
           "away_score": 0
         },
@@ -907,12 +907,12 @@
         },
         {
           "home": "URUGUAY",
-          "away": "CAPO VERDE",
+          "away": "CAPE VERDE",
           "home_score": 4,
           "away_score": 0
         },
         {
-          "home": "CAPO VERDE",
+          "home": "CAPE VERDE",
           "away": "SAUDI ARABIA",
           "home_score": 1,
           "away_score": 3
@@ -1003,7 +1003,7 @@
       "K": [
         {
           "home": "PORTUGAL",
-          "away": "DR CONGO",
+          "away": "CONGO DR",
           "home_score": 5,
           "away_score": 0
         },
@@ -1021,7 +1021,7 @@
         },
         {
           "home": "COLOMBIA",
-          "away": "DR CONGO",
+          "away": "CONGO DR",
           "home_score": 3,
           "away_score": 2
         },
@@ -1032,7 +1032,7 @@
           "away_score": 3
         },
         {
-          "home": "DR CONGO",
+          "home": "CONGO DR",
           "away": "UZBEKISTAN",
           "home_score": 1,
           "away_score": 2
@@ -1087,7 +1087,7 @@
       "B": [
         "SWITZERLAND",
         "CANADA",
-        "BOSNIA H.",
+        "BOSNIA",
         "QATAR"
       ],
       "C": [
@@ -1106,7 +1106,7 @@
         "GERMANY",
         "IVORY COAST",
         "ECUADOR",
-        "CURA\u00c7AO"
+        "CURACAO"
       ],
       "F": [
         "NETHERLANDS",
@@ -1124,7 +1124,7 @@
         "SPAIN",
         "URUGUAY",
         "SAUDI ARABIA",
-        "CAPO VERDE"
+        "CAPE VERDE"
       ],
       "I": [
         "FRANCE",
@@ -1142,7 +1142,7 @@
         "PORTUGAL",
         "COLOMBIA",
         "UZBEKISTAN",
-        "DR CONGO"
+        "CONGO DR"
       ],
       "L": [
         "ENGLAND",
@@ -1166,7 +1166,7 @@
         "SPAIN",
         "AUSTRIA",
         "TURKEY",
-        "BOSNIA H.",
+        "BOSNIA",
         "BELGIUM",
         "CZECHIA",
         "BRAZIL",
@@ -1279,7 +1279,7 @@
       "B": [
         {
           "home": "CANADA",
-          "away": "BOSNIA H.",
+          "away": "BOSNIA",
           "home_score": 2,
           "away_score": 1
         },
@@ -1291,7 +1291,7 @@
         },
         {
           "home": "SWITZERLAND",
-          "away": "BOSNIA H.",
+          "away": "BOSNIA",
           "home_score": 1,
           "away_score": 1
         },
@@ -1308,7 +1308,7 @@
           "away_score": 2
         },
         {
-          "home": "BOSNIA H.",
+          "home": "BOSNIA",
           "away": "QATAR",
           "home_score": 1,
           "away_score": 0
@@ -1393,7 +1393,7 @@
       "E": [
         {
           "home": "GERMANY",
-          "away": "CURA\u00c7AO",
+          "away": "CURACAO",
           "home_score": 5,
           "away_score": 0
         },
@@ -1411,12 +1411,12 @@
         },
         {
           "home": "ECUADOR",
-          "away": "CURA\u00c7AO",
+          "away": "CURACAO",
           "home_score": 3,
           "away_score": 0
         },
         {
-          "home": "CURA\u00c7AO",
+          "home": "CURACAO",
           "away": "IVORY COAST",
           "home_score": 1,
           "away_score": 2
@@ -1507,7 +1507,7 @@
       "H": [
         {
           "home": "SPAIN",
-          "away": "CAPO VERDE",
+          "away": "CAPE VERDE",
           "home_score": 5,
           "away_score": 0
         },
@@ -1525,12 +1525,12 @@
         },
         {
           "home": "URUGUAY",
-          "away": "CAPO VERDE",
+          "away": "CAPE VERDE",
           "home_score": 3,
           "away_score": 1
         },
         {
-          "home": "CAPO VERDE",
+          "home": "CAPE VERDE",
           "away": "SAUDI ARABIA",
           "home_score": 2,
           "away_score": 2
@@ -1621,7 +1621,7 @@
       "K": [
         {
           "home": "PORTUGAL",
-          "away": "DR CONGO",
+          "away": "CONGO DR",
           "home_score": 2,
           "away_score": 0
         },
@@ -1639,7 +1639,7 @@
         },
         {
           "home": "COLOMBIA",
-          "away": "DR CONGO",
+          "away": "CONGO DR",
           "home_score": 2,
           "away_score": 1
         },
@@ -1650,7 +1650,7 @@
           "away_score": 1
         },
         {
-          "home": "DR CONGO",
+          "home": "CONGO DR",
           "away": "UZBEKISTAN",
           "home_score": 2,
           "away_score": 1
@@ -1705,7 +1705,7 @@
       "B": [
         "CANADA",
         "SWITZERLAND",
-        "BOSNIA H.",
+        "BOSNIA",
         "QATAR"
       ],
       "C": [
@@ -1724,7 +1724,7 @@
         "GERMANY",
         "ECUADOR",
         "IVORY COAST",
-        "CURA\u00c7AO"
+        "CURACAO"
       ],
       "F": [
         "NETHERLANDS",
@@ -1742,7 +1742,7 @@
         "SPAIN",
         "URUGUAY",
         "SAUDI ARABIA",
-        "CAPO VERDE"
+        "CAPE VERDE"
       ],
       "I": [
         "FRANCE",
@@ -1759,7 +1759,7 @@
       "K": [
         "PORTUGAL",
         "COLOMBIA",
-        "DR CONGO",
+        "CONGO DR",
         "UZBEKISTAN"
       ],
       "L": [
@@ -1784,7 +1784,7 @@
         "SPAIN",
         "ALGERIA",
         "TURKEY",
-        "BOSNIA H.",
+        "BOSNIA",
         "BELGIUM",
         "SOUTH KOREA",
         "BRAZIL",
@@ -1794,7 +1794,7 @@
         "MEXICO",
         "IVORY COAST",
         "ENGLAND",
-        "DR CONGO",
+        "CONGO DR",
         "ARGENTINA",
         "URUGUAY",
         "USA",
@@ -1897,7 +1897,7 @@
       "B": [
         {
           "home": "CANADA",
-          "away": "BOSNIA H.",
+          "away": "BOSNIA",
           "home_score": 1,
           "away_score": 1
         },
@@ -1909,7 +1909,7 @@
         },
         {
           "home": "SWITZERLAND",
-          "away": "BOSNIA H.",
+          "away": "BOSNIA",
           "home_score": 3,
           "away_score": 2
         },
@@ -1926,7 +1926,7 @@
           "away_score": 1
         },
         {
-          "home": "BOSNIA H.",
+          "home": "BOSNIA",
           "away": "QATAR",
           "home_score": 1,
           "away_score": 1
@@ -2011,7 +2011,7 @@
       "E": [
         {
           "home": "GERMANY",
-          "away": "CURA\u00c7AO",
+          "away": "CURACAO",
           "home_score": 7,
           "away_score": 1
         },
@@ -2029,12 +2029,12 @@
         },
         {
           "home": "ECUADOR",
-          "away": "CURA\u00c7AO",
+          "away": "CURACAO",
           "home_score": 2,
           "away_score": 1
         },
         {
-          "home": "CURA\u00c7AO",
+          "home": "CURACAO",
           "away": "IVORY COAST",
           "home_score": 1,
           "away_score": 3
@@ -2125,7 +2125,7 @@
       "H": [
         {
           "home": "SPAIN",
-          "away": "CAPO VERDE",
+          "away": "CAPE VERDE",
           "home_score": 4,
           "away_score": 0
         },
@@ -2143,12 +2143,12 @@
         },
         {
           "home": "URUGUAY",
-          "away": "CAPO VERDE",
+          "away": "CAPE VERDE",
           "home_score": 2,
           "away_score": 0
         },
         {
-          "home": "CAPO VERDE",
+          "home": "CAPE VERDE",
           "away": "SAUDI ARABIA",
           "home_score": 1,
           "away_score": 2
@@ -2239,7 +2239,7 @@
       "K": [
         {
           "home": "PORTUGAL",
-          "away": "DR CONGO",
+          "away": "CONGO DR",
           "home_score": 2,
           "away_score": 1
         },
@@ -2257,7 +2257,7 @@
         },
         {
           "home": "COLOMBIA",
-          "away": "DR CONGO",
+          "away": "CONGO DR",
           "home_score": 2,
           "away_score": 1
         },
@@ -2268,7 +2268,7 @@
           "away_score": 2
         },
         {
-          "home": "DR CONGO",
+          "home": "CONGO DR",
           "away": "UZBEKISTAN",
           "home_score": 3,
           "away_score": 2
@@ -2322,7 +2322,7 @@
       ],
       "B": [
         "SWITZERLAND",
-        "BOSNIA H.",
+        "BOSNIA",
         "QATAR",
         "CANADA"
       ],
@@ -2342,7 +2342,7 @@
         "GERMANY",
         "IVORY COAST",
         "ECUADOR",
-        "CURA\u00c7AO"
+        "CURACAO"
       ],
       "F": [
         "NETHERLANDS",
@@ -2360,7 +2360,7 @@
         "SPAIN",
         "URUGUAY",
         "SAUDI ARABIA",
-        "CAPO VERDE"
+        "CAPE VERDE"
       ],
       "I": [
         "FRANCE",
@@ -2377,7 +2377,7 @@
       "K": [
         "PORTUGAL",
         "COLOMBIA",
-        "DR CONGO",
+        "CONGO DR",
         "UZBEKISTAN"
       ],
       "L": [
@@ -2394,7 +2394,7 @@
         "FRANCE",
         "JAPAN",
         "SOUTH KOREA",
-        "BOSNIA H.",
+        "BOSNIA",
         "NETHERLANDS",
         "MOROCCO",
         "COLOMBIA",
@@ -2412,7 +2412,7 @@
         "MEXICO",
         "SCOTLAND",
         "CROATIA",
-        "DR CONGO",
+        "CONGO DR",
         "ARGENTINA",
         "URUGUAY",
         "USA",
@@ -2515,7 +2515,7 @@
       "B": [
         {
           "home": "CANADA",
-          "away": "BOSNIA H.",
+          "away": "BOSNIA",
           "home_score": 1,
           "away_score": 1
         },
@@ -2527,7 +2527,7 @@
         },
         {
           "home": "SWITZERLAND",
-          "away": "BOSNIA H.",
+          "away": "BOSNIA",
           "home_score": 2,
           "away_score": 1
         },
@@ -2544,7 +2544,7 @@
           "away_score": 2
         },
         {
-          "home": "BOSNIA H.",
+          "home": "BOSNIA",
           "away": "QATAR",
           "home_score": 2,
           "away_score": 0
@@ -2629,7 +2629,7 @@
       "E": [
         {
           "home": "GERMANY",
-          "away": "CURA\u00c7AO",
+          "away": "CURACAO",
           "home_score": 3,
           "away_score": 0
         },
@@ -2647,12 +2647,12 @@
         },
         {
           "home": "ECUADOR",
-          "away": "CURA\u00c7AO",
+          "away": "CURACAO",
           "home_score": 2,
           "away_score": 0
         },
         {
-          "home": "CURA\u00c7AO",
+          "home": "CURACAO",
           "away": "IVORY COAST",
           "home_score": 1,
           "away_score": 2
@@ -2743,7 +2743,7 @@
       "H": [
         {
           "home": "SPAIN",
-          "away": "CAPO VERDE",
+          "away": "CAPE VERDE",
           "home_score": 5,
           "away_score": 0
         },
@@ -2761,12 +2761,12 @@
         },
         {
           "home": "URUGUAY",
-          "away": "CAPO VERDE",
+          "away": "CAPE VERDE",
           "home_score": 2,
           "away_score": 0
         },
         {
-          "home": "CAPO VERDE",
+          "home": "CAPE VERDE",
           "away": "SAUDI ARABIA",
           "home_score": 1,
           "away_score": 3
@@ -2857,7 +2857,7 @@
       "K": [
         {
           "home": "PORTUGAL",
-          "away": "DR CONGO",
+          "away": "CONGO DR",
           "home_score": 3,
           "away_score": 1
         },
@@ -2875,7 +2875,7 @@
         },
         {
           "home": "COLOMBIA",
-          "away": "DR CONGO",
+          "away": "CONGO DR",
           "home_score": 1,
           "away_score": 0
         },
@@ -2886,7 +2886,7 @@
           "away_score": 2
         },
         {
-          "home": "DR CONGO",
+          "home": "CONGO DR",
           "away": "UZBEKISTAN",
           "home_score": 0,
           "away_score": 1
@@ -2941,7 +2941,7 @@
       "B": [
         "SWITZERLAND",
         "CANADA",
-        "BOSNIA H.",
+        "BOSNIA",
         "QATAR"
       ],
       "C": [
@@ -2960,7 +2960,7 @@
         "GERMANY",
         "ECUADOR",
         "IVORY COAST",
-        "CURA\u00c7AO"
+        "CURACAO"
       ],
       "F": [
         "NETHERLANDS",
@@ -2978,7 +2978,7 @@
         "SPAIN",
         "URUGUAY",
         "SAUDI ARABIA",
-        "CAPO VERDE"
+        "CAPE VERDE"
       ],
       "I": [
         "NORWAY",
@@ -2996,7 +2996,7 @@
         "PORTUGAL",
         "COLOMBIA",
         "UZBEKISTAN",
-        "DR CONGO"
+        "CONGO DR"
       ],
       "L": [
         "ENGLAND",
@@ -3020,7 +3020,7 @@
         "SPAIN",
         "AUSTRIA",
         "TURKEY",
-        "BOSNIA H.",
+        "BOSNIA",
         "BELGIUM",
         "SENEGAL",
         "SCOTLAND",
@@ -3133,7 +3133,7 @@
       "B": [
         {
           "home": "CANADA",
-          "away": "BOSNIA H.",
+          "away": "BOSNIA",
           "home_score": 1,
           "away_score": 2
         },
@@ -3145,7 +3145,7 @@
         },
         {
           "home": "SWITZERLAND",
-          "away": "BOSNIA H.",
+          "away": "BOSNIA",
           "home_score": 1,
           "away_score": 1
         },
@@ -3162,7 +3162,7 @@
           "away_score": 0
         },
         {
-          "home": "BOSNIA H.",
+          "home": "BOSNIA",
           "away": "QATAR",
           "home_score": 2,
           "away_score": 0
@@ -3247,7 +3247,7 @@
       "E": [
         {
           "home": "GERMANY",
-          "away": "CURA\u00c7AO",
+          "away": "CURACAO",
           "home_score": 4,
           "away_score": 0
         },
@@ -3265,12 +3265,12 @@
         },
         {
           "home": "ECUADOR",
-          "away": "CURA\u00c7AO",
+          "away": "CURACAO",
           "home_score": 2,
           "away_score": 0
         },
         {
-          "home": "CURA\u00c7AO",
+          "home": "CURACAO",
           "away": "IVORY COAST",
           "home_score": 1,
           "away_score": 2
@@ -3361,7 +3361,7 @@
       "H": [
         {
           "home": "SPAIN",
-          "away": "CAPO VERDE",
+          "away": "CAPE VERDE",
           "home_score": 4,
           "away_score": 0
         },
@@ -3379,12 +3379,12 @@
         },
         {
           "home": "URUGUAY",
-          "away": "CAPO VERDE",
+          "away": "CAPE VERDE",
           "home_score": 2,
           "away_score": 1
         },
         {
-          "home": "CAPO VERDE",
+          "home": "CAPE VERDE",
           "away": "SAUDI ARABIA",
           "home_score": 0,
           "away_score": 2
@@ -3475,7 +3475,7 @@
       "K": [
         {
           "home": "PORTUGAL",
-          "away": "DR CONGO",
+          "away": "CONGO DR",
           "home_score": 2,
           "away_score": 0
         },
@@ -3493,7 +3493,7 @@
         },
         {
           "home": "COLOMBIA",
-          "away": "DR CONGO",
+          "away": "CONGO DR",
           "home_score": 1,
           "away_score": 1
         },
@@ -3504,7 +3504,7 @@
           "away_score": 2
         },
         {
-          "home": "DR CONGO",
+          "home": "CONGO DR",
           "away": "UZBEKISTAN",
           "home_score": 1,
           "away_score": 0
@@ -3557,7 +3557,7 @@
         "SOUTH AFRICA"
       ],
       "B": [
-        "BOSNIA H.",
+        "BOSNIA",
         "SWITZERLAND",
         "CANADA",
         "QATAR"
@@ -3578,7 +3578,7 @@
         "GERMANY",
         "ECUADOR",
         "IVORY COAST",
-        "CURA\u00c7AO"
+        "CURACAO"
       ],
       "F": [
         "NETHERLANDS",
@@ -3596,7 +3596,7 @@
         "SPAIN",
         "URUGUAY",
         "SAUDI ARABIA",
-        "CAPO VERDE"
+        "CAPE VERDE"
       ],
       "I": [
         "NORWAY",
@@ -3613,7 +3613,7 @@
       "K": [
         "PORTUGAL",
         "COLOMBIA",
-        "DR CONGO",
+        "CONGO DR",
         "UZBEKISTAN"
       ],
       "L": [
@@ -3648,12 +3648,12 @@
         "CZECHIA",
         "SAUDI ARABIA",
         "CROATIA",
-        "DR CONGO",
+        "CONGO DR",
         "AUSTRIA",
         "URUGUAY",
         "USA",
         "IRAN",
-        "BOSNIA H.",
+        "BOSNIA",
         "NEW ZEALAND",
         "PORTUGAL",
         "IVORY COAST"
@@ -3673,7 +3673,7 @@
         "CROATIA",
         "URUGUAY",
         "USA",
-        "BOSNIA H.",
+        "BOSNIA",
         "PORTUGAL"
       ],
       "qf": [
@@ -3751,7 +3751,7 @@
       "B": [
         {
           "home": "CANADA",
-          "away": "BOSNIA H.",
+          "away": "BOSNIA",
           "home_score": 2,
           "away_score": 1
         },
@@ -3763,7 +3763,7 @@
         },
         {
           "home": "SWITZERLAND",
-          "away": "BOSNIA H.",
+          "away": "BOSNIA",
           "home_score": 2,
           "away_score": 0
         },
@@ -3780,7 +3780,7 @@
           "away_score": 1
         },
         {
-          "home": "BOSNIA H.",
+          "home": "BOSNIA",
           "away": "QATAR",
           "home_score": 1,
           "away_score": 0
@@ -3865,7 +3865,7 @@
       "E": [
         {
           "home": "GERMANY",
-          "away": "CURA\u00c7AO",
+          "away": "CURACAO",
           "home_score": 3,
           "away_score": 0
         },
@@ -3883,12 +3883,12 @@
         },
         {
           "home": "ECUADOR",
-          "away": "CURA\u00c7AO",
+          "away": "CURACAO",
           "home_score": 1,
           "away_score": 0
         },
         {
-          "home": "CURA\u00c7AO",
+          "home": "CURACAO",
           "away": "IVORY COAST",
           "home_score": 1,
           "away_score": 2
@@ -3979,7 +3979,7 @@
       "H": [
         {
           "home": "SPAIN",
-          "away": "CAPO VERDE",
+          "away": "CAPE VERDE",
           "home_score": 3,
           "away_score": 0
         },
@@ -3997,12 +3997,12 @@
         },
         {
           "home": "URUGUAY",
-          "away": "CAPO VERDE",
+          "away": "CAPE VERDE",
           "home_score": 2,
           "away_score": 0
         },
         {
-          "home": "CAPO VERDE",
+          "home": "CAPE VERDE",
           "away": "SAUDI ARABIA",
           "home_score": 1,
           "away_score": 1
@@ -4093,7 +4093,7 @@
       "K": [
         {
           "home": "PORTUGAL",
-          "away": "DR CONGO",
+          "away": "CONGO DR",
           "home_score": 2,
           "away_score": 0
         },
@@ -4111,7 +4111,7 @@
         },
         {
           "home": "COLOMBIA",
-          "away": "DR CONGO",
+          "away": "CONGO DR",
           "home_score": 2,
           "away_score": 1
         },
@@ -4122,7 +4122,7 @@
           "away_score": 1
         },
         {
-          "home": "DR CONGO",
+          "home": "CONGO DR",
           "away": "UZBEKISTAN",
           "home_score": 1,
           "away_score": 0
@@ -4177,7 +4177,7 @@
       "B": [
         "SWITZERLAND",
         "CANADA",
-        "BOSNIA H.",
+        "BOSNIA",
         "QATAR"
       ],
       "C": [
@@ -4196,7 +4196,7 @@
         "GERMANY",
         "IVORY COAST",
         "ECUADOR",
-        "CURA\u00c7AO"
+        "CURACAO"
       ],
       "F": [
         "SWEDEN",
@@ -4214,7 +4214,7 @@
         "SPAIN",
         "URUGUAY",
         "SAUDI ARABIA",
-        "CAPO VERDE"
+        "CAPE VERDE"
       ],
       "I": [
         "FRANCE",
@@ -4231,7 +4231,7 @@
       "K": [
         "PORTUGAL",
         "COLOMBIA",
-        "DR CONGO",
+        "CONGO DR",
         "UZBEKISTAN"
       ],
       "L": [
@@ -4256,7 +4256,7 @@
         "SPAIN",
         "AUSTRIA",
         "TURKEY",
-        "BOSNIA H.",
+        "BOSNIA",
         "BELGIUM",
         "SOUTH KOREA",
         "MOROCCO",
@@ -4266,7 +4266,7 @@
         "CZECHIA",
         "ECUADOR",
         "ENGLAND",
-        "DR CONGO",
+        "CONGO DR",
         "ARGENTINA",
         "URUGUAY",
         "USA",
@@ -4369,7 +4369,7 @@
       "B": [
         {
           "home": "CANADA",
-          "away": "BOSNIA H.",
+          "away": "BOSNIA",
           "home_score": 1,
           "away_score": 1
         },
@@ -4381,7 +4381,7 @@
         },
         {
           "home": "SWITZERLAND",
-          "away": "BOSNIA H.",
+          "away": "BOSNIA",
           "home_score": 2,
           "away_score": 1
         },
@@ -4398,7 +4398,7 @@
           "away_score": 1
         },
         {
-          "home": "BOSNIA H.",
+          "home": "BOSNIA",
           "away": "QATAR",
           "home_score": 2,
           "away_score": 0
@@ -4483,7 +4483,7 @@
       "E": [
         {
           "home": "GERMANY",
-          "away": "CURA\u00c7AO",
+          "away": "CURACAO",
           "home_score": 4,
           "away_score": 0
         },
@@ -4501,12 +4501,12 @@
         },
         {
           "home": "ECUADOR",
-          "away": "CURA\u00c7AO",
+          "away": "CURACAO",
           "home_score": 1,
           "away_score": 0
         },
         {
-          "home": "CURA\u00c7AO",
+          "home": "CURACAO",
           "away": "IVORY COAST",
           "home_score": 0,
           "away_score": 3
@@ -4597,7 +4597,7 @@
       "H": [
         {
           "home": "SPAIN",
-          "away": "CAPO VERDE",
+          "away": "CAPE VERDE",
           "home_score": 5,
           "away_score": 0
         },
@@ -4615,12 +4615,12 @@
         },
         {
           "home": "URUGUAY",
-          "away": "CAPO VERDE",
+          "away": "CAPE VERDE",
           "home_score": 2,
           "away_score": 1
         },
         {
-          "home": "CAPO VERDE",
+          "home": "CAPE VERDE",
           "away": "SAUDI ARABIA",
           "home_score": 1,
           "away_score": 1
@@ -4711,7 +4711,7 @@
       "K": [
         {
           "home": "PORTUGAL",
-          "away": "DR CONGO",
+          "away": "CONGO DR",
           "home_score": 3,
           "away_score": 0
         },
@@ -4729,7 +4729,7 @@
         },
         {
           "home": "COLOMBIA",
-          "away": "DR CONGO",
+          "away": "CONGO DR",
           "home_score": 3,
           "away_score": 1
         },
@@ -4740,7 +4740,7 @@
           "away_score": 2
         },
         {
-          "home": "DR CONGO",
+          "home": "CONGO DR",
           "away": "UZBEKISTAN",
           "home_score": 1,
           "away_score": 1
@@ -4795,7 +4795,7 @@
       "B": [
         "SWITZERLAND",
         "CANADA",
-        "BOSNIA H.",
+        "BOSNIA",
         "QATAR"
       ],
       "C": [
@@ -4814,7 +4814,7 @@
         "GERMANY",
         "IVORY COAST",
         "ECUADOR",
-        "CURA\u00c7AO"
+        "CURACAO"
       ],
       "F": [
         "NETHERLANDS",
@@ -4832,7 +4832,7 @@
         "SPAIN",
         "URUGUAY",
         "SAUDI ARABIA",
-        "CAPO VERDE"
+        "CAPE VERDE"
       ],
       "I": [
         "FRANCE",
@@ -4849,7 +4849,7 @@
       "K": [
         "PORTUGAL",
         "COLOMBIA",
-        "DR CONGO",
+        "CONGO DR",
         "UZBEKISTAN"
       ],
       "L": [
@@ -4874,7 +4874,7 @@
         "SPAIN",
         "AUSTRIA",
         "TURKEY",
-        "BOSNIA H.",
+        "BOSNIA",
         "BELGIUM",
         "CZECHIA",
         "MOROCCO",
@@ -4987,7 +4987,7 @@
       "B": [
         {
           "home": "CANADA",
-          "away": "BOSNIA H.",
+          "away": "BOSNIA",
           "home_score": 1,
           "away_score": 1
         },
@@ -4999,7 +4999,7 @@
         },
         {
           "home": "SWITZERLAND",
-          "away": "BOSNIA H.",
+          "away": "BOSNIA",
           "home_score": 2,
           "away_score": 1
         },
@@ -5016,7 +5016,7 @@
           "away_score": 1
         },
         {
-          "home": "BOSNIA H.",
+          "home": "BOSNIA",
           "away": "QATAR",
           "home_score": 2,
           "away_score": 1
@@ -5101,7 +5101,7 @@
       "E": [
         {
           "home": "GERMANY",
-          "away": "CURA\u00c7AO",
+          "away": "CURACAO",
           "home_score": 4,
           "away_score": 0
         },
@@ -5119,12 +5119,12 @@
         },
         {
           "home": "ECUADOR",
-          "away": "CURA\u00c7AO",
+          "away": "CURACAO",
           "home_score": 2,
           "away_score": 0
         },
         {
-          "home": "CURA\u00c7AO",
+          "home": "CURACAO",
           "away": "IVORY COAST",
           "home_score": 0,
           "away_score": 2
@@ -5215,7 +5215,7 @@
       "H": [
         {
           "home": "SPAIN",
-          "away": "CAPO VERDE",
+          "away": "CAPE VERDE",
           "home_score": 5,
           "away_score": 0
         },
@@ -5233,12 +5233,12 @@
         },
         {
           "home": "URUGUAY",
-          "away": "CAPO VERDE",
+          "away": "CAPE VERDE",
           "home_score": 2,
           "away_score": 0
         },
         {
-          "home": "CAPO VERDE",
+          "home": "CAPE VERDE",
           "away": "SAUDI ARABIA",
           "home_score": 0,
           "away_score": 1
@@ -5329,7 +5329,7 @@
       "K": [
         {
           "home": "PORTUGAL",
-          "away": "DR CONGO",
+          "away": "CONGO DR",
           "home_score": 2,
           "away_score": 0
         },
@@ -5347,7 +5347,7 @@
         },
         {
           "home": "COLOMBIA",
-          "away": "DR CONGO",
+          "away": "CONGO DR",
           "home_score": 2,
           "away_score": 1
         },
@@ -5358,7 +5358,7 @@
           "away_score": 2
         },
         {
-          "home": "DR CONGO",
+          "home": "CONGO DR",
           "away": "UZBEKISTAN",
           "home_score": 1,
           "away_score": 1
@@ -5413,7 +5413,7 @@
       "B": [
         "SWITZERLAND",
         "CANADA",
-        "BOSNIA H.",
+        "BOSNIA",
         "QATAR"
       ],
       "C": [
@@ -5432,7 +5432,7 @@
         "GERMANY",
         "ECUADOR",
         "IVORY COAST",
-        "CURA\u00c7AO"
+        "CURACAO"
       ],
       "F": [
         "NETHERLANDS",
@@ -5450,7 +5450,7 @@
         "SPAIN",
         "URUGUAY",
         "SAUDI ARABIA",
-        "CAPO VERDE"
+        "CAPE VERDE"
       ],
       "I": [
         "NORWAY",
@@ -5467,7 +5467,7 @@
       "K": [
         "PORTUGAL",
         "COLOMBIA",
-        "DR CONGO",
+        "CONGO DR",
         "UZBEKISTAN"
       ],
       "L": [
@@ -5492,7 +5492,7 @@
         "SPAIN",
         "AUSTRIA",
         "TURKEY",
-        "BOSNIA H.",
+        "BOSNIA",
         "BELGIUM",
         "CZECHIA",
         "BRAZIL",
@@ -5605,7 +5605,7 @@
       "B": [
         {
           "home": "CANADA",
-          "away": "BOSNIA H.",
+          "away": "BOSNIA",
           "home_score": 1,
           "away_score": 0
         },
@@ -5617,7 +5617,7 @@
         },
         {
           "home": "SWITZERLAND",
-          "away": "BOSNIA H.",
+          "away": "BOSNIA",
           "home_score": 3,
           "away_score": 0
         },
@@ -5634,7 +5634,7 @@
           "away_score": 1
         },
         {
-          "home": "BOSNIA H.",
+          "home": "BOSNIA",
           "away": "QATAR",
           "home_score": 2,
           "away_score": 0
@@ -5719,7 +5719,7 @@
       "E": [
         {
           "home": "GERMANY",
-          "away": "CURA\u00c7AO",
+          "away": "CURACAO",
           "home_score": 4,
           "away_score": 0
         },
@@ -5737,12 +5737,12 @@
         },
         {
           "home": "ECUADOR",
-          "away": "CURA\u00c7AO",
+          "away": "CURACAO",
           "home_score": 2,
           "away_score": 0
         },
         {
-          "home": "CURA\u00c7AO",
+          "home": "CURACAO",
           "away": "IVORY COAST",
           "home_score": 0,
           "away_score": 1
@@ -5833,7 +5833,7 @@
       "H": [
         {
           "home": "SPAIN",
-          "away": "CAPO VERDE",
+          "away": "CAPE VERDE",
           "home_score": 3,
           "away_score": 0
         },
@@ -5851,12 +5851,12 @@
         },
         {
           "home": "URUGUAY",
-          "away": "CAPO VERDE",
+          "away": "CAPE VERDE",
           "home_score": 3,
           "away_score": 0
         },
         {
-          "home": "CAPO VERDE",
+          "home": "CAPE VERDE",
           "away": "SAUDI ARABIA",
           "home_score": 0,
           "away_score": 2
@@ -5947,7 +5947,7 @@
       "K": [
         {
           "home": "PORTUGAL",
-          "away": "DR CONGO",
+          "away": "CONGO DR",
           "home_score": 3,
           "away_score": 0
         },
@@ -5965,7 +5965,7 @@
         },
         {
           "home": "COLOMBIA",
-          "away": "DR CONGO",
+          "away": "CONGO DR",
           "home_score": 2,
           "away_score": 0
         },
@@ -5976,7 +5976,7 @@
           "away_score": 1
         },
         {
-          "home": "DR CONGO",
+          "home": "CONGO DR",
           "away": "UZBEKISTAN",
           "home_score": 3,
           "away_score": 2
@@ -6031,7 +6031,7 @@
       "B": [
         "SWITZERLAND",
         "CANADA",
-        "BOSNIA H.",
+        "BOSNIA",
         "QATAR"
       ],
       "C": [
@@ -6050,7 +6050,7 @@
         "GERMANY",
         "ECUADOR",
         "IVORY COAST",
-        "CURA\u00c7AO"
+        "CURACAO"
       ],
       "F": [
         "NETHERLANDS",
@@ -6068,7 +6068,7 @@
         "SPAIN",
         "URUGUAY",
         "SAUDI ARABIA",
-        "CAPO VERDE"
+        "CAPE VERDE"
       ],
       "I": [
         "FRANCE",
@@ -6085,7 +6085,7 @@
       "K": [
         "PORTUGAL",
         "COLOMBIA",
-        "DR CONGO",
+        "CONGO DR",
         "UZBEKISTAN"
       ],
       "L": [
@@ -6223,7 +6223,7 @@
       "B": [
         {
           "home": "CANADA",
-          "away": "BOSNIA H.",
+          "away": "BOSNIA",
           "home_score": 2,
           "away_score": 2
         },
@@ -6235,7 +6235,7 @@
         },
         {
           "home": "SWITZERLAND",
-          "away": "BOSNIA H.",
+          "away": "BOSNIA",
           "home_score": 2,
           "away_score": 0
         },
@@ -6252,7 +6252,7 @@
           "away_score": 1
         },
         {
-          "home": "BOSNIA H.",
+          "home": "BOSNIA",
           "away": "QATAR",
           "home_score": 2,
           "away_score": 1
@@ -6337,7 +6337,7 @@
       "E": [
         {
           "home": "GERMANY",
-          "away": "CURA\u00c7AO",
+          "away": "CURACAO",
           "home_score": 5,
           "away_score": 0
         },
@@ -6355,12 +6355,12 @@
         },
         {
           "home": "ECUADOR",
-          "away": "CURA\u00c7AO",
+          "away": "CURACAO",
           "home_score": 2,
           "away_score": 0
         },
         {
-          "home": "CURA\u00c7AO",
+          "home": "CURACAO",
           "away": "IVORY COAST",
           "home_score": 0,
           "away_score": 2
@@ -6451,7 +6451,7 @@
       "H": [
         {
           "home": "SPAIN",
-          "away": "CAPO VERDE",
+          "away": "CAPE VERDE",
           "home_score": 4,
           "away_score": 0
         },
@@ -6469,12 +6469,12 @@
         },
         {
           "home": "URUGUAY",
-          "away": "CAPO VERDE",
+          "away": "CAPE VERDE",
           "home_score": 3,
           "away_score": 0
         },
         {
-          "home": "CAPO VERDE",
+          "home": "CAPE VERDE",
           "away": "SAUDI ARABIA",
           "home_score": 1,
           "away_score": 2
@@ -6565,7 +6565,7 @@
       "K": [
         {
           "home": "PORTUGAL",
-          "away": "DR CONGO",
+          "away": "CONGO DR",
           "home_score": 4,
           "away_score": 1
         },
@@ -6583,7 +6583,7 @@
         },
         {
           "home": "COLOMBIA",
-          "away": "DR CONGO",
+          "away": "CONGO DR",
           "home_score": 2,
           "away_score": 1
         },
@@ -6594,7 +6594,7 @@
           "away_score": 2
         },
         {
-          "home": "DR CONGO",
+          "home": "CONGO DR",
           "away": "UZBEKISTAN",
           "home_score": 1,
           "away_score": 1
@@ -6649,7 +6649,7 @@
       "B": [
         "SWITZERLAND",
         "CANADA",
-        "BOSNIA H.",
+        "BOSNIA",
         "QATAR"
       ],
       "C": [
@@ -6668,7 +6668,7 @@
         "GERMANY",
         "ECUADOR",
         "IVORY COAST",
-        "CURA\u00c7AO"
+        "CURACAO"
       ],
       "F": [
         "NETHERLANDS",
@@ -6686,7 +6686,7 @@
         "SPAIN",
         "URUGUAY",
         "SAUDI ARABIA",
-        "CAPO VERDE"
+        "CAPE VERDE"
       ],
       "I": [
         "FRANCE",
@@ -6703,7 +6703,7 @@
       "K": [
         "PORTUGAL",
         "COLOMBIA",
-        "DR CONGO",
+        "CONGO DR",
         "UZBEKISTAN"
       ],
       "L": [
@@ -6728,7 +6728,7 @@
         "SPAIN",
         "AUSTRIA",
         "TURKEY",
-        "BOSNIA H.",
+        "BOSNIA",
         "BELGIUM",
         "SAUDI ARABIA",
         "BRAZIL",
@@ -6841,7 +6841,7 @@
       "B": [
         {
           "home": "CANADA",
-          "away": "BOSNIA H.",
+          "away": "BOSNIA",
           "home_score": 2,
           "away_score": 1
         },
@@ -6853,7 +6853,7 @@
         },
         {
           "home": "SWITZERLAND",
-          "away": "BOSNIA H.",
+          "away": "BOSNIA",
           "home_score": 2,
           "away_score": 1
         },
@@ -6870,7 +6870,7 @@
           "away_score": 1
         },
         {
-          "home": "BOSNIA H.",
+          "home": "BOSNIA",
           "away": "QATAR",
           "home_score": 2,
           "away_score": 0
@@ -6955,7 +6955,7 @@
       "E": [
         {
           "home": "GERMANY",
-          "away": "CURA\u00c7AO",
+          "away": "CURACAO",
           "home_score": 3,
           "away_score": 0
         },
@@ -6973,12 +6973,12 @@
         },
         {
           "home": "ECUADOR",
-          "away": "CURA\u00c7AO",
+          "away": "CURACAO",
           "home_score": 2,
           "away_score": 0
         },
         {
-          "home": "CURA\u00c7AO",
+          "home": "CURACAO",
           "away": "IVORY COAST",
           "home_score": 1,
           "away_score": 3
@@ -7069,7 +7069,7 @@
       "H": [
         {
           "home": "SPAIN",
-          "away": "CAPO VERDE",
+          "away": "CAPE VERDE",
           "home_score": 4,
           "away_score": 0
         },
@@ -7087,12 +7087,12 @@
         },
         {
           "home": "URUGUAY",
-          "away": "CAPO VERDE",
+          "away": "CAPE VERDE",
           "home_score": 2,
           "away_score": 0
         },
         {
-          "home": "CAPO VERDE",
+          "home": "CAPE VERDE",
           "away": "SAUDI ARABIA",
           "home_score": 2,
           "away_score": 2
@@ -7183,7 +7183,7 @@
       "K": [
         {
           "home": "PORTUGAL",
-          "away": "DR CONGO",
+          "away": "CONGO DR",
           "home_score": 4,
           "away_score": 1
         },
@@ -7201,7 +7201,7 @@
         },
         {
           "home": "COLOMBIA",
-          "away": "DR CONGO",
+          "away": "CONGO DR",
           "home_score": 3,
           "away_score": 0
         },
@@ -7212,7 +7212,7 @@
           "away_score": 2
         },
         {
-          "home": "DR CONGO",
+          "home": "CONGO DR",
           "away": "UZBEKISTAN",
           "home_score": 0,
           "away_score": 0
@@ -7267,7 +7267,7 @@
       "B": [
         "SWITZERLAND",
         "CANADA",
-        "BOSNIA H.",
+        "BOSNIA",
         "QATAR"
       ],
       "C": [
@@ -7286,7 +7286,7 @@
         "GERMANY",
         "IVORY COAST",
         "ECUADOR",
-        "CURA\u00c7AO"
+        "CURACAO"
       ],
       "F": [
         "NETHERLANDS",
@@ -7304,7 +7304,7 @@
         "SPAIN",
         "URUGUAY",
         "SAUDI ARABIA",
-        "CAPO VERDE"
+        "CAPE VERDE"
       ],
       "I": [
         "FRANCE",
@@ -7322,7 +7322,7 @@
         "PORTUGAL",
         "COLOMBIA",
         "UZBEKISTAN",
-        "DR CONGO"
+        "CONGO DR"
       ],
       "L": [
         "ENGLAND",
@@ -7346,7 +7346,7 @@
         "SPAIN",
         "AUSTRIA",
         "TURKEY",
-        "BOSNIA H.",
+        "BOSNIA",
         "BELGIUM",
         "SOUTH KOREA",
         "BRAZIL",
@@ -7459,7 +7459,7 @@
       "B": [
         {
           "home": "CANADA",
-          "away": "BOSNIA H.",
+          "away": "BOSNIA",
           "home_score": 1,
           "away_score": 1
         },
@@ -7471,7 +7471,7 @@
         },
         {
           "home": "SWITZERLAND",
-          "away": "BOSNIA H.",
+          "away": "BOSNIA",
           "home_score": 3,
           "away_score": 1
         },
@@ -7488,7 +7488,7 @@
           "away_score": 2
         },
         {
-          "home": "BOSNIA H.",
+          "home": "BOSNIA",
           "away": "QATAR",
           "home_score": 2,
           "away_score": 1
@@ -7573,7 +7573,7 @@
       "E": [
         {
           "home": "GERMANY",
-          "away": "CURA\u00c7AO",
+          "away": "CURACAO",
           "home_score": 7,
           "away_score": 1
         },
@@ -7591,12 +7591,12 @@
         },
         {
           "home": "ECUADOR",
-          "away": "CURA\u00c7AO",
+          "away": "CURACAO",
           "home_score": 2,
           "away_score": 0
         },
         {
-          "home": "CURA\u00c7AO",
+          "home": "CURACAO",
           "away": "IVORY COAST",
           "home_score": 1,
           "away_score": 3
@@ -7687,7 +7687,7 @@
       "H": [
         {
           "home": "SPAIN",
-          "away": "CAPO VERDE",
+          "away": "CAPE VERDE",
           "home_score": 6,
           "away_score": 1
         },
@@ -7705,12 +7705,12 @@
         },
         {
           "home": "URUGUAY",
-          "away": "CAPO VERDE",
+          "away": "CAPE VERDE",
           "home_score": 2,
           "away_score": 0
         },
         {
-          "home": "CAPO VERDE",
+          "home": "CAPE VERDE",
           "away": "SAUDI ARABIA",
           "home_score": 1,
           "away_score": 1
@@ -7801,7 +7801,7 @@
       "K": [
         {
           "home": "PORTUGAL",
-          "away": "DR CONGO",
+          "away": "CONGO DR",
           "home_score": 4,
           "away_score": 1
         },
@@ -7819,7 +7819,7 @@
         },
         {
           "home": "COLOMBIA",
-          "away": "DR CONGO",
+          "away": "CONGO DR",
           "home_score": 1,
           "away_score": 1
         },
@@ -7830,7 +7830,7 @@
           "away_score": 2
         },
         {
-          "home": "DR CONGO",
+          "home": "CONGO DR",
           "away": "UZBEKISTAN",
           "home_score": 0,
           "away_score": 1
@@ -7885,7 +7885,7 @@
       "B": [
         "SWITZERLAND",
         "CANADA",
-        "BOSNIA H.",
+        "BOSNIA",
         "QATAR"
       ],
       "C": [
@@ -7904,7 +7904,7 @@
         "GERMANY",
         "ECUADOR",
         "IVORY COAST",
-        "CURA\u00c7AO"
+        "CURACAO"
       ],
       "F": [
         "JAPAN",
@@ -7921,7 +7921,7 @@
       "H": [
         "SPAIN",
         "URUGUAY",
-        "CAPO VERDE",
+        "CAPE VERDE",
         "SAUDI ARABIA"
       ],
       "I": [
@@ -7940,7 +7940,7 @@
         "PORTUGAL",
         "COLOMBIA",
         "UZBEKISTAN",
-        "DR CONGO"
+        "CONGO DR"
       ],
       "L": [
         "ENGLAND",
@@ -7964,7 +7964,7 @@
         "SPAIN",
         "AUSTRIA",
         "TURKEY",
-        "BOSNIA H.",
+        "BOSNIA",
         "BELGIUM",
         "SENEGAL",
         "BRAZIL",
@@ -8077,7 +8077,7 @@
       "B": [
         {
           "home": "CANADA",
-          "away": "BOSNIA H.",
+          "away": "BOSNIA",
           "home_score": 2,
           "away_score": 0
         },
@@ -8089,7 +8089,7 @@
         },
         {
           "home": "SWITZERLAND",
-          "away": "BOSNIA H.",
+          "away": "BOSNIA",
           "home_score": 2,
           "away_score": 2
         },
@@ -8106,7 +8106,7 @@
           "away_score": 0
         },
         {
-          "home": "BOSNIA H.",
+          "home": "BOSNIA",
           "away": "QATAR",
           "home_score": 1,
           "away_score": 0
@@ -8191,7 +8191,7 @@
       "E": [
         {
           "home": "GERMANY",
-          "away": "CURA\u00c7AO",
+          "away": "CURACAO",
           "home_score": 2,
           "away_score": 0
         },
@@ -8209,12 +8209,12 @@
         },
         {
           "home": "ECUADOR",
-          "away": "CURA\u00c7AO",
+          "away": "CURACAO",
           "home_score": 2,
           "away_score": 0
         },
         {
-          "home": "CURA\u00c7AO",
+          "home": "CURACAO",
           "away": "IVORY COAST",
           "home_score": 3,
           "away_score": 3
@@ -8305,7 +8305,7 @@
       "H": [
         {
           "home": "SPAIN",
-          "away": "CAPO VERDE",
+          "away": "CAPE VERDE",
           "home_score": 6,
           "away_score": 0
         },
@@ -8323,12 +8323,12 @@
         },
         {
           "home": "URUGUAY",
-          "away": "CAPO VERDE",
+          "away": "CAPE VERDE",
           "home_score": 2,
           "away_score": 0
         },
         {
-          "home": "CAPO VERDE",
+          "home": "CAPE VERDE",
           "away": "SAUDI ARABIA",
           "home_score": 3,
           "away_score": 3
@@ -8419,7 +8419,7 @@
       "K": [
         {
           "home": "PORTUGAL",
-          "away": "DR CONGO",
+          "away": "CONGO DR",
           "home_score": 3,
           "away_score": 1
         },
@@ -8437,7 +8437,7 @@
         },
         {
           "home": "COLOMBIA",
-          "away": "DR CONGO",
+          "away": "CONGO DR",
           "home_score": 3,
           "away_score": 1
         },
@@ -8448,7 +8448,7 @@
           "away_score": 1
         },
         {
-          "home": "DR CONGO",
+          "home": "CONGO DR",
           "away": "UZBEKISTAN",
           "home_score": 1,
           "away_score": 2
@@ -8503,7 +8503,7 @@
       "B": [
         "CANADA",
         "SWITZERLAND",
-        "BOSNIA H.",
+        "BOSNIA",
         "QATAR"
       ],
       "C": [
@@ -8522,7 +8522,7 @@
         "GERMANY",
         "ECUADOR",
         "IVORY COAST",
-        "CURA\u00c7AO"
+        "CURACAO"
       ],
       "F": [
         "SWEDEN",
@@ -8540,13 +8540,13 @@
         "URUGUAY",
         "SPAIN",
         "SAUDI ARABIA",
-        "CAPO VERDE"
+        "CAPE VERDE"
       ],
       "I": [
         "FRANCE",
         "SENEGAL",
-        "0",
-        "0"
+        "",
+        ""
       ],
       "J": [
         "ARGENTINA",
@@ -8558,7 +8558,7 @@
         "PORTUGAL",
         "COLOMBIA",
         "UZBEKISTAN",
-        "DR CONGO"
+        "CONGO DR"
       ],
       "L": [
         "CROATIA",
@@ -8582,7 +8582,7 @@
         "URUGUAY",
         "AUSTRIA",
         "TURKEY",
-        "BOSNIA H.",
+        "BOSNIA",
         "EGYPT",
         "SOUTH AFRICA",
         "BRAZIL",
@@ -8695,7 +8695,7 @@
       "B": [
         {
           "home": "CANADA",
-          "away": "BOSNIA H.",
+          "away": "BOSNIA",
           "home_score": 1,
           "away_score": 1
         },
@@ -8707,7 +8707,7 @@
         },
         {
           "home": "SWITZERLAND",
-          "away": "BOSNIA H.",
+          "away": "BOSNIA",
           "home_score": 2,
           "away_score": 0
         },
@@ -8724,7 +8724,7 @@
           "away_score": 1
         },
         {
-          "home": "BOSNIA H.",
+          "home": "BOSNIA",
           "away": "QATAR",
           "home_score": 1,
           "away_score": 0
@@ -8809,7 +8809,7 @@
       "E": [
         {
           "home": "GERMANY",
-          "away": "CURA\u00c7AO",
+          "away": "CURACAO",
           "home_score": 4,
           "away_score": 0
         },
@@ -8827,12 +8827,12 @@
         },
         {
           "home": "ECUADOR",
-          "away": "CURA\u00c7AO",
+          "away": "CURACAO",
           "home_score": 2,
           "away_score": 0
         },
         {
-          "home": "CURA\u00c7AO",
+          "home": "CURACAO",
           "away": "IVORY COAST",
           "home_score": 1,
           "away_score": 1
@@ -8923,7 +8923,7 @@
       "H": [
         {
           "home": "SPAIN",
-          "away": "CAPO VERDE",
+          "away": "CAPE VERDE",
           "home_score": 4,
           "away_score": 0
         },
@@ -8941,12 +8941,12 @@
         },
         {
           "home": "URUGUAY",
-          "away": "CAPO VERDE",
+          "away": "CAPE VERDE",
           "home_score": 1,
           "away_score": 1
         },
         {
-          "home": "CAPO VERDE",
+          "home": "CAPE VERDE",
           "away": "SAUDI ARABIA",
           "home_score": 1,
           "away_score": 0
@@ -9037,7 +9037,7 @@
       "K": [
         {
           "home": "PORTUGAL",
-          "away": "DR CONGO",
+          "away": "CONGO DR",
           "home_score": 2,
           "away_score": 0
         },
@@ -9055,7 +9055,7 @@
         },
         {
           "home": "COLOMBIA",
-          "away": "DR CONGO",
+          "away": "CONGO DR",
           "home_score": 2,
           "away_score": 1
         },
@@ -9066,7 +9066,7 @@
           "away_score": 3
         },
         {
-          "home": "DR CONGO",
+          "home": "CONGO DR",
           "away": "UZBEKISTAN",
           "home_score": 1,
           "away_score": 1
@@ -9121,7 +9121,7 @@
       "B": [
         "SWITZERLAND",
         "CANADA",
-        "BOSNIA H.",
+        "BOSNIA",
         "QATAR"
       ],
       "C": [
@@ -9140,7 +9140,7 @@
         "GERMANY",
         "ECUADOR",
         "IVORY COAST",
-        "CURA\u00c7AO"
+        "CURACAO"
       ],
       "F": [
         "NETHERLANDS",
@@ -9157,7 +9157,7 @@
       "H": [
         "SPAIN",
         "URUGUAY",
-        "CAPO VERDE",
+        "CAPE VERDE",
         "SAUDI ARABIA"
       ],
       "I": [
@@ -9176,7 +9176,7 @@
         "PORTUGAL",
         "COLOMBIA",
         "UZBEKISTAN",
-        "DR CONGO"
+        "CONGO DR"
       ],
       "L": [
         "ENGLAND",
@@ -9200,7 +9200,7 @@
         "SPAIN",
         "AUSTRIA",
         "TURKEY",
-        "BOSNIA H.",
+        "BOSNIA",
         "BELGIUM",
         "SOUTH AFRICA",
         "BRAZIL",
@@ -9208,7 +9208,7 @@
         "ECUADOR",
         "FRANCE",
         "CZECHIA",
-        "CAPO VERDE",
+        "CAPE VERDE",
         "ENGLAND",
         "SENEGAL",
         "ARGENTINA",
@@ -9313,7 +9313,7 @@
       "B": [
         {
           "home": "CANADA",
-          "away": "BOSNIA H.",
+          "away": "BOSNIA",
           "home_score": 1,
           "away_score": 0
         },
@@ -9325,7 +9325,7 @@
         },
         {
           "home": "SWITZERLAND",
-          "away": "BOSNIA H.",
+          "away": "BOSNIA",
           "home_score": 2,
           "away_score": 0
         },
@@ -9342,7 +9342,7 @@
           "away_score": 1
         },
         {
-          "home": "BOSNIA H.",
+          "home": "BOSNIA",
           "away": "QATAR",
           "home_score": 2,
           "away_score": 0
@@ -9427,7 +9427,7 @@
       "E": [
         {
           "home": "GERMANY",
-          "away": "CURA\u00c7AO",
+          "away": "CURACAO",
           "home_score": 6,
           "away_score": 0
         },
@@ -9445,12 +9445,12 @@
         },
         {
           "home": "ECUADOR",
-          "away": "CURA\u00c7AO",
+          "away": "CURACAO",
           "home_score": 4,
           "away_score": 1
         },
         {
-          "home": "CURA\u00c7AO",
+          "home": "CURACAO",
           "away": "IVORY COAST",
           "home_score": 1,
           "away_score": 3
@@ -9541,7 +9541,7 @@
       "H": [
         {
           "home": "SPAIN",
-          "away": "CAPO VERDE",
+          "away": "CAPE VERDE",
           "home_score": 5,
           "away_score": 0
         },
@@ -9559,12 +9559,12 @@
         },
         {
           "home": "URUGUAY",
-          "away": "CAPO VERDE",
+          "away": "CAPE VERDE",
           "home_score": 3,
           "away_score": 0
         },
         {
-          "home": "CAPO VERDE",
+          "home": "CAPE VERDE",
           "away": "SAUDI ARABIA",
           "home_score": 0,
           "away_score": 2
@@ -9655,7 +9655,7 @@
       "K": [
         {
           "home": "PORTUGAL",
-          "away": "DR CONGO",
+          "away": "CONGO DR",
           "home_score": 5,
           "away_score": 0
         },
@@ -9673,7 +9673,7 @@
         },
         {
           "home": "COLOMBIA",
-          "away": "DR CONGO",
+          "away": "CONGO DR",
           "home_score": 3,
           "away_score": 0
         },
@@ -9684,7 +9684,7 @@
           "away_score": 3
         },
         {
-          "home": "DR CONGO",
+          "home": "CONGO DR",
           "away": "UZBEKISTAN",
           "home_score": 2,
           "away_score": 2
@@ -9739,7 +9739,7 @@
       "B": [
         "SWITZERLAND",
         "CANADA",
-        "BOSNIA H.",
+        "BOSNIA",
         "QATAR"
       ],
       "C": [
@@ -9758,7 +9758,7 @@
         "GERMANY",
         "ECUADOR",
         "IVORY COAST",
-        "CURA\u00c7AO"
+        "CURACAO"
       ],
       "F": [
         "NETHERLANDS",
@@ -9776,7 +9776,7 @@
         "SPAIN",
         "URUGUAY",
         "SAUDI ARABIA",
-        "CAPO VERDE"
+        "CAPE VERDE"
       ],
       "I": [
         "FRANCE",
@@ -9794,7 +9794,7 @@
         "PORTUGAL",
         "COLOMBIA",
         "UZBEKISTAN",
-        "DR CONGO"
+        "CONGO DR"
       ],
       "L": [
         "ENGLAND",
@@ -9818,7 +9818,7 @@
         "SPAIN",
         "AUSTRIA",
         "TURKEY",
-        "BOSNIA H.",
+        "BOSNIA",
         "BELGIUM",
         "CZECHIA",
         "BRAZIL",
@@ -9931,7 +9931,7 @@
       "B": [
         {
           "home": "CANADA",
-          "away": "BOSNIA H.",
+          "away": "BOSNIA",
           "home_score": 2,
           "away_score": 1
         },
@@ -9943,7 +9943,7 @@
         },
         {
           "home": "SWITZERLAND",
-          "away": "BOSNIA H.",
+          "away": "BOSNIA",
           "home_score": 1,
           "away_score": 1
         },
@@ -9960,7 +9960,7 @@
           "away_score": 0
         },
         {
-          "home": "BOSNIA H.",
+          "home": "BOSNIA",
           "away": "QATAR",
           "home_score": 1,
           "away_score": 1
@@ -10045,7 +10045,7 @@
       "E": [
         {
           "home": "GERMANY",
-          "away": "CURA\u00c7AO",
+          "away": "CURACAO",
           "home_score": 2,
           "away_score": 0
         },
@@ -10063,12 +10063,12 @@
         },
         {
           "home": "ECUADOR",
-          "away": "CURA\u00c7AO",
+          "away": "CURACAO",
           "home_score": 2,
           "away_score": 0
         },
         {
-          "home": "CURA\u00c7AO",
+          "home": "CURACAO",
           "away": "IVORY COAST",
           "home_score": 0,
           "away_score": 2
@@ -10159,7 +10159,7 @@
       "H": [
         {
           "home": "SPAIN",
-          "away": "CAPO VERDE",
+          "away": "CAPE VERDE",
           "home_score": 3,
           "away_score": 0
         },
@@ -10177,12 +10177,12 @@
         },
         {
           "home": "URUGUAY",
-          "away": "CAPO VERDE",
+          "away": "CAPE VERDE",
           "home_score": 2,
           "away_score": 0
         },
         {
-          "home": "CAPO VERDE",
+          "home": "CAPE VERDE",
           "away": "SAUDI ARABIA",
           "home_score": 1,
           "away_score": 1
@@ -10273,7 +10273,7 @@
       "K": [
         {
           "home": "PORTUGAL",
-          "away": "DR CONGO",
+          "away": "CONGO DR",
           "home_score": 3,
           "away_score": 0
         },
@@ -10291,7 +10291,7 @@
         },
         {
           "home": "COLOMBIA",
-          "away": "DR CONGO",
+          "away": "CONGO DR",
           "home_score": 2,
           "away_score": 0
         },
@@ -10302,7 +10302,7 @@
           "away_score": 2
         },
         {
-          "home": "DR CONGO",
+          "home": "CONGO DR",
           "away": "UZBEKISTAN",
           "home_score": 0,
           "away_score": 2
@@ -10357,7 +10357,7 @@
       "B": [
         "CANADA",
         "SWITZERLAND",
-        "BOSNIA H.",
+        "BOSNIA",
         "QATAR"
       ],
       "C": [
@@ -10376,7 +10376,7 @@
         "GERMANY",
         "IVORY COAST",
         "ECUADOR",
-        "CURA\u00c7AO"
+        "CURACAO"
       ],
       "F": [
         "JAPAN",
@@ -10394,7 +10394,7 @@
         "SPAIN",
         "URUGUAY",
         "SAUDI ARABIA",
-        "CAPO VERDE"
+        "CAPE VERDE"
       ],
       "I": [
         "NORWAY",
@@ -10412,7 +10412,7 @@
         "PORTUGAL",
         "COLOMBIA",
         "UZBEKISTAN",
-        "DR CONGO"
+        "CONGO DR"
       ],
       "L": [
         "ENGLAND",
@@ -10549,7 +10549,7 @@
       "B": [
         {
           "home": "CANADA",
-          "away": "BOSNIA H.",
+          "away": "BOSNIA",
           "home_score": 1,
           "away_score": 1
         },
@@ -10561,7 +10561,7 @@
         },
         {
           "home": "SWITZERLAND",
-          "away": "BOSNIA H.",
+          "away": "BOSNIA",
           "home_score": 1,
           "away_score": 1
         },
@@ -10578,7 +10578,7 @@
           "away_score": 1
         },
         {
-          "home": "BOSNIA H.",
+          "home": "BOSNIA",
           "away": "QATAR",
           "home_score": 2,
           "away_score": 0
@@ -10663,7 +10663,7 @@
       "E": [
         {
           "home": "GERMANY",
-          "away": "CURA\u00c7AO",
+          "away": "CURACAO",
           "home_score": 7,
           "away_score": 0
         },
@@ -10681,12 +10681,12 @@
         },
         {
           "home": "ECUADOR",
-          "away": "CURA\u00c7AO",
+          "away": "CURACAO",
           "home_score": 3,
           "away_score": 1
         },
         {
-          "home": "CURA\u00c7AO",
+          "home": "CURACAO",
           "away": "IVORY COAST",
           "home_score": 0,
           "away_score": 2
@@ -10777,7 +10777,7 @@
       "H": [
         {
           "home": "SPAIN",
-          "away": "CAPO VERDE",
+          "away": "CAPE VERDE",
           "home_score": 5,
           "away_score": 0
         },
@@ -10795,12 +10795,12 @@
         },
         {
           "home": "URUGUAY",
-          "away": "CAPO VERDE",
+          "away": "CAPE VERDE",
           "home_score": 2,
           "away_score": 0
         },
         {
-          "home": "CAPO VERDE",
+          "home": "CAPE VERDE",
           "away": "SAUDI ARABIA",
           "home_score": 0,
           "away_score": 2
@@ -10891,7 +10891,7 @@
       "K": [
         {
           "home": "PORTUGAL",
-          "away": "DR CONGO",
+          "away": "CONGO DR",
           "home_score": 5,
           "away_score": 0
         },
@@ -10909,7 +10909,7 @@
         },
         {
           "home": "COLOMBIA",
-          "away": "DR CONGO",
+          "away": "CONGO DR",
           "home_score": 3,
           "away_score": 0
         },
@@ -10920,7 +10920,7 @@
           "away_score": 2
         },
         {
-          "home": "DR CONGO",
+          "home": "CONGO DR",
           "away": "UZBEKISTAN",
           "home_score": 1,
           "away_score": 1
@@ -10974,7 +10974,7 @@
       ],
       "B": [
         "SWITZERLAND",
-        "BOSNIA H.",
+        "BOSNIA",
         "CANADA",
         "QATAR"
       ],
@@ -10994,7 +10994,7 @@
         "GERMANY",
         "ECUADOR",
         "IVORY COAST",
-        "CURA\u00c7AO"
+        "CURACAO"
       ],
       "F": [
         "NETHERLANDS",
@@ -11012,7 +11012,7 @@
         "SPAIN",
         "URUGUAY",
         "SAUDI ARABIA",
-        "CAPO VERDE"
+        "CAPE VERDE"
       ],
       "I": [
         "FRANCE",
@@ -11029,7 +11029,7 @@
       "K": [
         "PORTUGAL",
         "COLOMBIA",
-        "DR CONGO",
+        "CONGO DR",
         "UZBEKISTAN"
       ],
       "L": [
@@ -11046,7 +11046,7 @@
         "FRANCE",
         "SWEDEN",
         "SOUTH KOREA",
-        "BOSNIA H.",
+        "BOSNIA",
         "NETHERLANDS",
         "MOROCCO",
         "COLOMBIA",
@@ -11077,7 +11077,7 @@
       "r16": [
         "GERMANY",
         "FRANCE",
-        "BOSNIA H.",
+        "BOSNIA",
         "NETHERLANDS",
         "COLOMBIA",
         "SPAIN",
@@ -11167,7 +11167,7 @@
       "B": [
         {
           "home": "CANADA",
-          "away": "BOSNIA H.",
+          "away": "BOSNIA",
           "home_score": 2,
           "away_score": 1
         },
@@ -11179,7 +11179,7 @@
         },
         {
           "home": "SWITZERLAND",
-          "away": "BOSNIA H.",
+          "away": "BOSNIA",
           "home_score": 2,
           "away_score": 1
         },
@@ -11196,7 +11196,7 @@
           "away_score": 2
         },
         {
-          "home": "BOSNIA H.",
+          "home": "BOSNIA",
           "away": "QATAR",
           "home_score": 2,
           "away_score": 1
@@ -11281,7 +11281,7 @@
       "E": [
         {
           "home": "GERMANY",
-          "away": "CURA\u00c7AO",
+          "away": "CURACAO",
           "home_score": 4,
           "away_score": 0
         },
@@ -11299,12 +11299,12 @@
         },
         {
           "home": "ECUADOR",
-          "away": "CURA\u00c7AO",
+          "away": "CURACAO",
           "home_score": 3,
           "away_score": 0
         },
         {
-          "home": "CURA\u00c7AO",
+          "home": "CURACAO",
           "away": "IVORY COAST",
           "home_score": 1,
           "away_score": 2
@@ -11395,7 +11395,7 @@
       "H": [
         {
           "home": "SPAIN",
-          "away": "CAPO VERDE",
+          "away": "CAPE VERDE",
           "home_score": 4,
           "away_score": 0
         },
@@ -11413,12 +11413,12 @@
         },
         {
           "home": "URUGUAY",
-          "away": "CAPO VERDE",
+          "away": "CAPE VERDE",
           "home_score": 2,
           "away_score": 0
         },
         {
-          "home": "CAPO VERDE",
+          "home": "CAPE VERDE",
           "away": "SAUDI ARABIA",
           "home_score": 1,
           "away_score": 2
@@ -11509,7 +11509,7 @@
       "K": [
         {
           "home": "PORTUGAL",
-          "away": "DR CONGO",
+          "away": "CONGO DR",
           "home_score": 4,
           "away_score": 0
         },
@@ -11527,7 +11527,7 @@
         },
         {
           "home": "COLOMBIA",
-          "away": "DR CONGO",
+          "away": "CONGO DR",
           "home_score": 3,
           "away_score": 1
         },
@@ -11538,7 +11538,7 @@
           "away_score": 2
         },
         {
-          "home": "DR CONGO",
+          "home": "CONGO DR",
           "away": "UZBEKISTAN",
           "home_score": 1,
           "away_score": 1
@@ -11593,7 +11593,7 @@
       "B": [
         "CANADA",
         "SWITZERLAND",
-        "BOSNIA H.",
+        "BOSNIA",
         "QATAR"
       ],
       "C": [
@@ -11612,7 +11612,7 @@
         "GERMANY",
         "ECUADOR",
         "IVORY COAST",
-        "CURA\u00c7AO"
+        "CURACAO"
       ],
       "F": [
         "NETHERLANDS",
@@ -11630,7 +11630,7 @@
         "SPAIN",
         "URUGUAY",
         "SAUDI ARABIA",
-        "CAPO VERDE"
+        "CAPE VERDE"
       ],
       "I": [
         "FRANCE",
@@ -11647,7 +11647,7 @@
       "K": [
         "PORTUGAL",
         "COLOMBIA",
-        "DR CONGO",
+        "CONGO DR",
         "UZBEKISTAN"
       ],
       "L": [
@@ -11672,7 +11672,7 @@
         "SPAIN",
         "AUSTRIA",
         "TURKEY",
-        "BOSNIA H.",
+        "BOSNIA",
         "BELGIUM",
         "CZECHIA",
         "BRAZIL",
@@ -11785,7 +11785,7 @@
       "B": [
         {
           "home": "CANADA",
-          "away": "BOSNIA H.",
+          "away": "BOSNIA",
           "home_score": 2,
           "away_score": 0
         },
@@ -11797,7 +11797,7 @@
         },
         {
           "home": "SWITZERLAND",
-          "away": "BOSNIA H.",
+          "away": "BOSNIA",
           "home_score": 3,
           "away_score": 0
         },
@@ -11814,7 +11814,7 @@
           "away_score": 2
         },
         {
-          "home": "BOSNIA H.",
+          "home": "BOSNIA",
           "away": "QATAR",
           "home_score": 2,
           "away_score": 1
@@ -11899,7 +11899,7 @@
       "E": [
         {
           "home": "GERMANY",
-          "away": "CURA\u00c7AO",
+          "away": "CURACAO",
           "home_score": 5,
           "away_score": 0
         },
@@ -11917,12 +11917,12 @@
         },
         {
           "home": "ECUADOR",
-          "away": "CURA\u00c7AO",
+          "away": "CURACAO",
           "home_score": 3,
           "away_score": 2
         },
         {
-          "home": "CURA\u00c7AO",
+          "home": "CURACAO",
           "away": "IVORY COAST",
           "home_score": 1,
           "away_score": 4
@@ -12013,7 +12013,7 @@
       "H": [
         {
           "home": "SPAIN",
-          "away": "CAPO VERDE",
+          "away": "CAPE VERDE",
           "home_score": 5,
           "away_score": 0
         },
@@ -12031,12 +12031,12 @@
         },
         {
           "home": "URUGUAY",
-          "away": "CAPO VERDE",
+          "away": "CAPE VERDE",
           "home_score": 2,
           "away_score": 0
         },
         {
-          "home": "CAPO VERDE",
+          "home": "CAPE VERDE",
           "away": "SAUDI ARABIA",
           "home_score": 1,
           "away_score": 1
@@ -12127,7 +12127,7 @@
       "K": [
         {
           "home": "PORTUGAL",
-          "away": "DR CONGO",
+          "away": "CONGO DR",
           "home_score": 3,
           "away_score": 0
         },
@@ -12145,7 +12145,7 @@
         },
         {
           "home": "COLOMBIA",
-          "away": "DR CONGO",
+          "away": "CONGO DR",
           "home_score": 3,
           "away_score": 2
         },
@@ -12156,7 +12156,7 @@
           "away_score": 3
         },
         {
-          "home": "DR CONGO",
+          "home": "CONGO DR",
           "away": "UZBEKISTAN",
           "home_score": 1,
           "away_score": 1
@@ -12211,7 +12211,7 @@
       "B": [
         "SWITZERLAND",
         "CANADA",
-        "BOSNIA H.",
+        "BOSNIA",
         "QATAR"
       ],
       "C": [
@@ -12230,7 +12230,7 @@
         "GERMANY",
         "IVORY COAST",
         "ECUADOR",
-        "CURA\u00c7AO"
+        "CURACAO"
       ],
       "F": [
         "NETHERLANDS",
@@ -12248,7 +12248,7 @@
         "SPAIN",
         "URUGUAY",
         "SAUDI ARABIA",
-        "CAPO VERDE"
+        "CAPE VERDE"
       ],
       "I": [
         "FRANCE",
@@ -12265,7 +12265,7 @@
       "K": [
         "PORTUGAL",
         "COLOMBIA",
-        "DR CONGO",
+        "CONGO DR",
         "UZBEKISTAN"
       ],
       "L": [
@@ -12290,7 +12290,7 @@
         "SPAIN",
         "AUSTRIA",
         "USA",
-        "BOSNIA H.",
+        "BOSNIA",
         "BELGIUM",
         "SOUTH KOREA",
         "BRAZIL",
@@ -12403,7 +12403,7 @@
       "B": [
         {
           "home": "CANADA",
-          "away": "BOSNIA H.",
+          "away": "BOSNIA",
           "home_score": 2,
           "away_score": 0
         },
@@ -12415,7 +12415,7 @@
         },
         {
           "home": "SWITZERLAND",
-          "away": "BOSNIA H.",
+          "away": "BOSNIA",
           "home_score": 1,
           "away_score": 0
         },
@@ -12432,7 +12432,7 @@
           "away_score": 1
         },
         {
-          "home": "BOSNIA H.",
+          "home": "BOSNIA",
           "away": "QATAR",
           "home_score": 1,
           "away_score": 0
@@ -12517,7 +12517,7 @@
       "E": [
         {
           "home": "GERMANY",
-          "away": "CURA\u00c7AO",
+          "away": "CURACAO",
           "home_score": 4,
           "away_score": 0
         },
@@ -12535,12 +12535,12 @@
         },
         {
           "home": "ECUADOR",
-          "away": "CURA\u00c7AO",
+          "away": "CURACAO",
           "home_score": 1,
           "away_score": 0
         },
         {
-          "home": "CURA\u00c7AO",
+          "home": "CURACAO",
           "away": "IVORY COAST",
           "home_score": 1,
           "away_score": 1
@@ -12631,7 +12631,7 @@
       "H": [
         {
           "home": "SPAIN",
-          "away": "CAPO VERDE",
+          "away": "CAPE VERDE",
           "home_score": 3,
           "away_score": 1
         },
@@ -12649,12 +12649,12 @@
         },
         {
           "home": "URUGUAY",
-          "away": "CAPO VERDE",
+          "away": "CAPE VERDE",
           "home_score": 1,
           "away_score": 0
         },
         {
-          "home": "CAPO VERDE",
+          "home": "CAPE VERDE",
           "away": "SAUDI ARABIA",
           "home_score": 2,
           "away_score": 1
@@ -12745,7 +12745,7 @@
       "K": [
         {
           "home": "PORTUGAL",
-          "away": "DR CONGO",
+          "away": "CONGO DR",
           "home_score": 3,
           "away_score": 0
         },
@@ -12763,7 +12763,7 @@
         },
         {
           "home": "COLOMBIA",
-          "away": "DR CONGO",
+          "away": "CONGO DR",
           "home_score": 1,
           "away_score": 0
         },
@@ -12774,7 +12774,7 @@
           "away_score": 5
         },
         {
-          "home": "DR CONGO",
+          "home": "CONGO DR",
           "away": "UZBEKISTAN",
           "home_score": 2,
           "away_score": 2
@@ -12829,7 +12829,7 @@
       "B": [
         "SWITZERLAND",
         "CANADA",
-        "BOSNIA H.",
+        "BOSNIA",
         "QATAR"
       ],
       "C": [
@@ -12848,7 +12848,7 @@
         "GERMANY",
         "ECUADOR",
         "IVORY COAST",
-        "CURA\u00c7AO"
+        "CURACAO"
       ],
       "F": [
         "SWEDEN",
@@ -12865,7 +12865,7 @@
       "H": [
         "SPAIN",
         "URUGUAY",
-        "CAPO VERDE",
+        "CAPE VERDE",
         "SAUDI ARABIA"
       ],
       "I": [
@@ -12884,7 +12884,7 @@
         "PORTUGAL",
         "COLOMBIA",
         "UZBEKISTAN",
-        "DR CONGO"
+        "CONGO DR"
       ],
       "L": [
         "ENGLAND",
@@ -12908,7 +12908,7 @@
         "SPAIN",
         "AUSTRIA",
         "TURKEY",
-        "BOSNIA H.",
+        "BOSNIA",
         "BELGIUM",
         "SOUTH AFRICA",
         "BRAZIL",
@@ -12916,7 +12916,7 @@
         "ECUADOR",
         "NORWAY",
         "CZECHIA",
-        "CAPO VERDE",
+        "CAPE VERDE",
         "ENGLAND",
         "IRAQ",
         "ARGENTINA",
@@ -13021,7 +13021,7 @@
       "B": [
         {
           "home": "CANADA",
-          "away": "BOSNIA H.",
+          "away": "BOSNIA",
           "home_score": 1,
           "away_score": 0
         },
@@ -13033,7 +13033,7 @@
         },
         {
           "home": "SWITZERLAND",
-          "away": "BOSNIA H.",
+          "away": "BOSNIA",
           "home_score": 2,
           "away_score": 1
         },
@@ -13050,7 +13050,7 @@
           "away_score": 1
         },
         {
-          "home": "BOSNIA H.",
+          "home": "BOSNIA",
           "away": "QATAR",
           "home_score": 2,
           "away_score": 0
@@ -13135,7 +13135,7 @@
       "E": [
         {
           "home": "GERMANY",
-          "away": "CURA\u00c7AO",
+          "away": "CURACAO",
           "home_score": 5,
           "away_score": 0
         },
@@ -13153,12 +13153,12 @@
         },
         {
           "home": "ECUADOR",
-          "away": "CURA\u00c7AO",
+          "away": "CURACAO",
           "home_score": 3,
           "away_score": 0
         },
         {
-          "home": "CURA\u00c7AO",
+          "home": "CURACAO",
           "away": "IVORY COAST",
           "home_score": 0,
           "away_score": 3
@@ -13249,7 +13249,7 @@
       "H": [
         {
           "home": "SPAIN",
-          "away": "CAPO VERDE",
+          "away": "CAPE VERDE",
           "home_score": 4,
           "away_score": 0
         },
@@ -13267,12 +13267,12 @@
         },
         {
           "home": "URUGUAY",
-          "away": "CAPO VERDE",
+          "away": "CAPE VERDE",
           "home_score": 2,
           "away_score": 0
         },
         {
-          "home": "CAPO VERDE",
+          "home": "CAPE VERDE",
           "away": "SAUDI ARABIA",
           "home_score": 1,
           "away_score": 2
@@ -13363,7 +13363,7 @@
       "K": [
         {
           "home": "PORTUGAL",
-          "away": "DR CONGO",
+          "away": "CONGO DR",
           "home_score": 3,
           "away_score": 0
         },
@@ -13381,7 +13381,7 @@
         },
         {
           "home": "COLOMBIA",
-          "away": "DR CONGO",
+          "away": "CONGO DR",
           "home_score": 2,
           "away_score": 1
         },
@@ -13392,7 +13392,7 @@
           "away_score": 2
         },
         {
-          "home": "DR CONGO",
+          "home": "CONGO DR",
           "away": "UZBEKISTAN",
           "home_score": 2,
           "away_score": 1
@@ -13447,7 +13447,7 @@
       "B": [
         "SWITZERLAND",
         "CANADA",
-        "BOSNIA H.",
+        "BOSNIA",
         "QATAR"
       ],
       "C": [
@@ -13466,7 +13466,7 @@
         "GERMANY",
         "ECUADOR",
         "IVORY COAST",
-        "CURA\u00c7AO"
+        "CURACAO"
       ],
       "F": [
         "NETHERLANDS",
@@ -13484,7 +13484,7 @@
         "SPAIN",
         "URUGUAY",
         "SAUDI ARABIA",
-        "CAPO VERDE"
+        "CAPE VERDE"
       ],
       "I": [
         "FRANCE",
@@ -13501,7 +13501,7 @@
       "K": [
         "PORTUGAL",
         "COLOMBIA",
-        "DR CONGO",
+        "CONGO DR",
         "UZBEKISTAN"
       ],
       "L": [
@@ -13526,7 +13526,7 @@
         "SPAIN",
         "AUSTRIA",
         "TURKEY",
-        "BOSNIA H.",
+        "BOSNIA",
         "BELGIUM",
         "CZECHIA",
         "BRAZIL",
@@ -13639,7 +13639,7 @@
       "B": [
         {
           "home": "CANADA",
-          "away": "BOSNIA H.",
+          "away": "BOSNIA",
           "home_score": 1,
           "away_score": 1
         },
@@ -13651,7 +13651,7 @@
         },
         {
           "home": "SWITZERLAND",
-          "away": "BOSNIA H.",
+          "away": "BOSNIA",
           "home_score": 3,
           "away_score": 1
         },
@@ -13668,7 +13668,7 @@
           "away_score": 1
         },
         {
-          "home": "BOSNIA H.",
+          "home": "BOSNIA",
           "away": "QATAR",
           "home_score": 2,
           "away_score": 0
@@ -13753,7 +13753,7 @@
       "E": [
         {
           "home": "GERMANY",
-          "away": "CURA\u00c7AO",
+          "away": "CURACAO",
           "home_score": 4,
           "away_score": 0
         },
@@ -13771,12 +13771,12 @@
         },
         {
           "home": "ECUADOR",
-          "away": "CURA\u00c7AO",
+          "away": "CURACAO",
           "home_score": 1,
           "away_score": 1
         },
         {
-          "home": "CURA\u00c7AO",
+          "home": "CURACAO",
           "away": "IVORY COAST",
           "home_score": 0,
           "away_score": 2
@@ -13867,7 +13867,7 @@
       "H": [
         {
           "home": "SPAIN",
-          "away": "CAPO VERDE",
+          "away": "CAPE VERDE",
           "home_score": 4,
           "away_score": 0
         },
@@ -13885,12 +13885,12 @@
         },
         {
           "home": "URUGUAY",
-          "away": "CAPO VERDE",
+          "away": "CAPE VERDE",
           "home_score": 2,
           "away_score": 1
         },
         {
-          "home": "CAPO VERDE",
+          "home": "CAPE VERDE",
           "away": "SAUDI ARABIA",
           "home_score": 1,
           "away_score": 1
@@ -13981,7 +13981,7 @@
       "K": [
         {
           "home": "PORTUGAL",
-          "away": "DR CONGO",
+          "away": "CONGO DR",
           "home_score": 3,
           "away_score": 0
         },
@@ -13999,7 +13999,7 @@
         },
         {
           "home": "COLOMBIA",
-          "away": "DR CONGO",
+          "away": "CONGO DR",
           "home_score": 2,
           "away_score": 1
         },
@@ -14010,7 +14010,7 @@
           "away_score": 2
         },
         {
-          "home": "DR CONGO",
+          "home": "CONGO DR",
           "away": "UZBEKISTAN",
           "home_score": 1,
           "away_score": 1
@@ -14065,7 +14065,7 @@
       "B": [
         "SWITZERLAND",
         "CANADA",
-        "BOSNIA H.",
+        "BOSNIA",
         "QATAR"
       ],
       "C": [
@@ -14084,7 +14084,7 @@
         "GERMANY",
         "IVORY COAST",
         "ECUADOR",
-        "CURA\u00c7AO"
+        "CURACAO"
       ],
       "F": [
         "NETHERLANDS",
@@ -14101,7 +14101,7 @@
       "H": [
         "SPAIN",
         "URUGUAY",
-        "CAPO VERDE",
+        "CAPE VERDE",
         "SAUDI ARABIA"
       ],
       "I": [
@@ -14120,7 +14120,7 @@
         "PORTUGAL",
         "COLOMBIA",
         "UZBEKISTAN",
-        "DR CONGO"
+        "CONGO DR"
       ],
       "L": [
         "ENGLAND",
@@ -14144,7 +14144,7 @@
         "SPAIN",
         "AUSTRIA",
         "TURKEY",
-        "BOSNIA H.",
+        "BOSNIA",
         "BELGIUM",
         "SOUTH KOREA",
         "BRAZIL",
@@ -14257,7 +14257,7 @@
       "B": [
         {
           "home": "CANADA",
-          "away": "BOSNIA H.",
+          "away": "BOSNIA",
           "home_score": 1,
           "away_score": 1
         },
@@ -14269,7 +14269,7 @@
         },
         {
           "home": "SWITZERLAND",
-          "away": "BOSNIA H.",
+          "away": "BOSNIA",
           "home_score": 3,
           "away_score": 0
         },
@@ -14286,7 +14286,7 @@
           "away_score": 0
         },
         {
-          "home": "BOSNIA H.",
+          "home": "BOSNIA",
           "away": "QATAR",
           "home_score": 1,
           "away_score": 0
@@ -14371,7 +14371,7 @@
       "E": [
         {
           "home": "GERMANY",
-          "away": "CURA\u00c7AO",
+          "away": "CURACAO",
           "home_score": 5,
           "away_score": 0
         },
@@ -14389,12 +14389,12 @@
         },
         {
           "home": "ECUADOR",
-          "away": "CURA\u00c7AO",
+          "away": "CURACAO",
           "home_score": 1,
           "away_score": 0
         },
         {
-          "home": "CURA\u00c7AO",
+          "home": "CURACAO",
           "away": "IVORY COAST",
           "home_score": 0,
           "away_score": 2
@@ -14485,7 +14485,7 @@
       "H": [
         {
           "home": "SPAIN",
-          "away": "CAPO VERDE",
+          "away": "CAPE VERDE",
           "home_score": 7,
           "away_score": 0
         },
@@ -14503,12 +14503,12 @@
         },
         {
           "home": "URUGUAY",
-          "away": "CAPO VERDE",
+          "away": "CAPE VERDE",
           "home_score": 1,
           "away_score": 0
         },
         {
-          "home": "CAPO VERDE",
+          "home": "CAPE VERDE",
           "away": "SAUDI ARABIA",
           "home_score": 1,
           "away_score": 2
@@ -14599,7 +14599,7 @@
       "K": [
         {
           "home": "PORTUGAL",
-          "away": "DR CONGO",
+          "away": "CONGO DR",
           "home_score": 2,
           "away_score": 0
         },
@@ -14617,7 +14617,7 @@
         },
         {
           "home": "COLOMBIA",
-          "away": "DR CONGO",
+          "away": "CONGO DR",
           "home_score": 1,
           "away_score": 0
         },
@@ -14628,7 +14628,7 @@
           "away_score": 1
         },
         {
-          "home": "DR CONGO",
+          "home": "CONGO DR",
           "away": "UZBEKISTAN",
           "home_score": 0,
           "away_score": 0
@@ -14683,7 +14683,7 @@
       "B": [
         "SWITZERLAND",
         "CANADA",
-        "BOSNIA H.",
+        "BOSNIA",
         "QATAR"
       ],
       "C": [
@@ -14702,7 +14702,7 @@
         "GERMANY",
         "ECUADOR",
         "IVORY COAST",
-        "CURA\u00c7AO"
+        "CURACAO"
       ],
       "F": [
         "NETHERLANDS",
@@ -14720,7 +14720,7 @@
         "SPAIN",
         "URUGUAY",
         "SAUDI ARABIA",
-        "CAPO VERDE"
+        "CAPE VERDE"
       ],
       "I": [
         "NORWAY",
@@ -14738,7 +14738,7 @@
         "PORTUGAL",
         "COLOMBIA",
         "UZBEKISTAN",
-        "DR CONGO"
+        "CONGO DR"
       ],
       "L": [
         "ENGLAND",
@@ -14762,7 +14762,7 @@
         "SPAIN",
         "ALGERIA",
         "TURKEY",
-        "BOSNIA H.",
+        "BOSNIA",
         "BELGIUM",
         "SOUTH KOREA",
         "BRAZIL",
@@ -14875,7 +14875,7 @@
       "B": [
         {
           "home": "CANADA",
-          "away": "BOSNIA H.",
+          "away": "BOSNIA",
           "home_score": 2,
           "away_score": 0
         },
@@ -14887,7 +14887,7 @@
         },
         {
           "home": "SWITZERLAND",
-          "away": "BOSNIA H.",
+          "away": "BOSNIA",
           "home_score": 2,
           "away_score": 1
         },
@@ -14904,7 +14904,7 @@
           "away_score": 1
         },
         {
-          "home": "BOSNIA H.",
+          "home": "BOSNIA",
           "away": "QATAR",
           "home_score": 1,
           "away_score": 0
@@ -14989,7 +14989,7 @@
       "E": [
         {
           "home": "GERMANY",
-          "away": "CURA\u00c7AO",
+          "away": "CURACAO",
           "home_score": 6,
           "away_score": 0
         },
@@ -15007,12 +15007,12 @@
         },
         {
           "home": "ECUADOR",
-          "away": "CURA\u00c7AO",
+          "away": "CURACAO",
           "home_score": 3,
           "away_score": 0
         },
         {
-          "home": "CURA\u00c7AO",
+          "home": "CURACAO",
           "away": "IVORY COAST",
           "home_score": 0,
           "away_score": 2
@@ -15103,7 +15103,7 @@
       "H": [
         {
           "home": "SPAIN",
-          "away": "CAPO VERDE",
+          "away": "CAPE VERDE",
           "home_score": 5,
           "away_score": 0
         },
@@ -15121,12 +15121,12 @@
         },
         {
           "home": "URUGUAY",
-          "away": "CAPO VERDE",
+          "away": "CAPE VERDE",
           "home_score": 3,
           "away_score": 0
         },
         {
-          "home": "CAPO VERDE",
+          "home": "CAPE VERDE",
           "away": "SAUDI ARABIA",
           "home_score": 1,
           "away_score": 1
@@ -15217,7 +15217,7 @@
       "K": [
         {
           "home": "PORTUGAL",
-          "away": "DR CONGO",
+          "away": "CONGO DR",
           "home_score": 4,
           "away_score": 0
         },
@@ -15235,7 +15235,7 @@
         },
         {
           "home": "COLOMBIA",
-          "away": "DR CONGO",
+          "away": "CONGO DR",
           "home_score": 3,
           "away_score": 1
         },
@@ -15246,7 +15246,7 @@
           "away_score": 2
         },
         {
-          "home": "DR CONGO",
+          "home": "CONGO DR",
           "away": "UZBEKISTAN",
           "home_score": 1,
           "away_score": 0
@@ -15301,7 +15301,7 @@
       "B": [
         "CANADA",
         "SWITZERLAND",
-        "BOSNIA H.",
+        "BOSNIA",
         "QATAR"
       ],
       "C": [
@@ -15320,7 +15320,7 @@
         "GERMANY",
         "ECUADOR",
         "IVORY COAST",
-        "CURA\u00c7AO"
+        "CURACAO"
       ],
       "F": [
         "NETHERLANDS",
@@ -15337,7 +15337,7 @@
       "H": [
         "SPAIN",
         "URUGUAY",
-        "CAPO VERDE",
+        "CAPE VERDE",
         "SAUDI ARABIA"
       ],
       "I": [
@@ -15355,7 +15355,7 @@
       "K": [
         "PORTUGAL",
         "COLOMBIA",
-        "DR CONGO",
+        "CONGO DR",
         "UZBEKISTAN"
       ],
       "L": [
@@ -15380,7 +15380,7 @@
         "SPAIN",
         "AUSTRIA",
         "USA",
-        "BOSNIA H.",
+        "BOSNIA",
         "BELGIUM",
         "ALGERIA",
         "BRAZIL",
@@ -15493,7 +15493,7 @@
       "B": [
         {
           "home": "CANADA",
-          "away": "BOSNIA H.",
+          "away": "BOSNIA",
           "home_score": 0,
           "away_score": 2
         },
@@ -15505,7 +15505,7 @@
         },
         {
           "home": "SWITZERLAND",
-          "away": "BOSNIA H.",
+          "away": "BOSNIA",
           "home_score": 2,
           "away_score": 1
         },
@@ -15522,7 +15522,7 @@
           "away_score": 2
         },
         {
-          "home": "BOSNIA H.",
+          "home": "BOSNIA",
           "away": "QATAR",
           "home_score": 2,
           "away_score": 0
@@ -15607,7 +15607,7 @@
       "E": [
         {
           "home": "GERMANY",
-          "away": "CURA\u00c7AO",
+          "away": "CURACAO",
           "home_score": 5,
           "away_score": 0
         },
@@ -15625,12 +15625,12 @@
         },
         {
           "home": "ECUADOR",
-          "away": "CURA\u00c7AO",
+          "away": "CURACAO",
           "home_score": 3,
           "away_score": 0
         },
         {
-          "home": "CURA\u00c7AO",
+          "home": "CURACAO",
           "away": "IVORY COAST",
           "home_score": 0,
           "away_score": 2
@@ -15721,7 +15721,7 @@
       "H": [
         {
           "home": "SPAIN",
-          "away": "CAPO VERDE",
+          "away": "CAPE VERDE",
           "home_score": 5,
           "away_score": 0
         },
@@ -15739,12 +15739,12 @@
         },
         {
           "home": "URUGUAY",
-          "away": "CAPO VERDE",
+          "away": "CAPE VERDE",
           "home_score": 2,
           "away_score": 0
         },
         {
-          "home": "CAPO VERDE",
+          "home": "CAPE VERDE",
           "away": "SAUDI ARABIA",
           "home_score": 1,
           "away_score": 3
@@ -15835,7 +15835,7 @@
       "K": [
         {
           "home": "PORTUGAL",
-          "away": "DR CONGO",
+          "away": "CONGO DR",
           "home_score": 4,
           "away_score": 0
         },
@@ -15853,7 +15853,7 @@
         },
         {
           "home": "COLOMBIA",
-          "away": "DR CONGO",
+          "away": "CONGO DR",
           "home_score": 2,
           "away_score": 0
         },
@@ -15864,7 +15864,7 @@
           "away_score": 3
         },
         {
-          "home": "DR CONGO",
+          "home": "CONGO DR",
           "away": "UZBEKISTAN",
           "home_score": 1,
           "away_score": 2
@@ -15917,7 +15917,7 @@
         "SOUTH AFRICA"
       ],
       "B": [
-        "BOSNIA H.",
+        "BOSNIA",
         "SWITZERLAND",
         "CANADA",
         "QATAR"
@@ -15938,7 +15938,7 @@
         "GERMANY",
         "ECUADOR",
         "IVORY COAST",
-        "CURA\u00c7AO"
+        "CURACAO"
       ],
       "F": [
         "NETHERLANDS",
@@ -15956,7 +15956,7 @@
         "SPAIN",
         "URUGUAY",
         "SAUDI ARABIA",
-        "CAPO VERDE"
+        "CAPE VERDE"
       ],
       "I": [
         "FRANCE",
@@ -15974,7 +15974,7 @@
         "PORTUGAL",
         "COLOMBIA",
         "UZBEKISTAN",
-        "DR CONGO"
+        "CONGO DR"
       ],
       "L": [
         "ENGLAND",
@@ -16013,7 +16013,7 @@
         "URUGUAY",
         "USA",
         "EGYPT",
-        "BOSNIA H.",
+        "BOSNIA",
         "IRAN",
         "PORTUGAL",
         "SENEGAL"
@@ -16111,7 +16111,7 @@
       "B": [
         {
           "home": "CANADA",
-          "away": "BOSNIA H.",
+          "away": "BOSNIA",
           "home_score": 3,
           "away_score": 0
         },
@@ -16123,7 +16123,7 @@
         },
         {
           "home": "SWITZERLAND",
-          "away": "BOSNIA H.",
+          "away": "BOSNIA",
           "home_score": 2,
           "away_score": 0
         },
@@ -16140,7 +16140,7 @@
           "away_score": 1
         },
         {
-          "home": "BOSNIA H.",
+          "home": "BOSNIA",
           "away": "QATAR",
           "home_score": 0,
           "away_score": 1
@@ -16225,7 +16225,7 @@
       "E": [
         {
           "home": "GERMANY",
-          "away": "CURA\u00c7AO",
+          "away": "CURACAO",
           "home_score": 4,
           "away_score": 0
         },
@@ -16243,12 +16243,12 @@
         },
         {
           "home": "ECUADOR",
-          "away": "CURA\u00c7AO",
+          "away": "CURACAO",
           "home_score": 2,
           "away_score": 0
         },
         {
-          "home": "CURA\u00c7AO",
+          "home": "CURACAO",
           "away": "IVORY COAST",
           "home_score": 1,
           "away_score": 2
@@ -16339,7 +16339,7 @@
       "H": [
         {
           "home": "SPAIN",
-          "away": "CAPO VERDE",
+          "away": "CAPE VERDE",
           "home_score": 4,
           "away_score": 0
         },
@@ -16357,12 +16357,12 @@
         },
         {
           "home": "URUGUAY",
-          "away": "CAPO VERDE",
+          "away": "CAPE VERDE",
           "home_score": 2,
           "away_score": 0
         },
         {
-          "home": "CAPO VERDE",
+          "home": "CAPE VERDE",
           "away": "SAUDI ARABIA",
           "home_score": 0,
           "away_score": 1
@@ -16453,7 +16453,7 @@
       "K": [
         {
           "home": "PORTUGAL",
-          "away": "DR CONGO",
+          "away": "CONGO DR",
           "home_score": 2,
           "away_score": 0
         },
@@ -16471,7 +16471,7 @@
         },
         {
           "home": "COLOMBIA",
-          "away": "DR CONGO",
+          "away": "CONGO DR",
           "home_score": 3,
           "away_score": 1
         },
@@ -16482,7 +16482,7 @@
           "away_score": 2
         },
         {
-          "home": "DR CONGO",
+          "home": "CONGO DR",
           "away": "UZBEKISTAN",
           "home_score": 0,
           "away_score": 0
@@ -16538,7 +16538,7 @@
         "SWITZERLAND",
         "CANADA",
         "QATAR",
-        "BOSNIA H."
+        "BOSNIA"
       ],
       "C": [
         "BRAZIL",
@@ -16556,7 +16556,7 @@
         "GERMANY",
         "IVORY COAST",
         "ECUADOR",
-        "CURA\u00c7AO"
+        "CURACAO"
       ],
       "F": [
         "NETHERLANDS",
@@ -16574,7 +16574,7 @@
         "SPAIN",
         "URUGUAY",
         "SAUDI ARABIA",
-        "CAPO VERDE"
+        "CAPE VERDE"
       ],
       "I": [
         "FRANCE",
@@ -16591,7 +16591,7 @@
       "K": [
         "PORTUGAL",
         "COLOMBIA",
-        "DR CONGO",
+        "CONGO DR",
         "UZBEKISTAN"
       ],
       "L": [
@@ -16729,7 +16729,7 @@
       "B": [
         {
           "home": "CANADA",
-          "away": "BOSNIA H.",
+          "away": "BOSNIA",
           "home_score": 1,
           "away_score": 1
         },
@@ -16741,7 +16741,7 @@
         },
         {
           "home": "SWITZERLAND",
-          "away": "BOSNIA H.",
+          "away": "BOSNIA",
           "home_score": 3,
           "away_score": 1
         },
@@ -16758,7 +16758,7 @@
           "away_score": 0
         },
         {
-          "home": "BOSNIA H.",
+          "home": "BOSNIA",
           "away": "QATAR",
           "home_score": 2,
           "away_score": 0
@@ -16843,7 +16843,7 @@
       "E": [
         {
           "home": "GERMANY",
-          "away": "CURA\u00c7AO",
+          "away": "CURACAO",
           "home_score": 6,
           "away_score": 0
         },
@@ -16861,12 +16861,12 @@
         },
         {
           "home": "ECUADOR",
-          "away": "CURA\u00c7AO",
+          "away": "CURACAO",
           "home_score": 3,
           "away_score": 0
         },
         {
-          "home": "CURA\u00c7AO",
+          "home": "CURACAO",
           "away": "IVORY COAST",
           "home_score": 1,
           "away_score": 3
@@ -16957,7 +16957,7 @@
       "H": [
         {
           "home": "SPAIN",
-          "away": "CAPO VERDE",
+          "away": "CAPE VERDE",
           "home_score": 3,
           "away_score": 0
         },
@@ -16975,12 +16975,12 @@
         },
         {
           "home": "URUGUAY",
-          "away": "CAPO VERDE",
+          "away": "CAPE VERDE",
           "home_score": 1,
           "away_score": 0
         },
         {
-          "home": "CAPO VERDE",
+          "home": "CAPE VERDE",
           "away": "SAUDI ARABIA",
           "home_score": 0,
           "away_score": 0
@@ -17071,7 +17071,7 @@
       "K": [
         {
           "home": "PORTUGAL",
-          "away": "DR CONGO",
+          "away": "CONGO DR",
           "home_score": 3,
           "away_score": 0
         },
@@ -17089,7 +17089,7 @@
         },
         {
           "home": "COLOMBIA",
-          "away": "DR CONGO",
+          "away": "CONGO DR",
           "home_score": 2,
           "away_score": 0
         },
@@ -17100,7 +17100,7 @@
           "away_score": 2
         },
         {
-          "home": "DR CONGO",
+          "home": "CONGO DR",
           "away": "UZBEKISTAN",
           "home_score": 1,
           "away_score": 2
@@ -17155,7 +17155,7 @@
       "B": [
         "SWITZERLAND",
         "CANADA",
-        "BOSNIA H.",
+        "BOSNIA",
         "QATAR"
       ],
       "C": [
@@ -17174,7 +17174,7 @@
         "GERMANY",
         "ECUADOR",
         "IVORY COAST",
-        "CURA\u00c7AO"
+        "CURACAO"
       ],
       "F": [
         "NETHERLANDS",
@@ -17192,7 +17192,7 @@
         "SPAIN",
         "URUGUAY",
         "SAUDI ARABIA",
-        "CAPO VERDE"
+        "CAPE VERDE"
       ],
       "I": [
         "FRANCE",
@@ -17210,7 +17210,7 @@
         "PORTUGAL",
         "COLOMBIA",
         "UZBEKISTAN",
-        "DR CONGO"
+        "CONGO DR"
       ],
       "L": [
         "ENGLAND",
@@ -17234,7 +17234,7 @@
         "SPAIN",
         "AUSTRIA",
         "TURKEY",
-        "BOSNIA H.",
+        "BOSNIA",
         "BELGIUM",
         "CZECHIA",
         "BRAZIL",
@@ -17347,7 +17347,7 @@
       "B": [
         {
           "home": "CANADA",
-          "away": "BOSNIA H.",
+          "away": "BOSNIA",
           "home_score": 1,
           "away_score": 2
         },
@@ -17359,7 +17359,7 @@
         },
         {
           "home": "SWITZERLAND",
-          "away": "BOSNIA H.",
+          "away": "BOSNIA",
           "home_score": 2,
           "away_score": 1
         },
@@ -17376,7 +17376,7 @@
           "away_score": 1
         },
         {
-          "home": "BOSNIA H.",
+          "home": "BOSNIA",
           "away": "QATAR",
           "home_score": 3,
           "away_score": 0
@@ -17461,7 +17461,7 @@
       "E": [
         {
           "home": "GERMANY",
-          "away": "CURA\u00c7AO",
+          "away": "CURACAO",
           "home_score": 4,
           "away_score": 0
         },
@@ -17479,12 +17479,12 @@
         },
         {
           "home": "ECUADOR",
-          "away": "CURA\u00c7AO",
+          "away": "CURACAO",
           "home_score": 3,
           "away_score": 0
         },
         {
-          "home": "CURA\u00c7AO",
+          "home": "CURACAO",
           "away": "IVORY COAST",
           "home_score": 1,
           "away_score": 2
@@ -17575,7 +17575,7 @@
       "H": [
         {
           "home": "SPAIN",
-          "away": "CAPO VERDE",
+          "away": "CAPE VERDE",
           "home_score": 4,
           "away_score": 0
         },
@@ -17593,12 +17593,12 @@
         },
         {
           "home": "URUGUAY",
-          "away": "CAPO VERDE",
+          "away": "CAPE VERDE",
           "home_score": 3,
           "away_score": 1
         },
         {
-          "home": "CAPO VERDE",
+          "home": "CAPE VERDE",
           "away": "SAUDI ARABIA",
           "home_score": 1,
           "away_score": 2
@@ -17689,7 +17689,7 @@
       "K": [
         {
           "home": "PORTUGAL",
-          "away": "DR CONGO",
+          "away": "CONGO DR",
           "home_score": 3,
           "away_score": 1
         },
@@ -17707,7 +17707,7 @@
         },
         {
           "home": "COLOMBIA",
-          "away": "DR CONGO",
+          "away": "CONGO DR",
           "home_score": 2,
           "away_score": 1
         },
@@ -17718,7 +17718,7 @@
           "away_score": 1
         },
         {
-          "home": "DR CONGO",
+          "home": "CONGO DR",
           "away": "UZBEKISTAN",
           "home_score": 1,
           "away_score": 1
@@ -17772,7 +17772,7 @@
       ],
       "B": [
         "SWITZERLAND",
-        "BOSNIA H.",
+        "BOSNIA",
         "CANADA",
         "QATAR"
       ],
@@ -17792,7 +17792,7 @@
         "GERMANY",
         "ECUADOR",
         "IVORY COAST",
-        "CURA\u00c7AO"
+        "CURACAO"
       ],
       "F": [
         "NETHERLANDS",
@@ -17810,7 +17810,7 @@
         "SPAIN",
         "URUGUAY",
         "SAUDI ARABIA",
-        "CAPO VERDE"
+        "CAPE VERDE"
       ],
       "I": [
         "FRANCE",
@@ -17827,7 +17827,7 @@
       "K": [
         "COLOMBIA",
         "PORTUGAL",
-        "DR CONGO",
+        "CONGO DR",
         "UZBEKISTAN"
       ],
       "L": [
@@ -17844,7 +17844,7 @@
         "FRANCE",
         "AUSTRALIA",
         "SOUTH KOREA",
-        "BOSNIA H.",
+        "BOSNIA",
         "NETHERLANDS",
         "SCOTLAND",
         "PORTUGAL",

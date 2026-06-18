@@ -167,9 +167,42 @@ def tournament_max(P):
     topscorer = P["topscorer_player"] + P["topscorer_goals"]    # 100
     return group + ko + standings + topscorer                  # 3460 with defaults
 
+TEAM_RECONCILIATION_MAP = {
+    "CAPE VERDE": "CAPE VERDE",
+    "CABO VERDE": "CAPE VERDE",
+    "CAPO VERDE": "CAPE VERDE",
+    "CONGO DR": "CONGO DR",
+    "DR CONGO": "CONGO DR",
+    "DEMOCRATIC REPUBLIC OF CONGO": "CONGO DR",
+    "BOSNIA": "BOSNIA",
+    "BOSNIA HERZEGOVINA": "BOSNIA",
+    "BOSNIA H.": "BOSNIA",
+    "BOSNIA-HERZEGOVINA": "BOSNIA",
+    "CURACAO": "CURACAO",
+    "CURAÇAO": "CURACAO",
+    "IVORY COAST": "IVORY COAST",
+    "COTE D'IVOIRE": "IVORY COAST",
+    "COTE DIVOIRE": "IVORY COAST",
+    "SOUTH KOREA": "SOUTH KOREA",
+    "KOREA SOUTH": "SOUTH KOREA",
+    "KOREA REPUBLIC": "SOUTH KOREA",
+    "CZECH REPUBLIC": "CZECHIA",
+    "CZECHIA": "CZECHIA",
+    "UNITED STATES": "USA",
+    "UNITED STATES OF AMERICA": "USA",
+    "USA": "USA",
+}
+
+
+def reconcile_team_name(name):
+    if not name:
+        return ""
+    name = str(name).strip().upper()
+    return TEAM_RECONCILIATION_MAP.get(name, name)
+
 
 def norm(v):
-    return str(v).strip().upper() if v not in (None, "") else None
+    return reconcile_team_name(v) if v not in (None, "") else None
 
 
 def outcome(h, a):
@@ -958,8 +991,7 @@ function build(list){
       <div class="rmain">
         <div class="ball">⚽</div>
         <div class="rank">${rankHtml}</div>
-        <div><div class="who">${d.name}</div>
-          <div class="barwrap"><div class="bar" style="background:${barColor}" data-w="${pctN}"></div></div></div>
+        <div class="who">${d.name}</div>
         <div class="pts">${d.total}</div>
         <div class="chev">▾</div>
       </div>

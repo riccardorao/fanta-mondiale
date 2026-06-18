@@ -518,6 +518,7 @@ def main():
     parser.add_argument("--dry-run",      action="store_true", help="Show what would change without writing")
     parser.add_argument("--no-push",      action="store_true", help="Update Excel but skip push_to_supabase")
     parser.add_argument("--ticker-only",  action="store_true", help="Only update ticker text (no Excel write)")
+    parser.add_argument("--force",        action="store_true", help="Force push update to Supabase even if no matches updated")
     args = parser.parse_args()
 
     print(f"\n{'='*60}")
@@ -574,9 +575,9 @@ def main():
         # Update ticker + next game in Supabase
         push_meta_to_supabase(ticker, next_game_text)
         
-        # Trigger leaderboard re-computation ONLY if a match actually transitioned to finished in Excel
-        if updated > 0:
-            print("\n[automation] Match completed and Excel updated. Re-computing leaderboard...")
+        # Trigger leaderboard re-computation if a match actually transitioned to finished in Excel or --force is active
+        if updated > 0 or args.force:
+            print("\n[automation] Match completed or force triggered. Re-computing leaderboard...")
             run_subprocess("push_to_supabase.py")
         else:
             print("\n[automation] No new games completed (updated = 0). Leaderboard re-computation skipped.")

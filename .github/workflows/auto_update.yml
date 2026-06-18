@@ -12,6 +12,10 @@ on:
         description: 'Dry run (show changes without writing)'
         type: boolean
         default: false
+      force_recompute:
+        description: 'Force re-compute leaderboard and push to Supabase'
+        type: boolean
+        default: true
 
 jobs:
   update:
@@ -54,6 +58,8 @@ jobs:
         run: |
           if [ "${{ inputs.dry_run }}" = "true" ]; then
             python3 scripts/fetch_results.py --dry-run
+          elif [ "${{ inputs.force_recompute }}" = "true" ]; then
+            python3 scripts/fetch_results.py --force
           else
             python3 scripts/fetch_results.py
           fi
