@@ -745,7 +745,9 @@
       font-size: 11px;
       color: var(--neon-yellow);
       text-align: right;
-        /* Predictions Panel */
+    }
+
+    /* ========== Predictions Panel ========== */
     .player-select-wrap {
       display: flex;
       justify-content: center;
@@ -797,7 +799,7 @@
       background: rgba(5, 0, 20, 0.7);
       border: 2px solid var(--neon-cyan);
       box-shadow: 0 0 0 3px var(--ink), 0 0 0 5px var(--neon-pink), 0 0 14px rgba(0, 255, 255, .3);
-      padding: 16px 20px;
+      padding: 20px 24px;
       text-align: center;
     }
 
@@ -806,15 +808,15 @@
       font-size: 10px;
       color: var(--neon-yellow);
       text-shadow: 0 0 6px var(--neon-yellow);
-      margin-bottom: 12px;
+      margin-bottom: 14px;
       letter-spacing: 1px;
     }
 
     .pred-summary-val {
       font-family: 'Press Start 2P', monospace;
-      font-size: 16px;
-      color: var(--neon-cyan);
-      text-shadow: 0 0 8px var(--neon-cyan);
+      font-size: 14px;
+      color: #fff;
+      text-shadow: 0 0 6px rgba(255, 255, 255, 0.4);
       text-transform: uppercase;
       display: flex;
       align-items: center;
@@ -823,6 +825,7 @@
     }
 
     .pred-summary-sub {
+      font-family: 'VT323', monospace;
       font-size: 18px;
       color: var(--neon-green);
       margin-top: 8px;
@@ -882,7 +885,7 @@
     .pred-match-team {
       font-family: 'Press Start 2P', monospace;
       font-size: 8px;
-      color: var(--neon-cyan);
+      color: #fff;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -916,10 +919,21 @@
       font-family: 'Press Start 2P', monospace;
       font-size: 9px;
       color: var(--neon-pink);
+      text-shadow: 0 0 4px var(--neon-pink);
       text-align: center;
       margin-top: 14px;
       margin-bottom: 8px;
       letter-spacing: 0.5px;
+    }
+
+    .standing-correct {
+      color: var(--neon-green) !important;
+      text-shadow: 0 0 4px var(--neon-green);
+    }
+
+    .standing-wrong {
+      color: rgba(255, 255, 255, 0.35) !important;
+      text-shadow: none;
     }
 
     .ko-rounds-container {
