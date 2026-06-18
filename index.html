@@ -113,10 +113,10 @@
 
     h1 {
       font-family: 'Press Start 2P', monospace;
-      font-size: clamp(18px, 6vw, 60px);
+      font-size: clamp(22px, 8.2vw, 60px);
       line-height: 1.2;
       color: var(--neon-yellow);
-      letter-spacing: 3px;
+      letter-spacing: 2px;
       font-weight: 900;
       text-shadow: 3px 3px 0 var(--neon-pink), 6px 6px 0 var(--neon-cyan), 0 0 24px rgba(255, 232, 0, .5);
       animation: glitchIn .6s ease-out
@@ -1178,6 +1178,9 @@
     }
 
     @media (max-width: 699px) {
+      h1 {
+        letter-spacing: 1px !important;
+      }
       .standing-rmain {
         grid-template-columns: 26px 1fr auto !important;
         gap: 6px !important;
@@ -1437,7 +1440,7 @@
         btnStats.classList.add('active');
         viewStats.style.display = 'block';
         setTimeout(() => {
-          document.querySelectorAll('.scorer-bar').forEach(b => b.style.width = b.dataset.w + '%');
+          document.querySelectorAll('.bar').forEach(b => b.style.width = b.dataset.w + '%');
         }, 50);
       } else if (tab === 'predictions') {
         btnPredictions.classList.add('active');
@@ -1733,7 +1736,7 @@
           "r16": "ROUND OF 16",
           "qf": "QUARTERFINALS",
           "sf": "SEMIFINALS",
-          "final": "FINALISTS"
+          "final": "FINAL"
         };
 
         Object.keys(ROUND_LABELS).forEach(rName => {
@@ -1844,15 +1847,18 @@
         `;
       }
 
-      // Render Scorers (all predicted, vertical list, no bars, vote count written)
+      // Render Scorers (all predicted, vertical list, with bars relative to the top scorer)
       let scorersHtml = '';
       if (scorers.length > 0) {
+        const refCount = scorers[0].count || 1;
         scorersHtml = `
           <div class="section-label">⚽️ TOP SCORERS ⚽️</div>
           <div class="board">
         `;
 
         scorers.forEach((s, i) => {
+          const pct = Math.round((s.count / refCount) * 100);
+          const barColor = `hsl(${120 * (s.count / refCount)}, 100%, 50%)`;
           const rankHtml = i < 3
             ? `<span class="r${i + 1}">${RANK_LABEL[i]}</span>`
             : String(i + 1).padStart(2, '0');
@@ -1863,6 +1869,7 @@
                 <div class="rank">${rankHtml}</div>
                 <div>
                   <div class="who">${s.player}</div>
+                  <div class="barwrap"><div class="bar" style="background:${barColor}" data-w="${pct}"></div></div>
                 </div>
                 <div class="pts">${s.count}</div>
               </div>
@@ -1893,35 +1900,26 @@
         const hudRight = document.getElementById('hud-right');
 
         if (hudLeft && hudRight) {
-          const parts = meta.next_game_text.split('|').map(p => p.trim());
+          const parts = meta.next_game_text.split('|')
+            .map(p => p.trim())
+            .filter(Boolean);
 
-          if (parts.length === 2) {
-            const bothLive = parts[0].includes('LIVE:') && parts[1].includes('LIVE:');
-            const rightLive = !bothLive && parts[1].includes('LIVE:');
+          const liveParts = parts.filter(p => p.toUpperCase().includes('LIVE:'));
+          const staticParts = parts.filter(p => !p.toUpperCase().includes('LIVE:'));
 
-            if (bothLive) {
-              hudLeft.textContent = parts[0].replace(/^LIVE:\s*/i, '');
-              hudRight.textContent = parts[1].replace(/^LIVE:\s*/i, '');
-              hudLeft.classList.add('blink');
-              hudRight.classList.add('blink');
-
-            } else if (rightLive) {
-              // parts[1] è live, parts[0] è etichetta statica
-              hudLeft.textContent = parts[1].replace(/^LIVE:\s*/i, '');
-              hudRight.textContent = parts[0];
-              hudLeft.classList.add('blink');
-              hudRight.classList.remove('blink');
-
-            } else {
-              hudLeft.textContent = parts[0];
-              hudRight.textContent = parts[1];
-              hudLeft.classList.remove('blink');
-              hudRight.classList.remove('blink');
-            }
-
+          if (liveParts.length >= 2) {
+            hudLeft.textContent = liveParts[0].replace(/^LIVE:\s*/i, '');
+            hudRight.textContent = liveParts[1].replace(/^LIVE:\s*/i, '');
+            hudLeft.classList.add('blink');
+            hudRight.classList.add('blink');
+          } else if (liveParts.length === 1) {
+            hudLeft.textContent = liveParts[0].replace(/^LIVE:\s*/i, '');
+            hudRight.textContent = staticParts[0] || 'TBD UP NEXT';
+            hudLeft.classList.add('blink');
+            hudRight.classList.remove('blink');
           } else {
             hudLeft.textContent = 'WELCOME BACK';
-            hudRight.textContent = parts[0];
+            hudRight.textContent = staticParts[0] || 'TBD UP NEXT';
             hudLeft.classList.remove('blink');
             hudRight.classList.remove('blink');
           }
