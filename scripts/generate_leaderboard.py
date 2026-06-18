@@ -324,6 +324,83 @@ def score_file(path, matches, positions, ko_truth=None, standings_truth=None, to
     return total, bd, predicted_winner, predicted_scorer
 
 
+def extract_all_predictions(pron_dir):
+    """Parses predictions from all participant Excel files in Pronostici/."""
+    predictions = {}
+    for f in sorted(glob.glob(os.path.join(pron_dir, "FIFAWC2026_*.xlsx"))):
+        name = os.path.basename(f).replace("FIFAWC2026_", "").replace(".xlsx", "")
+        display = FULL_NAMES.get(name, name)
+        try:
+            wb = openpyxl.load_workbook(f, data_only=True)
+            ws = wb["Bracket"] if "Bracket" in wb.sheetnames else wb.active
+            
+            group_matches = {}
+            group_standings = {}
+            
+            # Group Stage
+            for g, base in GH.items():
+                matches_list = []
+                for i in range(1, 7):
+                    r = base + i
+                    home = norm(ws.cell(r, ci("B")).value)
+                    away = norm(ws.cell(r, ci("C")).value)
+                    ph = ws.cell(r, ci("D")).value
+                    pa = ws.cell(r, ci("E")).value
+                    matches_list.append({
+                        "home": home,
+                        "away": away,
+                        "home_score": int(ph) if is_num(ph) else (ph if ph is not None else ""),
+                        "away_score": int(pa) if is_num(pa) else (pa if pa is not None else "")
+                    })
+                group_matches[g] = matches_list
+                
+                standings_list = []
+                for i in range(1, 5):
+                    r = base + i
+                    team = norm(ws.cell(r, ci("G")).value)
+                    standings_list.append(team)
+                group_standings[g] = standings_list
+                
+            # Knockouts
+            knockouts = {}
+            for round_name, info in KO_ROUNDS.items():
+                teams = []
+                for r in info["rows"]:
+                    teams.append(norm(ws.cell(r, info["col"]).value))
+                knockouts[round_name] = teams
+                
+            # Standings
+            standings_pred = []
+            for r in [35, 36, 37, 38]:
+                standings_pred.append(norm(ws.cell(r, ci("AJ")).value))
+                
+            # Top Scorer
+            top_scorer = norm(ws.cell(44, ci("AI")).value)
+            top_scorer_goals = ws.cell(44, ci("AK")).value
+            if is_num(top_scorer_goals):
+                top_scorer_goals = int(top_scorer_goals)
+            elif top_scorer_goals is None:
+                top_scorer_goals = ""
+                
+            winner = norm(ws.cell(35, ci("AJ")).value)
+            if winner == "WINNER":
+                winner = ""
+                
+            predictions[name] = {
+                "name": display,
+                "group_matches": group_matches,
+                "group_standings": group_standings,
+                "knockouts": knockouts,
+                "standings": standings_pred,
+                "winner": winner,
+                "top_scorer": top_scorer,
+                "top_scorer_goals": top_scorer_goals
+            }
+        except Exception as ex:
+            print(f"Error parsing predictions for {name}: {ex}")
+    return predictions
+
+
 def compute_leaderboard_data(model_path, pron_dir):
     """Loads model, extracts truth, scores files, and computes ranks + metadata."""
     wbM = openpyxl.load_workbook(model_path, data_only=True)
@@ -384,6 +461,53 @@ def compute_leaderboard_data(model_path, pron_dir):
             rank = i + 1; prev = r["total"]
         r["rank"] = rank
 
+    # Extract official results (truth) to store inside the stats JSON column
+    results_truth = {
+        "group_matches": {},
+        "group_standings": {},
+        "knockouts": {},
+        "standings": [],
+        "topscorer_player": topscorer_player_truth or "",
+        "topscorer_goals": topscorer_goals_truth if topscorer_goals_truth is not None else ""
+    }
+    
+    # 1. group_matches & standings
+    for g, base in GH.items():
+        matches_list = []
+        for i in range(1, 7):
+            r = base + i
+            home = norm(wsM.cell(r, ci("B")).value)
+            away = norm(wsM.cell(r, ci("C")).value)
+            d = wsM.cell(r, ci("D")).value
+            e = wsM.cell(r, ci("E")).value
+            matches_list.append({
+                "home": home,
+                "away": away,
+                "home_score": int(d) if is_num(d) else "",
+                "away_score": int(e) if is_num(e) else ""
+            })
+        results_truth["group_matches"][g] = matches_list
+        
+        # 2. group_standings (only completed groups)
+        if g in positions:
+            results_truth["group_standings"][g] = [positions[g].get(base + i, "") for i in range(1, 5)]
+        else:
+            results_truth["group_standings"][g] = ["", "", "", ""]
+            
+    # 3. knockouts
+    for round_name, info in KO_ROUNDS.items():
+        col = info["col"]
+        round_teams = []
+        for r in info["rows"]:
+            val = norm(wsM.cell(r, col).value)
+            round_teams.append(val if val else "")
+        results_truth["knockouts"][round_name] = round_teams
+        
+    # 4. standings
+    for r in [35, 36, 37, 38]:
+        val = norm(wsM.cell(r, ci("AJ")).value)
+        results_truth["standings"].append(val if val else "")
+
     meta = {
         "generated": datetime.datetime.now().strftime("%d %b %Y, %H:%M"),
         "matches_played": len(matches),
@@ -394,7 +518,8 @@ def compute_leaderboard_data(model_path, pron_dir):
         "tournament_max": tournament_max(POINTS),
         "stats": {
             "winners": stats_winners,
-            "scorers": stats_scorers
+            "scorers": stats_scorers,
+            "results": results_truth
         }
     }
     return rows, meta
@@ -406,6 +531,25 @@ def main():
     with open(OUT, "w", encoding="utf-8") as fh:
         fh.write(html)
     print("Wrote", OUT)
+    
+    # Generate and write predictions to JSON file in data/ folder
+    try:
+        predictions = extract_all_predictions(PRON)
+        repo_data_dir = os.path.join(os.path.dirname(SCRIPT_DIR), "data")
+        repo_json_path = os.path.join(repo_data_dir, "predictions.json")
+        with open(repo_json_path, "w", encoding="utf-8") as f_json:
+            json.dump(predictions, f_json, indent=2)
+        print(f"Wrote predictions to {repo_json_path}")
+
+        # If desktop path is different, write there as well
+        desktop_json_path = os.path.join(os.path.dirname(MODEL), "predictions.json")
+        if os.path.abspath(desktop_json_path) != os.path.abspath(repo_json_path):
+            with open(desktop_json_path, "w", encoding="utf-8") as f_json:
+                json.dump(predictions, f_json, indent=2)
+            print(f"Wrote predictions copy to {desktop_json_path}")
+    except Exception as ex:
+        print(f"Error writing predictions JSON: {ex}")
+
     print(f"{meta['participants']} participants, {meta['matches_played']} matches scored")
     for r in rows[:5]:
         print(f"  #{r['rank']:<2} {r['name']:<14} {r['total']}")

@@ -735,6 +735,349 @@
       color: var(--neon-yellow);
       text-align: right;
     }
+
+    /* Predictions Panel */
+    .player-select-wrap {
+      display: flex;
+      justify-content: center;
+      margin: 26px auto 20px;
+      width: 100%;
+      max-width: 500px;
+    }
+
+    .player-select {
+      width: 100%;
+      background: rgba(5, 0, 20, 0.85);
+      border: 2px solid var(--neon-cyan);
+      box-shadow: 0 0 0 3px var(--ink), 0 0 0 5px var(--neon-pink), 0 0 16px rgba(0, 255, 255, .4);
+      color: var(--neon-green);
+      padding: 12px 16px;
+      font-family: 'Press Start 2P', monospace;
+      font-size: 12px;
+      outline: none;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .player-select:focus {
+      box-shadow: 0 0 0 3px var(--ink), 0 0 0 5px var(--neon-green), 0 0 22px rgba(57, 255, 20, .55);
+      border-color: var(--neon-green);
+    }
+
+    .pred-summary {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+    }
+
+    .pred-summary-card {
+      flex: 1;
+      min-width: 250px;
+      max-width: 450px;
+      background: rgba(5, 0, 20, 0.7);
+      border: 2px solid var(--neon-cyan);
+      box-shadow: 0 0 0 3px var(--ink), 0 0 0 5px var(--neon-pink), 0 0 14px rgba(0, 255, 255, .3);
+      padding: 16px 20px;
+      text-align: center;
+    }
+
+    .pred-summary-title {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 10px;
+      color: var(--neon-yellow);
+      text-shadow: 0 0 6px var(--neon-yellow);
+      margin-bottom: 12px;
+      letter-spacing: 1px;
+    }
+
+    .pred-summary-val {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 16px;
+      color: var(--neon-cyan);
+      text-shadow: 0 0 8px var(--neon-cyan);
+      text-transform: uppercase;
+    }
+
+    .pred-summary-sub {
+      font-size: 18px;
+      color: var(--neon-green);
+      margin-top: 8px;
+    }
+
+    .groups-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+      margin-bottom: 40px;
+    }
+
+    @media (min-width: 768px) {
+      .groups-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .groups-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .group-card {
+      background: rgba(5, 0, 20, 0.6);
+      border: 2px solid var(--neon-pink);
+      box-shadow: 0 0 0 3px var(--ink), 0 0 0 5px var(--neon-cyan), 0 0 10px rgba(255, 16, 240, 0.2);
+      padding: 12px 14px;
+    }
+
+    .group-title {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 12px;
+      color: var(--neon-yellow);
+      text-shadow: 0 0 6px var(--neon-yellow);
+      text-align: center;
+      margin-bottom: 12px;
+      border-bottom: 1px solid var(--neon-pink);
+      padding-bottom: 6px;
+    }
+
+    .pred-match {
+      display: grid;
+      grid-template-columns: 1fr 60px 1fr;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 4px;
+      border-bottom: 1px dashed rgba(0, 255, 255, 0.15);
+      font-size: 16px;
+    }
+
+    .pred-match:last-child {
+      border-bottom: none;
+    }
+
+    .pred-match-team {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 8px;
+      color: var(--neon-cyan);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .pred-match-team.home {
+      text-align: right;
+    }
+
+    .pred-match-team.away {
+      text-align: left;
+    }
+
+    .pred-match-score {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 9px;
+      background: #000;
+      border: 1px solid var(--neon-pink);
+      padding: 3px 6px;
+      color: var(--neon-green);
+      text-align: center;
+      min-width: 44px;
+    }
+
+    /* Dynamic states for match predictions */
+    .match-perfect {
+      border: 1px solid var(--neon-green) !important;
+      box-shadow: 0 0 8px rgba(57, 255, 20, 0.4);
+    }
+
+    .match-correct-outcome {
+      border: 1px solid var(--neon-cyan) !important;
+      box-shadow: 0 0 8px rgba(0, 255, 255, 0.3);
+    }
+
+    .match-wrong {
+      opacity: 0.65;
+    }
+
+    .match-unplayed {
+      opacity: 0.85;
+    }
+
+    .group-standings-title {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 9px;
+      color: var(--neon-pink);
+      text-align: center;
+      margin-top: 10px;
+      margin-bottom: 6px;
+      letter-spacing: 0.5px;
+    }
+
+    .group-standings-list {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 4px;
+      background: #000;
+      padding: 4px;
+      border: 1px solid var(--neon-cyan);
+    }
+
+    .group-standing-item {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 7px;
+      text-align: center;
+      padding: 4px 2px;
+      color: #fff;
+    }
+
+    .standing-correct {
+      color: var(--neon-green) !important;
+      text-shadow: 0 0 4px var(--neon-green);
+    }
+
+    .standing-wrong {
+      color: rgba(255, 255, 255, 0.4) !important;
+    }
+
+    .ko-rounds-container {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+
+    @media (min-width: 600px) {
+      .ko-rounds-container {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (min-width: 900px) {
+      .ko-rounds-container {
+        grid-template-columns: repeat(5, 1fr);
+      }
+    }
+
+    .ko-round-card {
+      background: rgba(5, 0, 20, 0.7);
+      border: 2px solid var(--neon-cyan);
+      box-shadow: 0 0 0 3px var(--ink), 0 0 0 5px var(--neon-pink);
+      padding: 12px 10px;
+    }
+
+    .ko-round-title {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 10px;
+      color: var(--neon-yellow);
+      text-shadow: 0 0 5px var(--neon-yellow);
+      text-align: center;
+      margin-bottom: 12px;
+      border-bottom: 1px solid var(--neon-cyan);
+      padding-bottom: 6px;
+    }
+
+    .ko-teams-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      max-height: 360px;
+      overflow-y: auto;
+    }
+
+    .ko-teams-list::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    .ko-teams-list::-webkit-scrollbar-track {
+      background: #000;
+    }
+
+    .ko-teams-list::-webkit-scrollbar-thumb {
+      background: var(--neon-cyan);
+    }
+
+    .ko-team-item {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 7px;
+      padding: 4px 6px;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(0, 255, 255, 0.2);
+      color: #fff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .ko-team-correct {
+      border-color: var(--neon-green) !important;
+      color: var(--neon-green) !important;
+      text-shadow: 0 0 4px var(--neon-green);
+    }
+
+    .ko-team-wrong {
+      border-color: rgba(255, 16, 240, 0.4) !important;
+      color: rgba(255, 255, 255, 0.25) !important;
+      text-decoration: line-through;
+    }
+
+    .final-standings-card {
+      background: rgba(5, 0, 20, 0.7);
+      border: 2px solid var(--neon-cyan);
+      box-shadow: 0 0 0 3px var(--ink), 0 0 0 5px var(--neon-pink);
+      padding: 16px 20px;
+      margin-bottom: 30px;
+    }
+
+    .final-standings-list {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    @media (min-width: 600px) {
+      .final-standings-list {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    .final-standing-item {
+      border: 1px solid var(--neon-cyan);
+      background: rgba(0, 0, 0, 0.3);
+      padding: 10px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .final-standing-pos {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 10px;
+      color: var(--neon-yellow);
+    }
+
+    .final-standing-team {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 11px;
+      color: #fff;
+    }
+
+    .view-pred-link {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 8px;
+      color: var(--neon-cyan);
+      text-shadow: 0 0 5px var(--neon-cyan);
+      text-decoration: underline;
+      cursor: pointer;
+      margin-right: 12px;
+      transition: color 0.2s, text-shadow 0.2s;
+    }
+
+    .view-pred-link:hover {
+      color: var(--neon-green);
+      text-shadow: 0 0 5px var(--neon-green);
+    }
   </style>
 </head>
 
@@ -754,6 +1097,7 @@
     <div class="tabs">
       <button id="tab-leaderboard" class="tab-btn active" onclick="switchTab('leaderboard')">LEADERBOARD</button>
       <button id="tab-stats" class="tab-btn" onclick="switchTab('stats')">STATISTICS</button>
+      <button id="tab-predictions" class="tab-btn" onclick="switchTab('predictions')">PREDICTIONS</button>
     </div>
     <div id="view-leaderboard">
       <div class="podium" id="podium"></div>
@@ -763,6 +1107,16 @@
       </div>
     </div>
     <div id="view-stats" style="display: none;"></div>
+    <div id="view-predictions" style="display: none;">
+      <div class="player-select-wrap">
+        <select id="player-select" class="player-select" onchange="renderPlayerPredictions(this.value)">
+          <option value="">LOADING PLAYERS...</option>
+        </select>
+      </div>
+      <div id="predictions-content">
+        <div class="state">SELECT A PLAYER TO VIEW PREDICTIONS</div>
+      </div>
+    </div>
     <footer id="foot"></footer>
   </div>
 
@@ -839,16 +1193,34 @@
       return match ? COUNTRY_FLAGS[match] : '🌍';
     }
 
+    let PREDICTIONS_DATA = null;
+    let OFFICIAL_RESULTS = null;
+    let LEADERBOARD_ROWS = null;
+
     async function load() {
       try {
-        const [rowsR, metaR] = await Promise.all([
+        const [rowsR, metaR, predsR] = await Promise.all([
           fetch(`${SUPABASE_URL}/rest/v1/xl_leaderboard?select=*&order=rank.asc,name.asc`, { headers }),
-          fetch(`${SUPABASE_URL}/rest/v1/xl_leaderboard_meta?id=eq.1&select=*`, { headers })
+          fetch(`${SUPABASE_URL}/rest/v1/xl_leaderboard_meta?id=eq.1&select=*`, { headers }),
+          fetch(`data/predictions.json`).catch(e => {
+            console.error("Failed to load predictions.json:", e);
+            return null;
+          })
         ]);
         if (!rowsR.ok) throw new Error("HTTP " + rowsR.status);
-        const rows = await rowsR.json();
+        LEADERBOARD_ROWS = await rowsR.json();
         const meta = (await metaR.json())[0] || {};
-        render(rows, meta);
+        
+        if (meta.stats && meta.stats.results) {
+          OFFICIAL_RESULTS = meta.stats.results;
+        }
+        
+        if (predsR && predsR.ok) {
+          PREDICTIONS_DATA = await predsR.json();
+        }
+        
+        render(LEADERBOARD_ROWS, meta);
+        initPredictionsView();
       } catch (e) {
         document.getElementById('board').innerHTML =
           `<div class="state">ERROR: ${e.message}</div>`;
@@ -858,28 +1230,282 @@
     function switchTab(tab) {
       const btnLeaderboard = document.getElementById('tab-leaderboard');
       const btnStats = document.getElementById('tab-stats');
+      const btnPredictions = document.getElementById('tab-predictions');
       const viewLeaderboard = document.getElementById('view-leaderboard');
       const viewStats = document.getElementById('view-stats');
+      const viewPredictions = document.getElementById('view-predictions');
+
+      btnLeaderboard.classList.remove('active');
+      btnStats.classList.remove('active');
+      btnPredictions.classList.remove('active');
+      viewLeaderboard.style.display = 'none';
+      viewStats.style.display = 'none';
+      viewPredictions.style.display = 'none';
 
       if (tab === 'leaderboard') {
         btnLeaderboard.classList.add('active');
-        btnLeaderboard.innerText = 'LEADERBOARD';
-        btnStats.classList.remove('active');
-        btnStats.innerText = 'STATISTICS';
         viewLeaderboard.style.display = 'block';
-        viewStats.style.display = 'none';
-      } else {
-        btnLeaderboard.classList.remove('active');
-        btnLeaderboard.innerText = 'LEADERBOARD';
+      } else if (tab === 'stats') {
         btnStats.classList.add('active');
-        btnStats.innerText = 'STATISTICS';
-        viewLeaderboard.style.display = 'none';
         viewStats.style.display = 'block';
-
         setTimeout(() => {
           document.querySelectorAll('.scorer-bar').forEach(b => b.style.width = b.dataset.w + '%');
         }, 50);
+      } else if (tab === 'predictions') {
+        btnPredictions.classList.add('active');
+        viewPredictions.style.display = 'block';
+        initPredictionsView();
       }
+    }
+
+    function initPredictionsView() {
+      const select = document.getElementById('player-select');
+      if (!select || !PREDICTIONS_DATA) return;
+      const currentVal = select.value;
+      select.innerHTML = '<option value="">-- SELECT A PLAYER --</option>';
+      if (LEADERBOARD_ROWS) {
+        LEADERBOARD_ROWS.forEach(row => {
+          if (PREDICTIONS_DATA[row.key]) {
+            const opt = document.createElement('option');
+            opt.value = row.key;
+            opt.textContent = `${row.name} (RANK #${row.rank} · ${row.total} PTS)`;
+            select.appendChild(opt);
+          }
+        });
+      } else {
+        Object.keys(PREDICTIONS_DATA).forEach(key => {
+          const opt = document.createElement('option');
+          opt.value = key;
+          opt.textContent = PREDICTIONS_DATA[key].name;
+          select.appendChild(opt);
+        });
+      }
+      if (currentVal && PREDICTIONS_DATA[currentVal]) {
+        select.value = currentVal;
+      }
+    }
+
+    function viewPlayerPredictions(key) {
+      switchTab('predictions');
+      const select = document.getElementById('player-select');
+      if (select) {
+        select.value = key;
+        select.dispatchEvent(new Event('change'));
+      }
+    }
+
+    function renderPlayerPredictions(playerKey) {
+      const content = document.getElementById('predictions-content');
+      if (!content) return;
+      if (!playerKey || !PREDICTIONS_DATA || !PREDICTIONS_DATA[playerKey]) {
+        content.innerHTML = '<div class="state">SELECT A PLAYER TO VIEW PREDICTIONS</div>';
+        return;
+      }
+      
+      const pred = PREDICTIONS_DATA[playerKey];
+      let html = '';
+      
+      // 1. Summary Card (Predicted Champion & Top Scorer)
+      const flagWinner = getFlagEmoji(pred.winner);
+      html += `
+        <div class="pred-summary">
+          <div class="pred-summary-card">
+            <div class="pred-summary-title">🏆 PREDICTED CHAMPION</div>
+            <div class="pred-summary-val">${pred.winner || 'TBD'} ${flagWinner}</div>
+          </div>
+          <div class="pred-summary-card">
+            <div class="pred-summary-title">⚽️ PREDICTED TOP SCORER</div>
+            <div class="pred-summary-val">${pred.top_scorer || 'TBD'}</div>
+            <div class="pred-summary-sub">${pred.top_scorer_goals ? pred.top_scorer_goals + ' GOALS' : ''}</div>
+          </div>
+        </div>
+      `;
+      
+      // 2. Final Standings Predictions
+      if (pred.standings && pred.standings.some(x => x)) {
+        html += `
+          <div class="section-label">🏅 PREDICTED STANDINGS</div>
+          <div class="final-standings-card">
+            <div class="final-standings-list">
+        `;
+        const POS_LABELS = ['1ST (CHAMPION)', '2ND PLACE', '3RD PLACE', '4TH PLACE'];
+        pred.standings.forEach((team, idx) => {
+          const actualTeam = OFFICIAL_RESULTS && OFFICIAL_RESULTS.standings ? OFFICIAL_RESULTS.standings[idx] : "";
+          let stateClass = "";
+          let checkmark = "";
+          if (actualTeam) {
+            if (actualTeam.toUpperCase() === team.toUpperCase()) {
+              stateClass = "standing-correct";
+              checkmark = " ✓";
+            } else {
+              stateClass = "standing-wrong";
+            }
+          }
+          html += `
+            <div class="final-standing-item ${stateClass}">
+              <div class="final-standing-pos">${POS_LABELS[idx]}</div>
+              <div class="final-standing-team">${team ? team + ' ' + getFlagEmoji(team) : 'TBD'}${checkmark}</div>
+            </div>
+          `;
+        });
+        html += `
+            </div>
+          </div>
+        `;
+      }
+      
+      // 3. Group Stage Grid
+      html += `
+        <div class="section-label">📋 GROUP STAGE PREDICTIONS</div>
+        <div class="groups-grid">
+      `;
+      
+      Object.keys(pred.group_matches).forEach(g => {
+        html += `
+          <div class="group-card">
+            <div class="group-title">GROUP ${g}</div>
+        `;
+        
+        // Render 6 matches
+        pred.group_matches[g].forEach((m, idx) => {
+          let stateClass = "match-unplayed";
+          let scoreText = `${m.home_score} - ${m.away_score}`;
+          let actualScoreText = "";
+          
+          if (OFFICIAL_RESULTS && OFFICIAL_RESULTS.group_matches && OFFICIAL_RESULTS.group_matches[g]) {
+            const actual = OFFICIAL_RESULTS.group_matches[g][idx];
+            if (actual && actual.home_score !== "") {
+              const ah = parseInt(actual.home_score);
+              const aa = parseInt(actual.away_score);
+              const ph = parseInt(m.home_score);
+              const pa = parseInt(m.away_score);
+              
+              actualScoreText = `<div style="font-size: 7px; color: var(--neon-cyan); margin-top: 3.5px; font-family: 'Press Start 2P', monospace;">ACTUAL: ${ah}-${aa}</div>`;
+              
+              if (ph === ah && pa === aa) {
+                stateClass = "match-perfect";
+              } else {
+                const predOutcome = ph > pa ? "H" : (ph < pa ? "A" : "D");
+                const actualOutcome = ah > aa ? "H" : (ah < aa ? "A" : "D");
+                if (predOutcome === actualOutcome) {
+                  stateClass = "match-correct-outcome";
+                } else {
+                  stateClass = "match-wrong";
+                }
+              }
+            }
+          }
+          
+          html += `
+            <div class="pred-match ${stateClass}">
+              <div class="pred-match-team home">${m.home} ${getFlagEmoji(m.home)}</div>
+              <div>
+                <div class="pred-match-score">${scoreText}</div>
+                ${actualScoreText}
+              </div>
+              <div class="pred-match-team away">${getFlagEmoji(m.away)} ${m.away}</div>
+            </div>
+          `;
+        });
+        
+        // Render Group Standings Predictions
+        if (pred.group_standings && pred.group_standings[g]) {
+          html += `
+            <div class="group-standings-title">PREDICTED STANDINGS</div>
+            <div class="group-standings-list">
+          `;
+          pred.group_standings[g].forEach((team, idx) => {
+            let stateClass = "";
+            if (OFFICIAL_RESULTS && OFFICIAL_RESULTS.group_standings && OFFICIAL_RESULTS.group_standings[g]) {
+              const actualTeam = OFFICIAL_RESULTS.group_standings[g][idx];
+              if (actualTeam) {
+                if (actualTeam.toUpperCase() === team.toUpperCase()) {
+                  stateClass = "standing-correct";
+                } else {
+                  stateClass = "standing-wrong";
+                }
+              }
+            }
+            html += `
+              <div class="group-standing-item ${stateClass}" title="${team}">
+                <div>#${idx + 1}</div>
+                <div style="font-size: 11px; margin-top: 2px;">${getFlagEmoji(team)}</div>
+              </div>
+            `;
+          });
+          html += `
+            </div>
+          `;
+        }
+        
+        html += `
+          </div>
+        `;
+      });
+      
+      html += `
+        </div>
+      `;
+      
+      // 4. Knockout Bracket
+      if (pred.knockouts) {
+        html += `
+          <div class="section-label">🌳 KNOCKOUT BRACKET PREDICTIONS</div>
+          <div class="ko-rounds-container">
+        `;
+        
+        const ROUND_LABELS = {
+          "r32": "ROUND OF 32",
+          "r16": "ROUND OF 16",
+          "qf": "QUARTERFINALS",
+          "sf": "SEMIFINALS",
+          "final": "FINALISTS"
+        };
+        
+        Object.keys(ROUND_LABELS).forEach(rName => {
+          html += `
+            <div class="ko-round-card">
+              <div class="ko-round-title">${ROUND_LABELS[rName]}</div>
+              <div class="ko-teams-list">
+          `;
+          
+          pred.knockouts[rName].forEach((team, idx) => {
+            let stateClass = "";
+            let mark = "";
+            if (OFFICIAL_RESULTS && OFFICIAL_RESULTS.knockouts && OFFICIAL_RESULTS.knockouts[rName]) {
+              const actualRoundTeams = OFFICIAL_RESULTS.knockouts[rName];
+              if (actualRoundTeams.some(x => x)) {
+                const isCorrect = actualRoundTeams.some(t => t.toUpperCase() === team.toUpperCase());
+                if (isCorrect) {
+                  stateClass = "ko-team-correct";
+                  mark = "✓";
+                } else {
+                  stateClass = "ko-team-wrong";
+                  mark = "✗";
+                }
+              }
+            }
+            
+            html += `
+              <div class="ko-team-item ${stateClass}">
+                <span>${team ? getFlagEmoji(team) + ' ' + team : 'TBD'}</span>
+                <span>${mark}</span>
+              </div>
+            `;
+          });
+          
+          html += `
+              </div>
+            </div>
+          `;
+        });
+        
+        html += `
+          </div>
+        `;
+      }
+      
+      content.innerHTML = html;
     }
 
     function renderStats(meta, totalParticipants) {
@@ -1048,7 +1674,10 @@
         <div class="detail"><div class="cats">${cats}</div>
           <div class="ctx">
             <div>${d.total}/${meta.max_possible || 0} PTS · ${Math.round(pctN)}%</div>
-            <div class="ctx-winner">${getWinner(d) ? 'WORLD CHAMPIONS: ' + getWinner(d) + ' ' + getFlagEmoji(getWinner(d)) : ''}</div>
+            <div style="display: flex; align-items: center;">
+              <span class="view-pred-link" onclick="viewPlayerPredictions('${d.key}')">VIEW PREDICTIONS</span>
+              <div class="ctx-winner">${getWinner(d) ? 'WORLD CHAMPIONS: ' + getWinner(d) + ' ' + getFlagEmoji(getWinner(d)) : ''}</div>
+            </div>
           </div>
         </div>`;
           row.querySelector('.rmain').onclick = () => row.classList.toggle('open');
