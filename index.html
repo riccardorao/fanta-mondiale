@@ -113,13 +113,15 @@
 
     h1 {
       font-family: 'Press Start 2P', monospace;
-      font-size: clamp(20px, 7.4vw, 52px);
+      font-size: clamp(16px, 6vw, 68px);
       line-height: 1.2;
       color: var(--neon-yellow);
-      letter-spacing: 2px;
       font-weight: 900;
       text-shadow: 3px 3px 0 var(--neon-pink), 6px 6px 0 var(--neon-cyan), 0 0 24px rgba(255, 232, 0, .5);
-      animation: glitchIn .6s ease-out
+      animation: glitchIn .6s ease-out;
+      display: flex;
+      justify-content: space-between;
+      width: 100%
     }
 
     @keyframes glitchIn {
@@ -1179,9 +1181,6 @@
     }
 
     @media (max-width: 699px) {
-      h1 {
-        letter-spacing: 1px !important;
-      }
       .standing-rmain {
         grid-template-columns: 26px 1fr auto !important;
         gap: 6px !important;
@@ -1229,7 +1228,7 @@
       <span class="hud-item" id="hud-right">LOADING...</span>
     </div>
     <header>
-      <h1>TOTOMONDIALE</h1>
+      <h1><span>T</span><span>O</span><span>T</span><span>O</span><span>M</span><span>O</span><span>N</span><span>D</span><span>I</span><span>A</span><span>L</span><span>E</span></h1>
       <div class="ticker"><span>RECENT RESULTS: PORTUGAL 1-1 DR CONGO / AUSTRIA 3-1 JORDAN / ARGENTINA 3-0 ALGERIA /
           IRAQ 1-4 NORWAY / FRANCE 3-1 SENEGAL</span></div>
       <div class="sub" id="sub"></div>
@@ -1933,8 +1932,7 @@
       rows.slice(0, 3).forEach((d, i) => {
         const el = document.createElement('div'); el.className = 'pod';
         el.innerHTML = `<div class="medal">${medal[i]}</div>
-      <div class="pname">${d.name}</div><div class="ppts">${d.total}</div>
-      <div class="pod-rank r${i + 1}">${RANK_LABEL[i]}</div>`;
+      <div class="pname">${d.name}</div><div class="ppts">${d.total}</div>`;
         podEl.appendChild(el);
       });
 
