@@ -374,6 +374,15 @@ def fetch_games():
 
 # ─── Excel update ─────────────────────────────────────────────────────────────
 
+def normalize_team_name(name):
+    if not name:
+        return ""
+    n = str(name).strip().upper()
+    if n in ("DR CONGO", "CONGO DR", "DEMOCRATIC REPUBLIC OF CONGO", "CONGO DEMOCRATIC REPUBLIC", "DR. CONGO", "CONGO, DR"):
+        return "DR CONGO"
+    return n
+
+
 def build_excel_match_index(ws):
     from openpyxl.utils import column_index_from_string as ci
     index = {}
@@ -383,7 +392,7 @@ def build_excel_match_index(ws):
             home = ws.cell(r, ci("B")).value
             away = ws.cell(r, ci("C")).value
             if home and away:
-                index[(str(home).strip().upper(), str(away).strip().upper())] = r
+                index[(normalize_team_name(home), normalize_team_name(away))] = r
     return index
 
 
@@ -403,7 +412,7 @@ def update_excel(finished_games, dry_run=False):
     result_strings = []
 
     for m in finished_games:
-        key = (m["home"], m["away"])
+        key = (normalize_team_name(m["home"]), normalize_team_name(m["away"]))
         row = match_index.get(key)
         if row is None:
             print(f"  [WARN] Match not found in Excel: {m['home']} vs {m['away']}")

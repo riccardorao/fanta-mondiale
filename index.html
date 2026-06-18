@@ -1151,7 +1151,7 @@
       white-space: nowrap;
     }
 
-    /* Static Standing Row (no hover / highlight) */
+    /* Static Standing Row & Rmain (no hover / highlight) */
     .standing-row {
       background: rgba(5, 0, 20, 0.6);
       overflow: hidden;
@@ -1160,6 +1160,26 @@
       opacity: 0;
       transform: translateY(8px);
       animation: fade .5s forwards;
+    }
+
+    .standing-rmain {
+      display: grid;
+      grid-template-columns: 40px 1fr auto;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 16px;
+      cursor: default;
+      white-space: nowrap;
+      position: relative;
+      transform: none !important;
+    }
+
+    @media (max-width: 699px) {
+      .standing-rmain {
+        grid-template-columns: 26px 1fr auto !important;
+        gap: 6px !important;
+        padding: 8px 8px !important;
+      }
     }
 
     /* Desktop View: Horizontal Standings ONLY for Final Standings */
@@ -1177,14 +1197,16 @@
         margin-top: 0 !important;
         min-width: 0 !important;
       }
-      .final-standings-board .standing-row .rmain {
+      .final-standings-board .standing-row .standing-rmain {
         padding: 10px 16px !important;
         grid-template-columns: 40px 1fr auto !important;
         gap: 10px !important;
       }
       .ko-team-box {
-        font-size: 7px !important;
-        padding: 8px 4px !important;
+        font-family: 'VT323', monospace !important;
+        font-size: 12px !important;
+        padding: 6px 4px !important;
+        letter-spacing: 0.5px;
       }
     }
   </style>
@@ -1569,7 +1591,7 @@
             : String(idx + 1).padStart(2, '0');
           html += `
             <div class="standing-row">
-              <div class="rmain" style="cursor: default; transform: none !important; grid-template-columns: 40px 1fr auto; padding: 8px 16px;">
+              <div class="standing-rmain">
                 <div class="rank">${rankHtml}</div>
                 <div class="who ${stateClass === 'standing-correct' ? 'standing-correct' : ''}">${displayTeam || 'TBD'}</div>
                 <div class="pts ${stateClass}">${checkmark}</div>
@@ -1671,7 +1693,7 @@
             const rankHtml = String(idx + 1).padStart(2, '0');
             html += `
               <div class="standing-row">
-                <div class="rmain" style="cursor: default; transform: none !important; padding: 8px 16px; grid-template-columns: 40px 1fr auto;">
+                <div class="standing-rmain">
                   <div class="rank">${rankHtml}</div>
                   <div class="who ${stateClass === 'standing-correct' ? 'standing-correct' : ''}">${displayTeam || 'TBD'}</div>
                   <div class="pts ${stateClass}">${checkmark}</div>
@@ -1798,7 +1820,7 @@
           const displayTeam = reconcileCountryName(w.team);
           winnersHtml += `
             <div class="standing-row">
-              <div class="rmain" style="cursor: default; transform: none !important;">
+              <div class="standing-rmain">
                 <div class="ball">⚽</div>
                 <div class="rank">${rankHtml}</div>
                 <div>
@@ -1806,7 +1828,6 @@
                   <div class="barwrap"><div class="bar" style="background:${barColor}" data-w="${pct}"></div></div>
                 </div>
                 <div class="pts">${w.count}</div>
-                <div></div>
               </div>
             </div>
           `;
@@ -1831,14 +1852,13 @@
             : String(i + 1).padStart(2, '0');
            scorersHtml += `
             <div class="standing-row">
-              <div class="rmain" style="cursor: default; transform: none !important;">
+              <div class="standing-rmain">
                 <div class="ball">⚽</div>
                 <div class="rank">${rankHtml}</div>
                 <div>
                   <div class="who">${s.player}</div>
                 </div>
                 <div class="pts">${s.count}</div>
-                <div></div>
               </div>
             </div>
           `;
