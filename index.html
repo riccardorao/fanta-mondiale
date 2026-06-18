@@ -113,7 +113,7 @@
 
     h1 {
       font-family: 'Press Start 2P', monospace;
-      font-size: clamp(24px, 5.5vw, 50px);
+      font-size: clamp(18px, 6vw, 60px);
       line-height: 1.2;
       color: var(--neon-yellow);
       letter-spacing: 3px;
@@ -1233,12 +1233,12 @@
     </header>
     <div class="tabs">
       <button id="tab-leaderboard" class="tab-btn active" onclick="switchTab('leaderboard')">LEADERBOARD</button>
-      <button id="tab-stats" class="tab-btn" onclick="switchTab('stats')">STATISTICS</button>
       <button id="tab-predictions" class="tab-btn" onclick="switchTab('predictions')">PREDICTIONS</button>
+      <button id="tab-stats" class="tab-btn" onclick="switchTab('stats')">STATISTICS</button>
     </div>
     <div id="view-leaderboard">
       <div class="podium" id="podium"></div>
-      <input class="search" id="search" placeholder="🔍 SEARCH PLAYER" style="display:none" />
+      <input class="search" id="search" placeholder="SEARCH..." style="display:none" />
       <div class="board" id="board">
         <div class="state">LOADING...</div>
       </div>
