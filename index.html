@@ -1097,6 +1097,102 @@
       text-shadow: 0 0 4px var(--neon-pink);
       flex-shrink: 0;
     }
+
+    /* Group Prediction Styles & Alignment */
+    .pred-match-center {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+
+    .group-score-box {
+      padding: 3px 6px;
+      min-width: 44px;
+      text-align: center;
+      line-height: 1;
+      font-family: 'Press Start 2P', monospace;
+      font-size: 9px;
+      box-sizing: border-box;
+    }
+
+    .group-score-box-normal {
+      background: rgba(5, 0, 20, 0.7);
+      border: 1px solid rgba(0, 255, 255, 0.2);
+      color: #fff;
+    }
+
+    .group-score-box-correct {
+      background: #000;
+      border: 1px solid var(--neon-green) !important;
+      color: var(--neon-green) !important;
+      box-shadow: 0 0 10px rgba(57, 255, 20, 0.4);
+      text-shadow: 0 0 4px var(--neon-green) !important;
+    }
+
+    .group-score-box-wrong {
+      background: #000;
+      border: 1px solid var(--neon-pink) !important;
+      color: var(--neon-pink) !important;
+      box-shadow: 0 0 10px rgba(255, 16, 240, 0.4);
+      text-shadow: 0 0 4px var(--neon-pink) !important;
+    }
+
+    .group-actual-score {
+      position: absolute;
+      top: 100%;
+      margin-top: 2px;
+      font-family: 'Press Start 2P', monospace;
+      font-size: 7px;
+      color: var(--neon-cyan);
+      white-space: nowrap;
+    }
+
+    /* Static Standing Row (no hover / highlight) */
+    .standing-row {
+      background: rgba(5, 0, 20, 0.6);
+      overflow: hidden;
+      border: 2px solid var(--neon-cyan);
+      box-shadow: 0 0 0 3px var(--ink), 0 0 0 5px var(--neon-pink), 0 0 14px rgba(0, 255, 255, .3);
+      opacity: 0;
+      transform: translateY(8px);
+      animation: fade .5s forwards;
+    }
+
+    /* Desktop View: Horizontal Standings ONLY */
+    @media (min-width: 1024px) {
+      .group-standings-board {
+        display: flex !important;
+        flex-direction: row !important;
+        gap: 6px !important;
+        justify-content: space-between !important;
+        margin-top: 8px !important;
+      }
+      .group-standings-board .standing-row {
+        flex: 1 !important;
+        transform: none !important;
+        margin-top: 0 !important;
+        min-width: 0 !important;
+      }
+      .group-standings-board .standing-row .rmain {
+        padding: 6px 4px !important;
+        grid-template-columns: auto 1fr auto !important;
+        gap: 3px !important;
+      }
+      .group-standings-board .standing-row .rmain .rank {
+        font-size: 7px !important;
+      }
+      .group-standings-board .standing-row .rmain .who {
+        font-size: 6px !important;
+        text-align: center !important;
+      }
+      .group-standings-board .standing-row .rmain .pts {
+        font-size: 7px !important;
+      }
+    }
   </style>
 </head>
 
@@ -1478,8 +1574,8 @@
             ? `<span class="r${idx + 1}">${RANK_LABEL[idx]}</span>`
             : String(idx + 1).padStart(2, '0');
           html += `
-            <div class="row">
-              <div class="rmain" style="cursor: default; grid-template-columns: 48px 1fr auto; padding: 8px 16px;">
+            <div class="standing-row">
+              <div class="rmain" style="cursor: default; transform: none !important; grid-template-columns: 48px 1fr auto; padding: 8px 16px;">
                 <div class="rank">${rankHtml}</div>
                 <div class="who">${displayTeam || 'TBD'}</div>
                 <div class="pts ${stateClass}">${checkmark}</div>
@@ -1506,12 +1602,11 @@
         
         // Render 6 matches
         pred.group_matches[g].forEach((m, idx) => {
-          let outcomeMatches = false;
-          let homeMatches = false;
-          let awayMatches = false;
           let actualScoreText = "";
           let hsVal = m.home_score;
           let asVal = m.away_score;
+          let extraPaddingStyle = "";
+          let scoreBoxClass = "group-score-box group-score-box-normal";
           
           if (OFFICIAL_RESULTS && OFFICIAL_RESULTS.group_matches && OFFICIAL_RESULTS.group_matches[g]) {
             const actual = OFFICIAL_RESULTS.group_matches[g][idx];
@@ -1521,34 +1616,27 @@
               const ph = parseInt(m.home_score);
               const pa = parseInt(m.away_score);
               
-              homeMatches = (ph === ah);
-              awayMatches = (pa === aa);
-              
               const predOutcome = ph > pa ? "H" : (ph < pa ? "A" : "D");
               const actualOutcome = ah > aa ? "H" : (ah < aa ? "A" : "D");
               const outcomeMatches = (predOutcome === actualOutcome);
               
-              const boxBorderColor = outcomeMatches ? 'var(--neon-green)' : 'var(--neon-pink)';
-              scoreBoxStyle = `border: 1px solid ${boxBorderColor}; background: #000; box-shadow: 0 0 8px ${boxBorderColor};`;
-              
-              actualScoreText = `<div style="font-family: 'Press Start 2P', monospace; font-size: 7px; color: var(--neon-cyan); margin-top: 4px;">${ah}-${aa}</div>`;
+              scoreBoxClass = outcomeMatches ? "group-score-box group-score-box-correct" : "group-score-box group-score-box-wrong";
+              actualScoreText = `<div class="group-actual-score">${ah}-${aa}</div>`;
+              extraPaddingStyle = "padding-bottom: 16px;";
             }
           }
-          
-          const homeColor = homeMatches ? 'var(--neon-green)' : '#fff';
-          const awayColor = awayMatches ? 'var(--neon-green)' : '#fff';
           
           const displayHome = reconcileCountryName(m.home);
           const displayAway = reconcileCountryName(m.away);
           
           html += `
-            <div class="pred-match" style="border-bottom: 1px dashed rgba(0, 255, 255, 0.15);">
+            <div class="pred-match" style="border-bottom: 1px dashed rgba(0, 255, 255, 0.15); ${extraPaddingStyle}">
               <div class="pred-match-team home">${displayHome}</div>
-              <div style="display: flex; flex-direction: column; align-items: center;">
-                <div style="${scoreBoxStyle} padding: 3px 6px; min-width: 44px; text-align: center; line-height: 1;">
-                  <span style="color: ${homeColor}; font-family: 'Press Start 2P', monospace; font-size: 9px;">${hsVal}</span>
-                  <span style="color: #fff; font-family: 'Press Start 2P', monospace; font-size: 9px;">-</span>
-                  <span style="color: ${awayColor}; font-family: 'Press Start 2P', monospace; font-size: 9px;">${asVal}</span>
+              <div class="pred-match-center">
+                <div class="${scoreBoxClass}">
+                  <span>${hsVal}</span>
+                  <span>-</span>
+                  <span>${asVal}</span>
                 </div>
                 ${actualScoreText}
               </div>
@@ -1557,11 +1645,11 @@
           `;
         });
         
-        // Render Group Standings Predictions
+         // Render Group Standings Predictions
         if (pred.group_standings && pred.group_standings[g]) {
           html += `
             <div class="group-standings-title">PREDICTED STANDINGS</div>
-            <div class="board">
+            <div class="board group-standings-board">
           `;
           pred.group_standings[g].forEach((team, idx) => {
             let stateClass = "";
@@ -1583,8 +1671,8 @@
             const displayTeam = reconcileCountryName(team);
             const rankHtml = String(idx + 1).padStart(2, '0');
             html += `
-              <div class="row">
-                <div class="rmain" style="cursor: default; padding: 8px 12px; grid-template-columns: 48px 1fr auto;">
+              <div class="standing-row">
+                <div class="rmain" style="cursor: default; transform: none !important; padding: 8px 12px; grid-template-columns: 48px 1fr auto;">
                   <div class="rank">${rankHtml}</div>
                   <div class="who">${displayTeam || 'TBD'}</div>
                   <div class="pts ${stateClass}">${checkmark}</div>
@@ -1710,8 +1798,8 @@
             : String(i + 1).padStart(2, '0');
           const displayTeam = reconcileCountryName(w.team);
           winnersHtml += `
-            <div class="row">
-              <div class="rmain" style="cursor: default;">
+            <div class="standing-row">
+              <div class="rmain" style="cursor: default; transform: none !important;">
                 <div class="ball">⚽</div>
                 <div class="rank">${rankHtml}</div>
                 <div>
@@ -1742,9 +1830,9 @@
           const rankHtml = i < 3
             ? `<span class="r${i + 1}">${RANK_LABEL[i]}</span>`
             : String(i + 1).padStart(2, '0');
-          scorersHtml += `
-            <div class="row">
-              <div class="rmain" style="cursor: default;">
+           scorersHtml += `
+            <div class="standing-row">
+              <div class="rmain" style="cursor: default; transform: none !important;">
                 <div class="ball">⚽</div>
                 <div class="rank">${rankHtml}</div>
                 <div>
