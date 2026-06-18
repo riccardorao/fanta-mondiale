@@ -3,7 +3,7 @@ name: Auto-update Leaderboard
 on:
   # Run every 5 minutes from 18:00 to 08:00 CEST (16:00 to 06:00 UTC)
   schedule:
-    - cron: '*/5 0-5,16-23 * * *'
+    - cron: '*/30 0-5,16-23 * * *'
 
   # Also allow manual trigger from GitHub mobile app or website
   workflow_dispatch:
