@@ -1162,35 +1162,25 @@
       animation: fade .5s forwards;
     }
 
-    /* Desktop View: Horizontal Standings ONLY */
+    /* Desktop View: Horizontal Standings ONLY for Final Standings */
     @media (min-width: 1024px) {
-      .group-standings-board {
+      .final-standings-board {
         display: flex !important;
         flex-direction: row !important;
-        gap: 6px !important;
+        gap: 16px !important;
         justify-content: space-between !important;
         margin-top: 8px !important;
       }
-      .group-standings-board .standing-row {
+      .final-standings-board .standing-row {
         flex: 1 !important;
         transform: none !important;
         margin-top: 0 !important;
         min-width: 0 !important;
       }
-      .group-standings-board .standing-row .rmain {
-        padding: 6px 4px !important;
-        grid-template-columns: auto 1fr auto !important;
-        gap: 3px !important;
-      }
-      .group-standings-board .standing-row .rmain .rank {
-        font-size: 7px !important;
-      }
-      .group-standings-board .standing-row .rmain .who {
-        font-size: 6px !important;
-        text-align: center !important;
-      }
-      .group-standings-board .standing-row .rmain .pts {
-        font-size: 7px !important;
+      .final-standings-board .standing-row .rmain {
+        padding: 10px 16px !important;
+        grid-template-columns: 48px 1fr auto !important;
+        gap: 8px !important;
       }
     }
   </style>
@@ -1552,7 +1542,7 @@
       if (pred.standings && pred.standings.some(x => x)) {
         html += `
           <div class="section-label">🏅 PREDICTED STANDINGS</div>
-          <div class="board" style="margin-bottom: 30px;">
+          <div class="board final-standings-board" style="margin-bottom: 30px;">
         `;
         pred.standings.forEach((team, idx) => {
           const actualTeam = OFFICIAL_RESULTS && OFFICIAL_RESULTS.standings ? OFFICIAL_RESULTS.standings[idx] : "";
@@ -1607,6 +1597,8 @@
           let asVal = m.away_score;
           let extraPaddingStyle = "";
           let scoreBoxClass = "group-score-box group-score-box-normal";
+          let homeNumColor = "#fff";
+          let awayNumColor = "#fff";
           
           if (OFFICIAL_RESULTS && OFFICIAL_RESULTS.group_matches && OFFICIAL_RESULTS.group_matches[g]) {
             const actual = OFFICIAL_RESULTS.group_matches[g][idx];
@@ -1621,6 +1613,10 @@
               const outcomeMatches = (predOutcome === actualOutcome);
               
               scoreBoxClass = outcomeMatches ? "group-score-box group-score-box-correct" : "group-score-box group-score-box-wrong";
+              
+              homeNumColor = (ph === ah) ? "var(--neon-green)" : "var(--neon-pink)";
+              awayNumColor = (pa === aa) ? "var(--neon-green)" : "var(--neon-pink)";
+              
               actualScoreText = `<div class="group-actual-score">${ah}-${aa}</div>`;
               extraPaddingStyle = "padding-bottom: 16px;";
             }
@@ -1634,9 +1630,9 @@
               <div class="pred-match-team home">${displayHome}</div>
               <div class="pred-match-center">
                 <div class="${scoreBoxClass}">
-                  <span>${hsVal}</span>
-                  <span>-</span>
-                  <span>${asVal}</span>
+                  <span style="color: ${homeNumColor};">${hsVal}</span>
+                  <span style="color: #fff;">-</span>
+                  <span style="color: ${awayNumColor};">${asVal}</span>
                 </div>
                 ${actualScoreText}
               </div>
@@ -1648,7 +1644,6 @@
          // Render Group Standings Predictions
         if (pred.group_standings && pred.group_standings[g]) {
           html += `
-            <div class="group-standings-title">PREDICTED STANDINGS</div>
             <div class="board group-standings-board">
           `;
           pred.group_standings[g].forEach((team, idx) => {
