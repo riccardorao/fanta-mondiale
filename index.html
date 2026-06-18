@@ -837,13 +837,16 @@
     .custom-select-options::-webkit-scrollbar {
       width: 8px;
     }
+
     .custom-select-options::-webkit-scrollbar-track {
       background: rgba(5, 0, 20, 0.85);
     }
+
     .custom-select-options::-webkit-scrollbar-thumb {
       background: var(--neon-pink);
       border-radius: 4px;
     }
+
     .custom-select-options::-webkit-scrollbar-thumb:hover {
       background: var(--neon-green);
     }
@@ -1191,17 +1194,20 @@
         justify-content: space-between !important;
         margin-top: 8px !important;
       }
+
       .final-standings-board .standing-row {
         flex: 1 !important;
         transform: none !important;
         margin-top: 0 !important;
         min-width: 0 !important;
       }
+
       .final-standings-board .standing-row .standing-rmain {
         padding: 10px 16px !important;
         grid-template-columns: 40px 1fr auto !important;
         gap: 10px !important;
       }
+
       .ko-team-box {
         font-family: 'VT323', monospace !important;
         font-size: 12px !important;
@@ -1270,34 +1276,34 @@
       "CAPE VERDE": "Capo Verde",
       "CABO VERDE": "Capo Verde",
       "CAPO VERDE": "Capo Verde",
-      
+
       "CONGO DR": "Congo DR",
       "DR CONGO": "Congo DR",
       "DEMOCRATIC REPUBLIC OF CONGO": "Congo DR",
-      
+
       "BOSNIA": "Bosnia",
       "BOSNIA HERZEGOVINA": "Bosnia",
       "BOSNIA H.": "Bosnia",
       "BOSNIA-HERZEGOVINA": "Bosnia",
-      
+
       "CURACAO": "Curaçao",
       "CURAÇAO": "Curaçao",
-      
+
       "IVORY COAST": "Ivory Coast",
       "COTE D'IVOIRE": "Ivory Coast",
       "COTE DIVOIRE": "Ivory Coast",
-      
+
       "SOUTH KOREA": "South Korea",
       "KOREA SOUTH": "South Korea",
       "KOREA REPUBLIC": "South Korea",
-      
+
       "CZECH REPUBLIC": "Czechia",
       "CZECHIA": "Czechia",
-      
+
       "UNITED STATES": "USA",
       "UNITED STATES OF AMERICA": "USA",
       "USA": "USA",
-      
+
       "NEW ZEALAND": "New Zealand",
       "SOUTH AFRICA": "South Africa",
       "SAUDI ARABIA": "Saudi Arabia",
@@ -1335,17 +1341,17 @@
       const customTrigger = document.querySelector('.custom-select-trigger');
       const optionsDiv = document.getElementById('custom-player-options');
       const customSelect = document.getElementById('custom-player-select');
-      
+
       if (select) {
         select.value = key;
       }
-      
+
       if (key && PREDICTIONS_DATA && PREDICTIONS_DATA[key]) {
         customTrigger.textContent = (PREDICTIONS_DATA[key].name || '').toUpperCase();
       } else {
         customTrigger.textContent = '-- SELECT A PLAYER --';
       }
-      
+
       const options = document.querySelectorAll('.custom-select-option');
       options.forEach(opt => {
         if (opt.dataset.value === key) {
@@ -1354,16 +1360,16 @@
           opt.classList.remove('selected');
         }
       });
-      
+
       if (optionsDiv) optionsDiv.classList.remove('show');
       if (customSelect) customSelect.classList.remove('active');
-      
+
       if (triggerRender) {
         renderPlayerPredictions(key);
       }
     }
 
-    document.addEventListener('click', function(e) {
+    document.addEventListener('click', function (e) {
       const customSelect = document.getElementById('custom-player-select');
       if (customSelect && !customSelect.contains(e.target)) {
         const optionsDiv = document.getElementById('custom-player-options');
@@ -1391,15 +1397,15 @@
         if (!rowsR.ok) throw new Error("HTTP " + rowsR.status);
         LEADERBOARD_ROWS = await rowsR.json();
         const meta = (await metaR.json())[0] || {};
-        
+
         if (meta.stats && meta.stats.results) {
           OFFICIAL_RESULTS = meta.stats.results;
         }
-        
+
         if (predsR && predsR.ok) {
           PREDICTIONS_DATA = await predsR.json();
         }
-        
+
         render(LEADERBOARD_ROWS, meta);
         initPredictionsView();
       } catch (e) {
@@ -1476,11 +1482,11 @@
       const customOptions = document.getElementById('custom-player-options');
       const customTrigger = document.querySelector('.custom-select-trigger');
       if (!select || !PREDICTIONS_DATA || !customOptions) return;
-      
+
       const currentVal = select.value;
       select.innerHTML = '<option value="">-- SELECT A PLAYER --</option>';
       customOptions.innerHTML = '';
-      
+
       // Default placeholder option
       const defaultOpt = document.createElement('div');
       defaultOpt.className = 'custom-select-option';
@@ -1539,35 +1545,35 @@
         content.innerHTML = '<div class="state">SELECT A PLAYER TO VIEW PREDICTIONS</div>';
         return;
       }
-      
+
       const pred = PREDICTIONS_DATA[playerKey];
       let html = '';
-      
+
       // 1. Summary Card (Predicted Champion & Top Scorer)
       const displayWinner = reconcileCountryName(pred.winner);
       const isScorerCorrect = OFFICIAL_RESULTS && OFFICIAL_RESULTS.topscorer_player &&
         reconcileScorerName(pred.top_scorer) === reconcileScorerName(OFFICIAL_RESULTS.topscorer_player);
       const scorerStyle = isScorerCorrect ? 'color: var(--neon-green); text-shadow: 0 0 4px var(--neon-green);' : '';
       const displayScorer = reconcileScorerName(pred.top_scorer);
-      
+
       html += `
         <div class="pred-summary">
           <div class="pred-summary-card">
-            <div class="pred-summary-title">🏆 PREDICTED CHAMPION</div>
+            <div class="pred-summary-title">⭐️ WORLD CHAMPION ⭐️</div>
             <div class="pred-summary-val">${displayWinner || 'TBD'}</div>
           </div>
           <div class="pred-summary-card">
-            <div class="pred-summary-title">⚽️ PREDICTED TOP SCORER</div>
+            <div class="pred-summary-title">⚽️ TOP SCORER ⚽️</div>
             <div class="pred-summary-val" style="${scorerStyle}">${displayScorer || 'TBD'}</div>
             <div class="pred-summary-sub">${pred.top_scorer_goals ? pred.top_scorer_goals + ' GOALS' : ''}</div>
           </div>
         </div>
       `;
-      
+
       // 2. Final Standings Predictions
       if (pred.standings && pred.standings.some(x => x)) {
         html += `
-          <div class="section-label">🏅 PREDICTED STANDINGS</div>
+          <div class="section-label">🏅 FINAL STANDINGS 🏅</div>
           <div class="board final-standings-board" style="margin-bottom: 30px;">
         `;
         pred.standings.forEach((team, idx) => {
@@ -1603,19 +1609,19 @@
           </div>
         `;
       }
-      
+
       // 3. Group Stage Grid
       html += `
-        <div class="section-label">📋 GROUP STAGE PREDICTIONS</div>
+        <div class="section-label">GROUP STAGE</div>
         <div class="groups-grid">
       `;
-      
+
       Object.keys(pred.group_matches).forEach(g => {
         html += `
           <div class="group-card">
             <div class="group-title">GROUP ${g}</div>
         `;
-        
+
         // Render 6 matches
         pred.group_matches[g].forEach((m, idx) => {
           let actualScoreText = "";
@@ -1625,7 +1631,7 @@
           let scoreBoxClass = "group-score-box group-score-box-normal";
           let homeNumColor = "#fff";
           let awayNumColor = "#fff";
-          
+
           if (OFFICIAL_RESULTS && OFFICIAL_RESULTS.group_matches && OFFICIAL_RESULTS.group_matches[g]) {
             const actual = OFFICIAL_RESULTS.group_matches[g][idx];
             if (actual && actual.home_score !== "") {
@@ -1633,24 +1639,24 @@
               const aa = parseInt(actual.away_score);
               const ph = parseInt(m.home_score);
               const pa = parseInt(m.away_score);
-              
+
               const predOutcome = ph > pa ? "H" : (ph < pa ? "A" : "D");
               const actualOutcome = ah > aa ? "H" : (ah < aa ? "A" : "D");
               const outcomeMatches = (predOutcome === actualOutcome);
-              
+
               scoreBoxClass = outcomeMatches ? "group-score-box group-score-box-correct" : "group-score-box group-score-box-wrong";
-              
+
               homeNumColor = (ph === ah) ? "var(--neon-green)" : "#fff";
               awayNumColor = (pa === aa) ? "var(--neon-green)" : "#fff";
-              
+
               actualScoreText = `<div class="group-actual-score">${ah}-${aa}</div>`;
               extraPaddingStyle = "padding-bottom: 16px;";
             }
           }
-          
+
           const displayHome = reconcileCountryName(m.home);
           const displayAway = reconcileCountryName(m.away);
-          
+
           html += `
             <div class="pred-match" style="border-bottom: 1px dashed rgba(0, 255, 255, 0.15); ${extraPaddingStyle}">
               <div class="pred-match-team home">${displayHome}</div>
@@ -1666,8 +1672,8 @@
             </div>
           `;
         });
-        
-         // Render Group Standings Predictions
+
+        // Render Group Standings Predictions
         if (pred.group_standings && pred.group_standings[g]) {
           html += `
             <div class="board group-standings-board">
@@ -1705,23 +1711,23 @@
             </div>
           `;
         }
-        
+
         html += `
           </div>
         `;
       });
-      
+
       html += `
         </div>
       `;
-      
+
       // 4. Knockout Bracket Matches coupled
       if (pred.knockouts) {
         html += `
-          <div class="section-label">🌳 KNOCKOUT BRACKET PREDICTIONS</div>
+          <div class="section-label">KNOCKOUT STAGE</div>
           <div class="ko-rounds-container">
         `;
-        
+
         const ROUND_LABELS = {
           "r32": "ROUND OF 32",
           "r16": "ROUND OF 16",
@@ -1729,23 +1735,23 @@
           "sf": "SEMIFINALS",
           "final": "FINALISTS"
         };
-        
+
         Object.keys(ROUND_LABELS).forEach(rName => {
           html += `
             <div class="ko-round-card">
               <div class="ko-round-title">${ROUND_LABELS[rName]}</div>
               <div class="ko-teams-list">
           `;
-          
+
           const teamList = pred.knockouts[rName];
           const matchCount = Math.floor(teamList.length / 2);
           for (let mIdx = 0; mIdx < matchCount; mIdx++) {
             const team1 = teamList[mIdx * 2];
             const team2 = teamList[mIdx * 2 + 1];
-            
+
             let team1Class = "ko-team-normal";
             let team2Class = "ko-team-normal";
-            
+
             if (OFFICIAL_RESULTS && OFFICIAL_RESULTS.knockouts && OFFICIAL_RESULTS.knockouts[rName]) {
               const actualRoundTeams = OFFICIAL_RESULTS.knockouts[rName];
               if (actualRoundTeams.some(x => x)) {
@@ -1765,10 +1771,10 @@
                 }
               }
             }
-            
+
             const displayT1 = team1 ? reconcileCountryName(team1) : 'TBD';
             const displayT2 = team2 ? reconcileCountryName(team2) : 'TBD';
-            
+
             html += `
               <div class="ko-matchup" style="margin-bottom: 8px;">
                 <div class="ko-team-box ${team1Class}">${displayT1}</div>
@@ -1777,18 +1783,18 @@
               </div>
             `;
           }
-          
+
           html += `
               </div>
             </div>
           `;
         });
-        
+
         html += `
           </div>
         `;
       }
-      
+
       content.innerHTML = html;
     }
 
@@ -1850,7 +1856,7 @@
           const rankHtml = i < 3
             ? `<span class="r${i + 1}">${RANK_LABEL[i]}</span>`
             : String(i + 1).padStart(2, '0');
-           scorersHtml += `
+          scorersHtml += `
             <div class="standing-row">
               <div class="standing-rmain">
                 <div class="ball">⚽</div>
