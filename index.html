@@ -1179,8 +1179,12 @@
       }
       .final-standings-board .standing-row .rmain {
         padding: 10px 16px !important;
-        grid-template-columns: 48px 1fr auto !important;
-        gap: 8px !important;
+        grid-template-columns: 40px 1fr auto !important;
+        gap: 10px !important;
+      }
+      .ko-team-box {
+        font-size: 7px !important;
+        padding: 8px 4px !important;
       }
     }
   </style>
@@ -1565,9 +1569,9 @@
             : String(idx + 1).padStart(2, '0');
           html += `
             <div class="standing-row">
-              <div class="rmain" style="cursor: default; transform: none !important; grid-template-columns: 48px 1fr auto; padding: 8px 16px;">
+              <div class="rmain" style="cursor: default; transform: none !important; grid-template-columns: 40px 1fr auto; padding: 8px 16px;">
                 <div class="rank">${rankHtml}</div>
-                <div class="who">${displayTeam || 'TBD'}</div>
+                <div class="who ${stateClass === 'standing-correct' ? 'standing-correct' : ''}">${displayTeam || 'TBD'}</div>
                 <div class="pts ${stateClass}">${checkmark}</div>
               </div>
             </div>
@@ -1614,8 +1618,8 @@
               
               scoreBoxClass = outcomeMatches ? "group-score-box group-score-box-correct" : "group-score-box group-score-box-wrong";
               
-              homeNumColor = (ph === ah) ? "var(--neon-green)" : "var(--neon-pink)";
-              awayNumColor = (pa === aa) ? "var(--neon-green)" : "var(--neon-pink)";
+              homeNumColor = (ph === ah) ? "var(--neon-green)" : "#fff";
+              awayNumColor = (pa === aa) ? "var(--neon-green)" : "#fff";
               
               actualScoreText = `<div class="group-actual-score">${ah}-${aa}</div>`;
               extraPaddingStyle = "padding-bottom: 16px;";
@@ -1667,9 +1671,9 @@
             const rankHtml = String(idx + 1).padStart(2, '0');
             html += `
               <div class="standing-row">
-                <div class="rmain" style="cursor: default; transform: none !important; padding: 8px 12px; grid-template-columns: 48px 1fr auto;">
+                <div class="rmain" style="cursor: default; transform: none !important; padding: 8px 16px; grid-template-columns: 40px 1fr auto;">
                   <div class="rank">${rankHtml}</div>
-                  <div class="who">${displayTeam || 'TBD'}</div>
+                  <div class="who ${stateClass === 'standing-correct' ? 'standing-correct' : ''}">${displayTeam || 'TBD'}</div>
                   <div class="pts ${stateClass}">${checkmark}</div>
                 </div>
               </div>
