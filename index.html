@@ -1236,6 +1236,7 @@
     </div>
     <header>
       <h1><span>T</span><span>O</span><span>T</span><span>O</span><span>M</span><span>O</span><span>N</span><span>D</span><span>I</span><span>A</span><span>L</span><span>E</span></h1>
+      <div class="ticker"><span>★ WELCOME TO THE FANTAMONDIALE ARENA ★ INSERT COIN TO CONTINUE ★ MAY THE BEST PREDICTOR WIN ★ GOOD LUCK PLAYER ★</span></div>
       <div class="sub" id="sub"></div>
       <div class="stats" id="stats"></div>
     </header>
@@ -1696,7 +1697,7 @@
                 const predRec = reconcileCountryName(team).toUpperCase();
                 if (actualRec === predRec) {
                   stateClass = "standing-correct";
-                  checkmark = "✓";
+                  checkmark = "";
                 } else {
                   stateClass = "standing-wrong";
                   checkmark = "";
@@ -1902,7 +1903,10 @@
       document.getElementById('foot').innerHTML =
         `© TOTOMONDIALE 2026 - ALL RIGHTS RESERVED<br>UPDATED ${meta.generated || '--:--'}`;
 
-      // Auto-update HUD from Supabase fields set by fetch_results.py
+      // Auto-update ticker & HUD from Supabase fields set by fetch_results.py
+      if (meta.ticker_text) {
+        document.querySelector('.ticker span').textContent = meta.ticker_text;
+      }
 
       if (meta.next_game_text) {
         const hudLeft = document.getElementById('hud-left');

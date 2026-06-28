@@ -775,16 +775,15 @@ def compute_leaderboard_data(model_path, pron_dir):
             
     # 3. knockouts
     for round_name, info in KO_ROUNDS.items():
-        col = info["col"]
         round_teams = []
         for r in info["rows"]:
-            val = norm(wsM.cell(r, col).value)
+            val = ko_truth[round_name].get(r, "")
             round_teams.append(val if val else "")
         results_truth["knockouts"][round_name] = round_teams
         
     # 4. standings
     for r in [35, 36, 37, 38]:
-        val = norm(wsM.cell(r, ci("AJ")).value)
+        val = standings_truth.get(r, "")
         results_truth["standings"].append(val if val else "")
 
     meta = {
@@ -1003,6 +1002,7 @@ TEMPLATE = r"""<!DOCTYPE html>
   </div>
   <header>
     <h1>LEADERBOARD</h1>
+    <div class="ticker"><span>★ WELCOME TO THE FANTAMONDIALE ARENA ★ INSERT COIN TO CONTINUE ★ MAY THE BEST PREDICTOR WIN ★ GOOD LUCK PLAYER ★</span></div>
     <div class="sub" id="sub"></div>
     <div class="stats" id="stats"></div>
   </header>
