@@ -616,7 +616,6 @@ def main():
                 for m in finished
             ]
             recent_five = strs[:5]
-            recent_five.reverse()
             ticker = build_ticker_text(recent_five)
             print(f"[ticker] {ticker}")
         else:
@@ -649,7 +648,6 @@ def main():
     ticker = None
     if finished and result_strings:
         recent_five = result_strings[:5]
-        recent_five.reverse()
         ticker = build_ticker_text(recent_five)
         print(f"\n[ticker] {ticker}")
 
