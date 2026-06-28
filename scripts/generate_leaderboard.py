@@ -224,57 +224,303 @@ def is_num(v):
         return False
 
 
-def read_truth(ws):
+def compute_group_standings(ws):
+    """Computes group stats and ranks them dynamically. Returns group_standings (e.g. '1A' -> 'MEXICO') and raw_positions."""
+    group_standings = {}
+    raw_positions = {}
+    group_stats = {}
+    
+    for g, base in GH.items():
+        # Get the unique teams in this group from rows base+1 to base+6, columns B & C
+        teams = set()
+        for i in range(1, 7):
+            r = base + i
+            h = ws.cell(r, ci("B")).value
+            a = ws.cell(r, ci("C")).value
+            if h: teams.add(norm(h))
+            if a: teams.add(norm(a))
+        teams = sorted(list(teams))
+        
+        # Calculate stats for each team
+        stats = {t: {"points": 0, "gd": 0, "gf": 0, "name": t} for t in teams}
+        for i in range(1, 7):
+            r = base + i
+            h = norm(ws.cell(r, ci("B")).value)
+            a = norm(ws.cell(r, ci("C")).value)
+            hs = ws.cell(r, ci("D")).value
+            as_ = ws.cell(r, ci("E")).value
+            if is_num(hs) and is_num(as_):
+                hs, as_ = float(hs), float(as_)
+                stats[h]["gf"] += hs
+                stats[a]["gf"] += as_
+                stats[h]["gd"] += (hs - as_)
+                stats[a]["gd"] += (as_ - hs)
+                if hs > as_:
+                    stats[h]["points"] += 3
+                elif hs < as_:
+                    stats[a]["points"] += 3
+                else:
+                    stats[h]["points"] += 1
+                    stats[a]["points"] += 1
+                    
+        # Identify the order in which teams are listed in columns B and C in matches base+1, base+2
+        team_order = []
+        for i in range(1, 7):
+            r = base + i
+            h = norm(ws.cell(r, ci("B")).value)
+            a = norm(ws.cell(r, ci("C")).value)
+            if h and h not in team_order:
+                team_order.append(h)
+            if a and a not in team_order:
+                team_order.append(a)
+                
+        def get_team_key(t):
+            idx = team_order.index(t) if t in team_order else 0
+            return stats[t]["points"] * 1000000 + stats[t]["gd"] * 1000 + stats[t]["gf"] * 10 - idx
+            
+        sorted_teams = sorted(teams, key=get_team_key, reverse=True)
+        
+        # Populate maps
+        for idx, t in enumerate(sorted_teams):
+            pos_label = f"{idx+1}{g}" # e.g. "1A", "2A"
+            group_standings[pos_label] = t
+            
+        slots = {}
+        for idx, t in enumerate(sorted_teams):
+            slots[base + idx + 1] = t
+        raw_positions[g] = slots
+        
+        group_stats[g] = stats
+        
+    return group_standings, raw_positions, group_stats
+
+
+def get_top_8_third_places(group_standings, group_stats):
+    """Rank the 12 third-placed teams and construct the 8-letter combination key."""
+    third_placed = []
+    groups = "ABCDEFGHIJKL"
+    for idx, g in enumerate(groups):
+        t = group_standings.get(f"3{g}")
+        if t:
+            stats = group_stats[g][t]
+            key = stats["points"] * 1000000 + stats["gd"] * 1000 + stats["gf"] * 10 - idx
+            third_placed.append((g, t, key))
+            
+    third_placed.sort(key=lambda x: x[2], reverse=True)
+    top_8 = third_placed[:8]
+    top_8_group_letters = sorted([item[0] for item in top_8])
+    return "".join(top_8_group_letters)
+
+
+def get_third_place_assignments(wb, combination_key):
+    """Looks up slot assignments from the Terze sheet for the combination_key."""
+    if not wb or "Terze" not in wb.sheetnames:
+        return {}
+    terze_ws = wb["Terze"]
+    for r in range(2, terze_ws.max_row + 1):
+        if terze_ws.cell(r, 2).value == combination_key:
+            return {
+                "slot_1A": terze_ws.cell(r, 3).value,
+                "slot_1B": terze_ws.cell(r, 4).value,
+                "slot_1D": terze_ws.cell(r, 5).value,
+                "slot_1E": terze_ws.cell(r, 6).value,
+                "slot_1G": terze_ws.cell(r, 7).value,
+                "slot_1I": terze_ws.cell(r, 8).value,
+                "slot_1K": terze_ws.cell(r, 9).value,
+                "slot_1L": terze_ws.cell(r, 10).value,
+            }
+    return {}
+
+
+def read_truth(ws, wb=None):
     """Returns truth: matches, group standings, knockout rounds truth, standings truth, top scorer truth."""
     matches = []       # (row, gh, ga, outcome)
-    raw_positions = {} # group -> {row: team}  (only if all 4 slots present)
     for g, base in GH.items():
         for i in range(1, 7):
             r = base + i
             d, e = ws.cell(r, ci("D")).value, ws.cell(r, ci("E")).value
             if is_num(d) and is_num(e):
                 matches.append((r, float(d), float(e), outcome(d, e)))
-        slots = {}
-        for i in range(1, 5):
-            r = base + i
-            t = norm(ws.cell(r, ci("G")).value)
-            if t:
-                slots[r] = t
-        if len(slots) == 4:          # group standings finalised
-            raw_positions[g] = slots
-    # Group positions only count once the ENTIRE group stage is played —
-    # partial standings (predicted, not yet locked in) don't score early.
+                
     group_stage_complete = len(matches) == GROUP_MATCHES_TOTAL
+    
+    # 1. Group Standings
+    group_standings, raw_positions, group_stats = compute_group_standings(ws)
     positions = raw_positions if group_stage_complete else {}
-
-    ko_truth = {}
+    
+    ko_truth = {
+        "r32": {},
+        "r16": {},
+        "qf": {},
+        "sf": {},
+        "final": {}
+    }
     standings_truth = {}
     topscorer_player_truth = None
     topscorer_goals_truth = None
-
+    
     if group_stage_complete:
-        # Extract knockout truth (only non-empty cells count)
-        for round_name, info in KO_ROUNDS.items():
-            col = info["col"]
-            ko_truth[round_name] = {}
-            for r in info["rows"]:
-                val = norm(ws.cell(r, col).value)
-                if val:
-                    ko_truth[round_name][r] = val
-
-        # Extract standings truth
-        for r in STANDINGS_MAP.keys():
-            val = norm(ws.cell(r, ci("AJ")).value)
-            if val:
-                standings_truth[r] = val
-
-        # Extract top scorer truth
+        # 2. Third-place assignments
+        combo_key = get_top_8_third_places(group_standings, group_stats)
+        slot_assignments = get_third_place_assignments(wb, combo_key)
+        
+        # 3. Round of 32 teams mapping
+        R32_SEEDS = {
+            5: "1E",   6: "slot_1E",
+            9: "1I",  10: "slot_1I",
+            13: "2A", 14: "2B",
+            17: "1F", 18: "2C",
+            21: "2K", 22: "2L",
+            25: "1H", 26: "2J",
+            29: "1D", 30: "slot_1D",
+            33: "1G", 34: "slot_1G",
+            37: "1C", 38: "2F",
+            41: "2E", 42: "2I",
+            45: "1A", 46: "slot_1A",
+            49: "1L", 50: "slot_1L",
+            53: "1J", 54: "2H",
+            57: "2D", 58: "2G",
+            61: "1B", 62: "slot_1B",
+            65: "1K", 66: "slot_1K",
+        }
+        for r, seed in R32_SEEDS.items():
+            resolved_seed = seed
+            if seed.startswith("slot_"):
+                resolved_seed = slot_assignments.get(seed)
+            if resolved_seed:
+                team = group_standings.get(resolved_seed)
+                if team:
+                    ko_truth["r32"][r] = team
+                    
+        # 4. Round of 16 progression
+        r32_to_r16_mapping = [
+            (5, 6, 5, 7),
+            (9, 10, 9, 8),
+            (13, 14, 13, 15),
+            (17, 18, 17, 16),
+            (21, 22, 21, 23),
+            (25, 26, 25, 24),
+            (29, 30, 29, 31),
+            (33, 34, 33, 32),
+            (37, 38, 37, 39),
+            (41, 42, 41, 40),
+            (45, 46, 45, 47),
+            (49, 50, 49, 48),
+            (53, 54, 53, 55),
+            (57, 58, 57, 56),
+            (61, 62, 61, 63),
+            (65, 66, 65, 64),
+        ]
+        for h_r, a_r, ind_r, t_r in r32_to_r16_mapping:
+            ind = ws.cell(ind_r, 12).value # Column L is 12
+            if is_num(ind):
+                ind = int(ind)
+                h_team = ko_truth["r32"].get(h_r)
+                a_team = ko_truth["r32"].get(a_r)
+                if ind == 1 and h_team:
+                    ko_truth["r16"][t_r] = h_team
+                elif ind == 2 and a_team:
+                    ko_truth["r16"][t_r] = a_team
+                    
+        # 5. Quarter-finals progression
+        r16_to_qf_mapping = [
+            (7, 8, 7, 11),
+            (15, 16, 15, 12),
+            (23, 24, 23, 27),
+            (31, 32, 31, 28),
+            (39, 40, 39, 43),
+            (47, 48, 47, 44),
+            (55, 56, 55, 59),
+            (63, 64, 63, 60),
+        ]
+        for h_r, a_r, ind_r, t_r in r16_to_qf_mapping:
+            ind = ws.cell(ind_r, 17).value # Column Q is 17
+            if is_num(ind):
+                ind = int(ind)
+                h_team = ko_truth["r16"].get(h_r)
+                a_team = ko_truth["r16"].get(a_r)
+                if ind == 1 and h_team:
+                    ko_truth["qf"][t_r] = h_team
+                elif ind == 2 and a_team:
+                    ko_truth["qf"][t_r] = a_team
+                    
+        # 6. Semi-finals progression
+        qf_to_sf_mapping = [
+            (11, 12, 11, 19),
+            (27, 28, 27, 20),
+            (43, 44, 43, 51),
+            (59, 60, 59, 52),
+        ]
+        for h_r, a_r, ind_r, t_r in qf_to_sf_mapping:
+            ind = ws.cell(ind_r, 22).value # Column V is 22
+            if is_num(ind):
+                ind = int(ind)
+                h_team = ko_truth["qf"].get(h_r)
+                a_team = ko_truth["qf"].get(a_r)
+                if ind == 1 and h_team:
+                    ko_truth["sf"][t_r] = h_team
+                elif ind == 2 and a_team:
+                    ko_truth["sf"][t_r] = a_team
+                    
+        # 7. Finals progression
+        sf_to_final_mapping = [
+            (19, 20, 19, 35),
+            (51, 52, 51, 36),
+        ]
+        for h_r, a_r, ind_r, t_r in sf_to_final_mapping:
+            ind = ws.cell(ind_r, 27).value # Column AA is 27
+            if is_num(ind):
+                ind = int(ind)
+                h_team = ko_truth["sf"].get(h_r)
+                a_team = ko_truth["sf"].get(a_r)
+                if ind == 1 and h_team:
+                    ko_truth["final"][t_r] = h_team
+                elif ind == 2 and a_team:
+                    ko_truth["final"][t_r] = a_team
+                    
+        # 8. Third-place match and Final Standings truth
+        team_final_1 = ko_truth["final"].get(35)
+        team_final_2 = ko_truth["final"].get(36)
+        
+        ind_sf1 = ws.cell(19, 27).value # Column AA
+        team_3rd_1 = None
+        if is_num(ind_sf1):
+            ind_sf1 = int(ind_sf1)
+            team_3rd_1 = ko_truth["sf"].get(20) if ind_sf1 == 1 else ko_truth["sf"].get(19)
+            
+        ind_sf2 = ws.cell(51, 27).value # Column AA
+        team_3rd_2 = None
+        if is_num(ind_sf2):
+            ind_sf2 = int(ind_sf2)
+            team_3rd_2 = ko_truth["sf"].get(52) if ind_sf2 == 1 else ko_truth["sf"].get(51)
+            
+        ind_final = ws.cell(35, 32).value # Column AF is 32
+        if is_num(ind_final) and team_final_1 and team_final_2:
+            ind_final = int(ind_final)
+            if ind_final == 1:
+                standings_truth[35] = team_final_1
+                standings_truth[36] = team_final_2
+            else:
+                standings_truth[35] = team_final_2
+                standings_truth[36] = team_final_1
+                
+        ind_3rd = ws.cell(43, 32).value # Column AF is 32
+        if is_num(ind_3rd) and team_3rd_1 and team_3rd_2:
+            ind_3rd = int(ind_3rd)
+            if ind_3rd == 1:
+                standings_truth[37] = team_3rd_1
+                standings_truth[38] = team_3rd_2
+            else:
+                standings_truth[37] = team_3rd_2
+                standings_truth[38] = team_3rd_1
+                
         topscorer_player_truth = norm(ws.cell(44, ci("AJ")).value)
         topscorer_goals_truth = ws.cell(44, ci("AK")).value
         if topscorer_goals_truth is not None and not is_num(topscorer_goals_truth):
             topscorer_goals_truth = None
-
+            
     return matches, positions, ko_truth, standings_truth, topscorer_player_truth, topscorer_goals_truth
+
 
 
 def score_file(path, matches, positions, ko_truth=None, standings_truth=None, topscorer_player_truth=None, topscorer_goals_truth=None):
@@ -438,7 +684,7 @@ def compute_leaderboard_data(model_path, pron_dir):
     """Loads model, extracts truth, scores files, and computes ranks + metadata."""
     wbM = openpyxl.load_workbook(model_path, data_only=True)
     wsM = wbM["Bracket"] if "Bracket" in wbM.sheetnames else wbM.active
-    matches, positions, ko_truth, standings_truth, topscorer_player_truth, topscorer_goals_truth = read_truth(wsM)
+    matches, positions, ko_truth, standings_truth, topscorer_player_truth, topscorer_goals_truth = read_truth(wsM, wbM)
 
     rows = []
     predicted_winners = []

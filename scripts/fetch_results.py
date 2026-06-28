@@ -200,7 +200,7 @@ def _get_json(url, headers=None, timeout=20):
 
 def fetch_from_footballdata(api_key):
     """
-    Fetch finished group matches from football-data.org.
+    Fetch finished matches from football-data.org.
     Returns (finished_matches, next_game_dict_or_None, is_live).
     """
     print(f"[fetch] football-data.org → {FOOTBALLDATA_URL}")
@@ -214,9 +214,8 @@ def fetch_from_footballdata(api_key):
     finished = []
     upcoming = []
     for m in data.get("matches", []):
-        if m.get("stage") not in ("GROUP_STAGE",):
-            continue
         status = m.get("status")
+        stage = m.get("stage")
         home_api = m.get("homeTeam", {}).get("name", "")
         away_api = m.get("awayTeam", {}).get("name", "")
         home_xl = FOOTBALLDATA_TEAM_MAP.get(home_api)
@@ -234,6 +233,7 @@ def fetch_from_footballdata(api_key):
                 "id": str(m.get("id", "")),
                 "home": home_xl, "away": away_xl,
                 "home_score": int(hs), "away_score": int(as_),
+                "stage": stage
             })
         else:
             is_live = status in ("LIVE", "IN_PLAY", "PAUSED")
@@ -252,9 +252,10 @@ def fetch_from_footballdata(api_key):
                 "is_live": is_live,
                 "home_score": int(hs) if (is_live and hs is not None) else 0,
                 "away_score": int(as_) if (is_live and as_ is not None) else 0,
+                "stage": stage
             })
 
-    print(f"[fetch] Got {len(finished)} finished group matches from football-data.org")
+    print(f"[fetch] Got {len(finished)} finished matches from football-data.org")
     live_games = []
     next_game = None
 
@@ -276,7 +277,7 @@ def fetch_from_footballdata(api_key):
 
 def fetch_from_worldcup26():
     """
-    Fetch finished group matches from worldcup26.ir (local-only fallback).
+    Fetch finished matches from worldcup26.ir (local-only fallback).
     Returns (finished_matches, next_game_dict_or_None, is_live).
     """
     print(f"[fetch] worldcup26.ir → {WORLDCUP26_URL}")
@@ -284,8 +285,6 @@ def fetch_from_worldcup26():
     finished = []
     upcoming = []
     for g in data.get("games", []):
-        if g.get("type") != "group":
-            continue
         home_api = g.get("home_team_name_en", "")
         away_api = g.get("away_team_name_en", "")
         home_xl = WORLDCUP26_TEAM_MAP.get(home_api)
@@ -294,6 +293,7 @@ def fetch_from_worldcup26():
             if g.get("finished", "").upper() == "TRUE":
                 print(f"  [WARN] Unknown team: '{home_api}' or '{away_api}' — add to WORLDCUP26_TEAM_MAP")
             continue
+        stage = g.get("type", "group")
         if g.get("finished", "").upper() == "TRUE":
             try:
                 hs = int(g["home_score"])
@@ -304,6 +304,7 @@ def fetch_from_worldcup26():
                 "id": g["id"],
                 "home": home_xl, "away": away_xl,
                 "home_score": hs, "away_score": as_,
+                "stage": stage
             })
         else:
             hs = g.get("home_score")
@@ -323,9 +324,10 @@ def fetch_from_worldcup26():
                 "is_live": is_live,
                 "home_score": hs_val,
                 "away_score": as_val,
+                "stage": stage
             })
 
-    print(f"[fetch] Got {len(finished)} finished group matches from worldcup26.ir")
+    print(f"[fetch] Got {len(finished)} finished matches from worldcup26.ir")
     live_games = []
     next_game = None
 
@@ -536,7 +538,7 @@ def main():
     print(f"{'='*60}\n")
 
     finished, next_game, live_games = fetch_games()
-    print(f"[fetch] {len(finished)} finished group-stage matches found.\n")
+    print(f"[fetch] {len(finished)} finished matches found.\n")
 
     next_game_text = build_next_game_text(next_game, live_games)
     if next_game_text:
@@ -556,17 +558,24 @@ def main():
             print("[ticker] No finished matches found. Skip ticker text generation.")
 
         if not args.no_push:
-            push_meta_to_supabase(ticker, next_game_text)
+            push_meta_to_supabase(ticker, next_game_text or "")
         else:
             print("[skip] Skip pushing metadata (--no-push)")
         return
 
     updated = 0
     result_strings = []
-    if finished:
-        updated, result_strings = update_excel(finished, dry_run=args.dry_run)
+    group_finished = [m for m in finished if m.get("stage", "GROUP_STAGE") in ("GROUP_STAGE", "group")]
+    if group_finished:
+        updated, _ = update_excel(group_finished, dry_run=args.dry_run)
     else:
-        print("[excel] No finished matches found. Skip Excel update.")
+        print("[excel] No finished group-stage matches found. Skip Excel update.")
+
+    if finished:
+        result_strings = [
+            f"{display(m['home']).upper()} {m['home_score']}-{m['away_score']} {display(m['away']).upper()}"
+            for m in finished
+        ]
 
     if args.dry_run:
         print("\n[dry-run] Done. No files written.")
@@ -582,7 +591,7 @@ def main():
 
     if not args.no_push:
         # Update ticker + next game in Supabase
-        push_meta_to_supabase(ticker, next_game_text)
+        push_meta_to_supabase(ticker, next_game_text or "")
         
         # Trigger leaderboard re-computation if a match actually transitioned to finished in Excel or --force is active
         if updated > 0 or args.force:
