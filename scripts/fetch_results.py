@@ -233,7 +233,8 @@ def fetch_from_footballdata(api_key):
                 "id": str(m.get("id", "")),
                 "home": home_xl, "away": away_xl,
                 "home_score": int(hs), "away_score": int(as_),
-                "stage": stage
+                "stage": stage,
+                "date": m.get("utcDate", "")
             })
         else:
             is_live = status in ("LIVE", "IN_PLAY", "PAUSED")
@@ -304,7 +305,8 @@ def fetch_from_worldcup26():
                 "id": g["id"],
                 "home": home_xl, "away": away_xl,
                 "home_score": hs, "away_score": as_,
-                "stage": stage
+                "stage": stage,
+                "date": g.get("local_date") or g.get("date") or g.get("utc_date") or ""
             })
         else:
             hs = g.get("home_score")
@@ -347,6 +349,61 @@ def fetch_from_worldcup26():
     return finished, next_game, live_games
 
 
+def parse_match_date(date_str):
+    if not date_str:
+        return datetime.datetime.min
+    date_str = str(date_str).strip()
+    
+    # Try football-data format: e.g. 2026-06-23T16:00:00Z or 2026-06-23 16:00
+    if "-" in date_str:
+        normalized = date_str.replace("T", " ").replace("Z", "")
+        for fmt in ("%Y-%m-%d %H:%M:%S", "%Y-%m-%d %H:%M", "%Y-%m-%d"):
+            try:
+                return datetime.datetime.strptime(normalized[:len(fmt)-2+len(normalized)], fmt)
+            except ValueError:
+                pass
+        try:
+            parts = normalized.split(" ")
+            ymd = parts[0].split("-")
+            year, month, day = int(ymd[0]), int(ymd[1]), int(ymd[2])
+            hour, minute, second = 0, 0, 0
+            if len(parts) > 1:
+                hms = parts[1].split(" ")
+                hms_clean = hms[0].split(":")
+                hour = int(hms_clean[0])
+                if len(hms_clean) > 1:
+                    minute = int(hms_clean[1])
+                if len(hms_clean) > 2:
+                    second = int(hms_clean[2].split(".")[0])
+            return datetime.datetime(year, month, day, hour, minute, second)
+        except Exception:
+            return datetime.datetime.min
+            
+    # Try worldcup26.ir format: e.g. 06/23/2026 16:00
+    if "/" in date_str:
+        for fmt in ("%m/%d/%Y %H:%M", "%d/%m/%Y %H:%M", "%m/%d/%Y", "%d/%m/%Y"):
+            try:
+                return datetime.datetime.strptime(date_str, fmt)
+            except ValueError:
+                pass
+        try:
+            parts = date_str.split(" ")
+            mdy = parts[0].split("/")
+            month, day, year = int(mdy[0]), int(mdy[1]), int(mdy[2])
+            hour, minute = 0, 0
+            if len(parts) > 1:
+                hm = parts[1].split(" ")
+                hm_clean = hm[0].split(":")
+                hour = int(hm_clean[0])
+                if len(hm_clean) > 1:
+                    minute = int(hm_clean[1])
+            return datetime.datetime(year, month, day, hour, minute)
+        except Exception:
+            return datetime.datetime.min
+            
+    return datetime.datetime.min
+
+
 def fetch_games():
     """
     Try football-data.org first (works in GitHub Actions).
@@ -357,21 +414,28 @@ def fetch_games():
     load_dotenv()
 
     api_key = os.environ.get("FOOTBALL_DATA_API_KEY", "")
+    finished = []
+    next_game = None
+    live_games = []
     if api_key:
         try:
             finished, next_game, live_games = fetch_from_footballdata(api_key)
-            return finished, next_game, live_games
         except Exception as e:
             print(f"  [WARN] football-data.org failed: {e}")
             print("  [WARN] Falling back to worldcup26.ir ...")
+            api_key = ""
 
-    # Fallback
-    try:
-        return fetch_from_worldcup26()
-    except Exception as e:
-        sys.exit(f"[fetch] ERROR: Both APIs failed. Last error: {e}\n"
-                 f"  → Set FOOTBALL_DATA_API_KEY env var for reliable cloud access.\n"
-                 f"  → Free key: https://www.football-data.org/client/register")
+    if not api_key:
+        try:
+            finished, next_game, live_games = fetch_from_worldcup26()
+        except Exception as e:
+            sys.exit(f"[fetch] ERROR: Both APIs failed. Last error: {e}\n"
+                     f"  → Set FOOTBALL_DATA_API_KEY env var for reliable cloud access.\n"
+                     f"  → Free key: https://www.football-data.org/client/register")
+
+    # Sort finished matches descending by date (most recent first)
+    finished.sort(key=lambda m: parse_match_date(m.get("date")), reverse=True)
+    return finished, next_game, live_games
 
 
 # ─── Excel update ─────────────────────────────────────────────────────────────
@@ -551,8 +615,9 @@ def main():
                 f"{display(m['home']).upper()} {m['home_score']}-{m['away_score']} {display(m['away']).upper()}"
                 for m in finished
             ]
-            strs.reverse()  # most recent first
-            ticker = build_ticker_text(strs[:5])
+            recent_five = strs[:5]
+            recent_five.reverse()
+            ticker = build_ticker_text(recent_five)
             print(f"[ticker] {ticker}")
         else:
             print("[ticker] No finished matches found. Skip ticker text generation.")
@@ -583,10 +648,9 @@ def main():
 
     ticker = None
     if finished and result_strings:
-        # Reverse for most-recent first, keep last 5
-        res_copy = list(result_strings)
-        res_copy.reverse()
-        ticker = build_ticker_text(res_copy[:5])
+        recent_five = result_strings[:5]
+        recent_five.reverse()
+        ticker = build_ticker_text(recent_five)
         print(f"\n[ticker] {ticker}")
 
     if not args.no_push:

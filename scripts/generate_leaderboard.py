@@ -1003,7 +1003,6 @@ TEMPLATE = r"""<!DOCTYPE html>
   </div>
   <header>
     <h1>LEADERBOARD</h1>
-    <div class="ticker"><span>★ WELCOME TO THE FANTAMONDIALE ARENA ★ INSERT COIN TO CONTINUE ★ MAY THE BEST PREDICTOR WIN ★ GOOD LUCK PLAYER ★</span></div>
     <div class="sub" id="sub"></div>
     <div class="stats" id="stats"></div>
   </header>

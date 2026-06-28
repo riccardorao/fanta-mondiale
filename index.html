@@ -1090,6 +1090,13 @@
       text-shadow: 0 0 4px var(--neon-pink) !important;
     }
 
+    .ko-team-box.ko-team-passed-wrong-spot {
+      border-color: var(--neon-pink) !important;
+      color: var(--neon-green) !important;
+      box-shadow: 0 0 10px rgba(255, 16, 240, 0.4);
+      text-shadow: 0 0 4px var(--neon-green) !important;
+    }
+
     .ko-team-box.ko-team-normal {
       border-color: rgba(0, 255, 255, 0.2) !important;
       color: #fff !important;
@@ -1229,8 +1236,6 @@
     </div>
     <header>
       <h1><span>T</span><span>O</span><span>T</span><span>O</span><span>M</span><span>O</span><span>N</span><span>D</span><span>I</span><span>A</span><span>L</span><span>E</span></h1>
-      <div class="ticker"><span>RECENT RESULTS: PORTUGAL 1-1 DR CONGO / AUSTRIA 3-1 JORDAN / ARGENTINA 3-0 ALGERIA /
-          IRAQ 1-4 NORWAY / FRANCE 3-1 SENEGAL</span></div>
       <div class="sub" id="sub"></div>
       <div class="stats" id="stats"></div>
     </header>
@@ -1694,7 +1699,7 @@
                   checkmark = "✓";
                 } else {
                   stateClass = "standing-wrong";
-                  checkmark = "✗";
+                  checkmark = "";
                 }
               }
             }
@@ -1760,16 +1765,23 @@
               if (actualRoundTeams.some(x => x)) {
                 // Team 1
                 const t1True = actualRoundTeams[mIdx * 2];
+                const t1Passed = actualRoundTeams.some(t => t && reconcileCountryName(t).toUpperCase() === reconcileCountryName(team1).toUpperCase());
                 if (t1True && reconcileCountryName(t1True).toUpperCase() === reconcileCountryName(team1).toUpperCase()) {
                   team1Class = "ko-team-right-spot";
-                } else if (actualRoundTeams.some(t => t && reconcileCountryName(t).toUpperCase() === reconcileCountryName(team1).toUpperCase())) {
+                } else if (t1Passed) {
+                  team1Class = "ko-team-passed-wrong-spot";
+                } else {
                   team1Class = "ko-team-wrong-spot";
                 }
+                
                 // Team 2
                 const t2True = actualRoundTeams[mIdx * 2 + 1];
+                const t2Passed = actualRoundTeams.some(t => t && reconcileCountryName(t).toUpperCase() === reconcileCountryName(team2).toUpperCase());
                 if (t2True && reconcileCountryName(t2True).toUpperCase() === reconcileCountryName(team2).toUpperCase()) {
                   team2Class = "ko-team-right-spot";
-                } else if (actualRoundTeams.some(t => t && reconcileCountryName(t).toUpperCase() === reconcileCountryName(team2).toUpperCase())) {
+                } else if (t2Passed) {
+                  team2Class = "ko-team-passed-wrong-spot";
+                } else {
                   team2Class = "ko-team-wrong-spot";
                 }
               }
@@ -1890,10 +1902,7 @@
       document.getElementById('foot').innerHTML =
         `© TOTOMONDIALE 2026 - ALL RIGHTS RESERVED<br>UPDATED ${meta.generated || '--:--'}`;
 
-      // Auto-update ticker & HUD from Supabase fields set by fetch_results.py
-      if (meta.ticker_text) {
-        document.querySelector('.ticker span').textContent = meta.ticker_text;
-      }
+      // Auto-update HUD from Supabase fields set by fetch_results.py
 
       if (meta.next_game_text) {
         const hudLeft = document.getElementById('hud-left');
