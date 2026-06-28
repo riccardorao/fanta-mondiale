@@ -552,11 +552,14 @@ def score_file(path, matches, positions, ko_truth=None, standings_truth=None, to
             col = KO_ROUNDS[round_name]["col"]
             correct_key = f"{round_name}_correct"
             wrong_key = f"{round_name}_wrong"
+            actual_teams = {t for t in truth_slots.values() if t}
             for r, true_team in truth_slots.items():
                 pred_team = norm(ws.cell(r, col).value)
+                if not pred_team:
+                    continue
                 if pred_team == true_team:
                     bd["Knockouts"] += POINTS[correct_key]
-                else:
+                elif pred_team in actual_teams:
                     bd["Knockouts"] += POINTS[wrong_key]
 
     # final standings
