@@ -234,7 +234,8 @@ def fetch_from_footballdata(api_key):
                 "home": home_xl, "away": away_xl,
                 "home_score": int(hs), "away_score": int(as_),
                 "stage": stage,
-                "date": m.get("utcDate", "")
+                "date": m.get("utcDate", ""),
+                "winner": m.get("score", {}).get("winner")
             })
         else:
             is_live = status in ("LIVE", "IN_PLAY", "PAUSED")
@@ -301,12 +302,23 @@ def fetch_from_worldcup26():
                 as_ = int(g["away_score"])
             except (KeyError, ValueError, TypeError):
                 continue
+            winner = None
+            if hs > as_:
+                winner = "HOME_TEAM"
+            elif as_ > hs:
+                winner = "AWAY_TEAM"
+            else:
+                if g.get("winner") == g.get("home_team_name_en"):
+                    winner = "HOME_TEAM"
+                elif g.get("winner") == g.get("away_team_name_en"):
+                    winner = "AWAY_TEAM"
             finished.append({
                 "id": g["id"],
                 "home": home_xl, "away": away_xl,
                 "home_score": hs, "away_score": as_,
                 "stage": stage,
-                "date": g.get("local_date") or g.get("date") or g.get("utc_date") or ""
+                "date": g.get("local_date") or g.get("date") or g.get("utc_date") or "",
+                "winner": winner
             })
         else:
             hs = g.get("home_score")
@@ -469,37 +481,109 @@ def update_excel(finished_games, dry_run=False):
     if not os.path.exists(MODEL):
         sys.exit(f"[excel] ERROR: Model not found at {MODEL}")
 
-    wb = openpyxl.load_workbook(MODEL)
+    wb = openpyxl.load_workbook(MODEL, data_only=False)
     ws = wb["Bracket"] if "Bracket" in wb.sheetnames else wb.active
+    
+    wb_val = openpyxl.load_workbook(MODEL, data_only=True)
+    ws_val = wb_val["Bracket"] if "Bracket" in wb_val.sheetnames else wb_val.active
+
+    # Load dynamically computed ko_truth from generate_leaderboard!
+    sys.path.append(SCRIPT_DIR)
+    import generate_leaderboard as gen
+    _, _, ko_truth, _, _, _ = gen.read_truth(ws_val, wb_val)
+
     match_index = build_excel_match_index(ws)
 
     updated = 0
     skipped = 0
     result_strings = []
 
+    KO_SEARCH_ROUNDS = [
+        ("r32", 11, 12, [5, 9, 13, 17, 21, 25, 29, 33, 37, 41, 45, 49, 53, 57, 61, 65]),
+        ("r16", 16, 17, [7, 15, 23, 31, 39, 47, 55, 63]),
+        ("qf", 21, 22, [11, 27, 43, 59]),
+        ("sf", 26, 27, [19, 51]),
+        ("final", 31, 32, [35, 43])
+    ]
+
     for m in finished_games:
-        key = (normalize_team_name(m["home"]), normalize_team_name(m["away"]))
-        row = match_index.get(key)
-        if row is None:
-            print(f"  [WARN] Match not found in Excel: {m['home']} vs {m['away']}")
-            skipped += 1
-            continue
-
-        current_home = ws.cell(row, ci("D")).value
-        current_away = ws.cell(row, ci("E")).value
-
+        home_api = normalize_team_name(m["home"])
+        away_api = normalize_team_name(m["away"])
+        
         result_strings.append(f"{display(m['home']).upper()} {m['home_score']}-{m['away_score']} {display(m['away']).upper()}")
+        
+        stage = m.get("stage", "GROUP_STAGE").upper()
+        if stage in ("GROUP_STAGE", "GROUP", "GROUP STAGE"):
+            key = (home_api, away_api)
+            row = match_index.get(key)
+            if row is None:
+                print(f"  [WARN] Group match not found in Excel: {m['home']} vs {m['away']}")
+                skipped += 1
+                continue
 
-        if current_home == m["home_score"] and current_away == m["away_score"]:
-            continue  # already correct
+            current_home = ws.cell(row, ci("D")).value
+            current_away = ws.cell(row, ci("E")).value
 
-        if dry_run:
-            print(f"  [DRY-RUN] Would set row {row}: {m['home']} {m['home_score']}-{m['away_score']} {m['away']}")
+            if current_home == m["home_score"] and current_away == m["away_score"]:
+                continue
+
+            if dry_run:
+                print(f"  [DRY-RUN] Would set row {row}: {m['home']} {m['home_score']}-{m['away_score']} {m['away']}")
+            else:
+                ws.cell(row, ci("D")).value = m["home_score"]
+                ws.cell(row, ci("E")).value = m["away_score"]
+                print(f"  [excel] Updated row {row}: {m['home']} {m['home_score']}-{m['away_score']} {m['away']}")
+            updated += 1
         else:
-            ws.cell(row, ci("D")).value = m["home_score"]
-            ws.cell(row, ci("E")).value = m["away_score"]
-            print(f"  [excel] Updated row {row}: {m['home']} {m['home_score']}-{m['away_score']} {m['away']}")
-        updated += 1
+            winner = m.get("winner")
+            if not winner:
+                hs = m.get("home_score", 0)
+                as_ = m.get("away_score", 0)
+                if hs > as_:
+                    winner = "HOME_TEAM"
+                elif as_ > hs:
+                    winner = "AWAY_TEAM"
+                else:
+                    continue
+
+            match_found = False
+            for round_name, team_col, ind_col, home_rows in KO_SEARCH_ROUNDS:
+                for r in home_rows:
+                    sheet_home = normalize_team_name(ko_truth[round_name].get(r, ""))
+                    sheet_away = normalize_team_name(ko_truth[round_name].get(r+1, ""))
+
+                    is_direct = (sheet_home == home_api and sheet_away == away_api)
+                    is_swapped = (sheet_home == away_api and sheet_away == home_api)
+
+                    if is_direct or is_swapped:
+                        indicator_val = None
+                        if is_direct:
+                            if winner == "HOME_TEAM":
+                                indicator_val = 1
+                            elif winner == "AWAY_TEAM":
+                                indicator_val = 2
+                        else:
+                            if winner == "HOME_TEAM":
+                                indicator_val = 2
+                            elif winner == "AWAY_TEAM":
+                                indicator_val = 1
+
+                        if indicator_val is not None:
+                            current_val = ws.cell(r, ind_col).value
+                            if current_val != indicator_val:
+                                if dry_run:
+                                    print(f"  [DRY-RUN] Would set indicator in row {r}, col {ind_col} to {indicator_val} ({sheet_home} vs {sheet_away})")
+                                else:
+                                    ws.cell(r, ind_col).value = indicator_val
+                                    print(f"  [excel] Updated indicator in row {r}, col {ind_col} to {indicator_val} ({sheet_home} won)")
+                                updated += 1
+                        match_found = True
+                        break
+                if match_found:
+                    break
+            if not match_found:
+                print(f"  [WARN] Knockout match not found in Excel: {m['home']} vs {m['away']}")
+                skipped += 1
 
     if not dry_run and updated > 0:
         wb.save(MODEL)
@@ -629,17 +713,10 @@ def main():
 
     updated = 0
     result_strings = []
-    group_finished = [m for m in finished if m.get("stage", "GROUP_STAGE") in ("GROUP_STAGE", "group")]
-    if group_finished:
-        updated, _ = update_excel(group_finished, dry_run=args.dry_run)
-    else:
-        print("[excel] No finished group-stage matches found. Skip Excel update.")
-
     if finished:
-        result_strings = [
-            f"{display(m['home']).upper()} {m['home_score']}-{m['away_score']} {display(m['away']).upper()}"
-            for m in finished
-        ]
+        updated, result_strings = update_excel(finished, dry_run=args.dry_run)
+    else:
+        print("[excel] No finished matches found. Skip Excel update.")
 
     if args.dry_run:
         print("\n[dry-run] Done. No files written.")
