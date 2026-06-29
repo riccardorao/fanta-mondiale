@@ -44,11 +44,11 @@ else:
 POINTS = {
     "score_per_team": 5, "outcome": 10, "position": 10,
     "r32_correct": 10, "r32_wrong": 5,
-    "r16_correct": 15, "r16_wrong": 10,
-    "qf_correct": 30,  "qf_wrong": 15,
-    "sf_correct": 60,  "sf_wrong": 25,
-    "final_correct": 90, "final_wrong": 40,
-    "standing_1st": 100, "standing_2nd": 60, "standing_3rd": 40, "standing_4th": 20,
+    "r16_correct": 20, "r16_wrong": 10,
+    "qf_correct": 40,  "qf_wrong": 20,
+    "sf_correct": 80,  "sf_wrong": 40,
+    "final_correct": 100, "final_wrong": 60,
+    "standing_1st": 150, "standing_2nd": 120, "standing_3rd": 80, "standing_4th": 60,
     "topscorer_player": 80, "topscorer_goals": 20,
 }
 
@@ -162,10 +162,10 @@ def tournament_max(P):
              + N_GROUPS * 4 * P["position"])                    # 480  positions
     ko = (KO_SLOTS["r32"] * P["r32_correct"] + KO_SLOTS["r16"] * P["r16_correct"]
           + KO_SLOTS["qf"] * P["qf_correct"] + KO_SLOTS["sf"] * P["sf_correct"]
-          + KO_SLOTS["final"] * P["final_correct"])             # 1220
-    standings = P["standing_1st"] + P["standing_2nd"] + P["standing_3rd"] + P["standing_4th"]  # 220
+          + KO_SLOTS["final"] * P["final_correct"])             # 1480
+    standings = P["standing_1st"] + P["standing_2nd"] + P["standing_3rd"] + P["standing_4th"]  # 410
     topscorer = P["topscorer_player"] + P["topscorer_goals"]    # 100
-    return group + ko + standings + topscorer                  # 3460 with defaults
+    return group + ko + standings + topscorer                  # 3910 with defaults
 
 TEAM_RECONCILIATION_MAP = {
     "CAPE VERDE": "CAPE VERDE",
