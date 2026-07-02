@@ -455,10 +455,11 @@ def fetch_games():
 def normalize_team_name(name):
     if not name:
         return ""
-    n = str(name).strip().upper()
-    if n in ("DR CONGO", "CONGO DR", "DEMOCRATIC REPUBLIC OF CONGO", "CONGO DEMOCRATIC REPUBLIC", "DR. CONGO", "CONGO, DR"):
-        return "DR CONGO"
-    return n
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    if script_dir not in sys.path:
+        sys.path.append(script_dir)
+    import generate_leaderboard as gen
+    return gen.reconcile_team_name(name)
 
 
 def build_excel_match_index(ws):
