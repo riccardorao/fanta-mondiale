@@ -308,10 +308,24 @@ def fetch_from_worldcup26():
             elif as_ > hs:
                 winner = "AWAY_TEAM"
             else:
-                if g.get("winner") == g.get("home_team_name_en"):
-                    winner = "HOME_TEAM"
-                elif g.get("winner") == g.get("away_team_name_en"):
-                    winner = "AWAY_TEAM"
+                hps = g.get("home_penalty_score")
+                aps = g.get("away_penalty_score")
+                if hps is not None and aps is not None and str(hps).strip() != "" and str(aps).strip() != "":
+                    try:
+                        hps_int = int(hps)
+                        aps_int = int(aps)
+                        if hps_int > aps_int:
+                            winner = "HOME_TEAM"
+                        elif aps_int > hps_int:
+                            winner = "AWAY_TEAM"
+                    except (ValueError, TypeError):
+                        pass
+                
+                if winner is None:
+                    if g.get("winner") == g.get("home_team_name_en"):
+                        winner = "HOME_TEAM"
+                    elif g.get("winner") == g.get("away_team_name_en"):
+                        winner = "AWAY_TEAM"
             finished.append({
                 "id": g["id"],
                 "home": home_xl, "away": away_xl,
@@ -575,9 +589,10 @@ def update_excel(finished_games, dry_run=False):
                                 if dry_run:
                                     print(f"  [DRY-RUN] Would set indicator in row {r}, col {ind_col} to {indicator_val} ({sheet_home} vs {sheet_away})")
                                 else:
-                                    ws.cell(r, ind_col).value = indicator_val
-                                    print(f"  [excel] Updated indicator in row {r}, col {ind_col} to {indicator_val} ({sheet_home} won)")
-                                updated += 1
+                                     ws.cell(r, ind_col).value = indicator_val
+                                     winner_team = sheet_home if indicator_val == 1 else sheet_away
+                                     print(f"  [excel] Updated indicator in row {r}, col {ind_col} to {indicator_val} ({winner_team} won)")
+                                     updated += 1
                         match_found = True
                         break
                 if match_found:
