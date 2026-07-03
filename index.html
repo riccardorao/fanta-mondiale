@@ -1955,18 +1955,13 @@
       const board = document.getElementById('board');
       function build(list) {
         board.innerHTML = '';
-        const maxScore = Math.max(...list.map(x => x.total || 0), 1);
         list.forEach((d, idx) => {
           const row = document.createElement('div'); row.className = 'row'; row.style.animationDelay = (idx * 0.02) + 's';
           const pctN = Math.round(100 * d.total / maxBar);
-          const pctScore = d.total / maxScore;
           const cats = CATS.map(([k, label]) => {
             const v = d[k] || 0;
             return `<div class="cat ${v === 0 ? 'zero' : ''}"><div class="cl">${label}</div><div class="cv">${v}</div></div>`;
           }).join('');
-          let barColor;
-          const hue = pctN * 1.25
-          barColor = `hsl(${hue}, 100%, 50%)`;
           const rankHtml = d.rank <= 3
             ? `<span class="r${d.rank}">${RANK_LABEL[d.rank - 1]}</span>`
             : String(d.rank).padStart(2, '0');

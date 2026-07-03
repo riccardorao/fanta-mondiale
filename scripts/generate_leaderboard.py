@@ -229,27 +229,27 @@ def compute_group_standings(ws):
     group_standings = {}
     raw_positions = {}
     group_stats = {}
-    
+
     for g, base in GH.items():
-        # Get the unique teams in this group from rows base+1 to base+6, columns B & C
+        # Read all 6 matches once (team names + scores) so we can recompute
+        # head-to-head mini-league stats for any tied subset below.
+        raw_matches = []
         teams = set()
-        for i in range(1, 7):
-            r = base + i
-            h = ws.cell(r, ci("B")).value
-            a = ws.cell(r, ci("C")).value
-            if h: teams.add(norm(h))
-            if a: teams.add(norm(a))
-        teams = sorted(list(teams))
-        
-        # Calculate stats for each team
-        stats = {t: {"points": 0, "gd": 0, "gf": 0, "name": t} for t in teams}
         for i in range(1, 7):
             r = base + i
             h = norm(ws.cell(r, ci("B")).value)
             a = norm(ws.cell(r, ci("C")).value)
             hs = ws.cell(r, ci("D")).value
             as_ = ws.cell(r, ci("E")).value
-            if is_num(hs) and is_num(as_):
+            raw_matches.append((h, a, hs, as_))
+            if h: teams.add(h)
+            if a: teams.add(a)
+        teams = sorted(list(teams))
+
+        # Calculate overall stats for each team
+        stats = {t: {"points": 0, "gd": 0, "gf": 0, "name": t} for t in teams}
+        for h, a, hs, as_ in raw_matches:
+            if h and a and is_num(hs) and is_num(as_):
                 hs, as_ = float(hs), float(as_)
                 stats[h]["gf"] += hs
                 stats[a]["gf"] += as_
@@ -262,36 +262,69 @@ def compute_group_standings(ws):
                 else:
                     stats[h]["points"] += 1
                     stats[a]["points"] += 1
-                    
-        # Identify the order in which teams are listed in columns B and C in matches base+1, base+2
+
+        # Identify the order in which teams are first listed in columns B and C
+        # (last-resort tiebreak only, once head-to-head is also exhausted).
         team_order = []
-        for i in range(1, 7):
-            r = base + i
-            h = norm(ws.cell(r, ci("B")).value)
-            a = norm(ws.cell(r, ci("C")).value)
+        for h, a, hs, as_ in raw_matches:
             if h and h not in team_order:
                 team_order.append(h)
             if a and a not in team_order:
                 team_order.append(a)
-                
-        def get_team_key(t):
-            idx = team_order.index(t) if t in team_order else 0
-            return stats[t]["points"] * 1000000 + stats[t]["gd"] * 1000 + stats[t]["gf"] * 10 - idx
-            
-        sorted_teams = sorted(teams, key=get_team_key, reverse=True)
-        
+
+        def fixture_idx(t):
+            return team_order.index(t) if t in team_order else 0
+
+        def h2h_key(t, cluster):
+            """Mini-league (points, gd, gf) among only the teams tied with t."""
+            pts = gd = gf = 0.0
+            for h, a, hs, as_ in raw_matches:
+                if h not in cluster or a not in cluster or t not in (h, a):
+                    continue
+                if not (is_num(hs) and is_num(as_)):
+                    continue
+                hs, as_ = float(hs), float(as_)
+                if h == t:
+                    gf += hs; gd += (hs - as_)
+                    pts += 3 if hs > as_ else (1 if hs == as_ else 0)
+                else:
+                    gf += as_; gd += (as_ - hs)
+                    pts += 3 if as_ > hs else (1 if hs == as_ else 0)
+            return (pts, gd, gf)
+
+        primary_key = lambda t: (stats[t]["points"], stats[t]["gd"], stats[t]["gf"])
+        primary_sorted = sorted(teams, key=primary_key, reverse=True)
+
+        # Group consecutive teams tied on the full (points, gd, gf) triple and
+        # resolve each such cluster with real head-to-head results before
+        # falling back to fixture-listing order for any still-tied remainder
+        # (FIFA's own last resorts — disciplinary points, drawing of lots —
+        # aren't derivable from this sheet).
+        sorted_teams = []
+        i = 0
+        while i < len(primary_sorted):
+            j = i
+            while j + 1 < len(primary_sorted) and primary_key(primary_sorted[j + 1]) == primary_key(primary_sorted[i]):
+                j += 1
+            cluster = primary_sorted[i:j + 1]
+            if len(cluster) > 1:
+                cluster_set = set(cluster)
+                cluster = sorted(cluster, key=lambda t: (h2h_key(t, cluster_set), -fixture_idx(t)), reverse=True)
+            sorted_teams.extend(cluster)
+            i = j + 1
+
         # Populate maps
         for idx, t in enumerate(sorted_teams):
             pos_label = f"{idx+1}{g}" # e.g. "1A", "2A"
             group_standings[pos_label] = t
-            
+
         slots = {}
         for idx, t in enumerate(sorted_teams):
             slots[base + idx + 1] = t
         raw_positions[g] = slots
-        
+
         group_stats[g] = stats
-        
+
     return group_standings, raw_positions, group_stats
 
 
@@ -353,7 +386,8 @@ def read_truth(ws, wb=None):
         "r16": {},
         "qf": {},
         "sf": {},
-        "final": {}
+        "final": {},
+        "third_place": {},  # SF losers; not part of KO_ROUNDS/POINTS, see below
     }
     standings_truth = {}
     topscorer_player_truth = None
@@ -493,7 +527,16 @@ def read_truth(ws, wb=None):
         if is_num(ind_sf2):
             ind_sf2 = int(ind_sf2)
             team_3rd_2 = ko_truth["sf"].get(52) if ind_sf2 == 1 else ko_truth["sf"].get(51)
-            
+
+        # Expose the third-place-match contestants (the two SF losers) so
+        # fetch_results.py can match the live API fixture and auto-write the
+        # winner indicator at row 43/col AF below. Kept out of KO_ROUNDS/POINTS
+        # (see the "third_place" guards in score_file and compute_leaderboard_data)
+        # since this match isn't part of the Knockouts bracket score — it's
+        # already scored via Final Standings standing_3rd/standing_4th.
+        if team_3rd_1 and team_3rd_2:
+            ko_truth["third_place"] = {43: team_3rd_1, 44: team_3rd_2}
+
         ind_final = ws.cell(35, 32).value # Column AF is 32
         if is_num(ind_final) and team_final_1 and team_final_2:
             ind_final = int(ind_final)
@@ -549,18 +592,26 @@ def score_file(path, matches, positions, ko_truth=None, standings_truth=None, to
     # knockouts (gated by populated model truth)
     if ko_truth:
         for round_name, truth_slots in ko_truth.items():
+            if round_name not in KO_ROUNDS:
+                # e.g. "third_place": scored via Final Standings, not the bracket
+                continue
             col = KO_ROUNDS[round_name]["col"]
             correct_key = f"{round_name}_correct"
             wrong_key = f"{round_name}_wrong"
+            pred_by_row = {r: norm(ws.cell(r, col).value) for r in truth_slots}
             actual_teams = {t for t in truth_slots.values() if t}
+            # Award full credit once per team correctly placed in its true slot,
+            # and at most ONE partial credit per real team guessed anywhere else
+            # in the round — a team's name repeated across several slots must
+            # not multiply the "wrong slot, right team" bonus.
+            credited = set()
             for r, true_team in truth_slots.items():
-                pred_team = norm(ws.cell(r, col).value)
-                if not pred_team:
-                    continue
-                if pred_team == true_team:
+                if pred_by_row.get(r) == true_team:
                     bd["Knockouts"] += POINTS[correct_key]
-                elif pred_team in actual_teams:
-                    bd["Knockouts"] += POINTS[wrong_key]
+                    credited.add(true_team)
+            guessed_teams = {t for t in pred_by_row.values() if t}
+            for t in guessed_teams & actual_teams - credited:
+                bd["Knockouts"] += POINTS[wrong_key]
 
     # final standings
     if standings_truth:
@@ -724,6 +775,8 @@ def compute_leaderboard_data(model_path, pron_dir):
     max_possible = len(matches) * (2 * POINTS["score_per_team"] + POINTS["outcome"])
     max_possible += len(positions) * 4 * POINTS["position"]
     for round_name, truth_slots in ko_truth.items():
+        if round_name not in KO_ROUNDS:
+            continue  # e.g. "third_place": not part of the Knockouts bracket score
         max_possible += len(truth_slots) * POINTS[f"{round_name}_correct"]
     for r in standings_truth.keys():
         key = STANDINGS_MAP[r]
@@ -1220,7 +1273,6 @@ DATA.slice(0,3).forEach((d,i)=>{
 const board=document.getElementById('board');
 function build(list){
   board.innerHTML='';
-  const maxScore = Math.max(...list.map(x => x.total || 0), 1);
   list.forEach((d,idx)=>{
     const row=document.createElement('div');
     row.className='row'; row.style.animationDelay=(idx*0.02)+'s';
@@ -1229,8 +1281,6 @@ function build(list){
       return `<div class="cat ${v===0?'zero':''}"><div class="cl">${c}</div>
               <div class="cv">${v}</div></div>`;
     }).join('');
-    const pctScore = d.total / maxScore;
-    const barColor = `hsl(${120 * pctScore}, 100%, 50%)`;
     const pctN = Math.round(100*d.total/maxT);
     const rankHtml = d.rank<=3
       ? `<span class="r${d.rank}">${RANK_LABEL[d.rank-1]}</span>`
