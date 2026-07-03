@@ -148,6 +148,22 @@ Each participant's points are automatically calculated based on the following br
 
 Scoring weights can be modified in the `POINTS` dictionary inside [generate_leaderboard.py](file:///Users/riccardorao/fanta-mondiale/fanta-mondiale/scripts/generate_leaderboard.py).
 
+### Independent verification
+
+`scripts/independent_verify.py` is a from-scratch re-implementation of the
+scoring engine (group standings, bracket seeding, knockout progression,
+per-participant scoring) written independently of `generate_leaderboard.py`,
+used only to cross-check it. Run it any time you want extra confidence
+before trusting a newly-computed leaderboard, especially after a new
+tournament stage (knockouts, final standings, top scorer) activates for the
+first time:
+```bash
+python3 scripts/independent_verify.py
+```
+It recomputes every participant's score from raw Excel cells using its own
+logic and diffs the result against the live engine, exiting non-zero if
+even one participant's total or category breakdown disagrees.
+
 ---
 
 ## Troubleshooting
