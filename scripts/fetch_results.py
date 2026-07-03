@@ -518,7 +518,13 @@ def update_excel(finished_games, dry_run=False):
         ("r16", 16, 17, [7, 15, 23, 31, 39, 47, 55, 63]),
         ("qf", 21, 22, [11, 27, 43, 59]),
         ("sf", 26, 27, [19, 51]),
-        ("final", 31, 32, [35, 43])
+        ("final", 31, 32, [35]),
+        # Third-place match: teams are the two SF losers, exposed by read_truth
+        # under ko_truth["third_place"] (NOT ko_truth["final"], which only ever
+        # holds the two grand-finalists at rows 35/36). Winner indicator still
+        # goes to column AF (32), same column the "final" entry uses, at row 43
+        # — matching read_truth's ind_3rd = ws.cell(43, 32) read.
+        ("third_place", 31, 32, [43]),
     ]
 
     for m in finished_games:

@@ -69,11 +69,14 @@ def upsert(table, payload, on_conflict):
 
 def main():
     rows, meta = compute()
+    for r in rows:
+        if r.get("error"):
+            print(f"  [WARN] {r['name']} ({r['key']}) failed to score: {r['error']} — pushing as all-zero row instead of blocking everyone else.")
     db_rows = [{
-        "key": r["key"], "name": r["name"], "rank": r["rank"], "total": r["total"],
-        "correct_score": r["bd"]["Correct Score"], "correct_outcome": r["bd"]["Correct Outcome"],
-        "group_positions": r["bd"]["Group Positions"], "knockouts": r["bd"]["Knockouts"],
-        "final_standings": r["bd"]["Final Standings"], "top_scorer": r["bd"]["Top Scorer"],
+        "key": r["key"], "name": r["name"], "rank": r["rank"], "total": max(r["total"], 0),
+        "correct_score": r["bd"].get("Correct Score", 0), "correct_outcome": r["bd"].get("Correct Outcome", 0),
+        "group_positions": r["bd"].get("Group Positions", 0), "knockouts": r["bd"].get("Knockouts", 0),
+        "final_standings": r["bd"].get("Final Standings", 0), "top_scorer": r["bd"].get("Top Scorer", 0),
         "predicted_winner": r["predicted_winner"],
     } for r in rows]
 
