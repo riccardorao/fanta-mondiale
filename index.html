@@ -1503,7 +1503,17 @@
       defaultOpt.onclick = () => selectCustomPlayer("");
       customOptions.appendChild(defaultOpt);
 
+      // Leaderboard order (rank asc, name asc) as the primary sort key, so the
+      // player picker matches the leaderboard instead of the alphabet.
+      const leaderboardIndex = {};
+      (LEADERBOARD_ROWS || []).forEach((r, i) => { leaderboardIndex[r.key] = i; });
+
       const sortedKeys = Object.keys(PREDICTIONS_DATA).sort((a, b) => {
+        const ia = leaderboardIndex.hasOwnProperty(a) ? leaderboardIndex[a] : Infinity;
+        const ib = leaderboardIndex.hasOwnProperty(b) ? leaderboardIndex[b] : Infinity;
+        if (ia !== ib) return ia - ib;
+        // Fallback (surname, then full name) for any player missing from the
+        // leaderboard data, so they still appear rather than being lost.
         const nameA = (PREDICTIONS_DATA[a].name || '').trim();
         const nameB = (PREDICTIONS_DATA[b].name || '').trim();
         const partsA = nameA.split(/\s+/);
