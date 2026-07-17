@@ -1,0 +1,987 @@
+{
+  "generated_from": "FIFAWC2026_Model.xlsx",
+  "final": {
+    "team_a": "SPAIN",
+    "team_b": "ARGENTINA"
+  },
+  "third_place": {
+    "team_a": "FRANCE",
+    "team_b": "ENGLAND"
+  },
+  "topscorer_still_open": true,
+  "scenario_count": 4,
+  "scenarios": [
+    {
+      "outcome": {
+        "label": "SPAIN champion, ARGENTINA 2nd | FRANCE 3rd, ENGLAND 4th",
+        "1st": "SPAIN",
+        "2nd": "ARGENTINA",
+        "3rd": "FRANCE",
+        "4th": "ENGLAND"
+      },
+      "ranked": [
+        {
+          "rank": 1,
+          "key": "Stampone",
+          "name": "Valentino Stampone",
+          "base_total": 2040,
+          "final_standings": 270,
+          "total": 2310
+        },
+        {
+          "rank": 2,
+          "key": "Rotellini",
+          "name": "Giorgio Rotellini",
+          "base_total": 2065,
+          "final_standings": 230,
+          "total": 2295
+        },
+        {
+          "rank": 2,
+          "key": "Staderini",
+          "name": "Lorenzo Staderini",
+          "base_total": 2065,
+          "final_standings": 230,
+          "total": 2295
+        },
+        {
+          "rank": 4,
+          "key": "Trabona",
+          "name": "Tommaso Trabona",
+          "base_total": 1970,
+          "final_standings": 270,
+          "total": 2240
+        },
+        {
+          "rank": 5,
+          "key": "Marchini",
+          "name": "Saverio Marchini",
+          "base_total": 1980,
+          "final_standings": 230,
+          "total": 2210
+        },
+        {
+          "rank": 6,
+          "key": "Polletta",
+          "name": "Matteo Polletta",
+          "base_total": 1950,
+          "final_standings": 230,
+          "total": 2180
+        },
+        {
+          "rank": 7,
+          "key": "Cernotto",
+          "name": "Giovanni Cernotto",
+          "base_total": 2010,
+          "final_standings": 150,
+          "total": 2160
+        },
+        {
+          "rank": 8,
+          "key": "RaoR",
+          "name": "Riccardo Rao",
+          "base_total": 1945,
+          "final_standings": 120,
+          "total": 2065
+        },
+        {
+          "rank": 9,
+          "key": "Rola",
+          "name": "Davide Rola",
+          "base_total": 1865,
+          "final_standings": 150,
+          "total": 2015
+        },
+        {
+          "rank": 10,
+          "key": "Mastrorilli",
+          "name": "Marco Mastrorilli",
+          "base_total": 1910,
+          "final_standings": 80,
+          "total": 1990
+        },
+        {
+          "rank": 11,
+          "key": "Redaelli",
+          "name": "Daniele Redaelli",
+          "base_total": 1975,
+          "final_standings": 0,
+          "total": 1975
+        },
+        {
+          "rank": 12,
+          "key": "Antonini",
+          "name": "Stefano Antonini",
+          "base_total": 1705,
+          "final_standings": 230,
+          "total": 1935
+        },
+        {
+          "rank": 13,
+          "key": "Rigoni",
+          "name": "Alessandro Rigoni",
+          "base_total": 1850,
+          "final_standings": 60,
+          "total": 1910
+        },
+        {
+          "rank": 14,
+          "key": "Castelli",
+          "name": "Giovanni Castelli",
+          "base_total": 1875,
+          "final_standings": 0,
+          "total": 1875
+        },
+        {
+          "rank": 15,
+          "key": "Lima",
+          "name": "Mayara Lima",
+          "base_total": 1855,
+          "final_standings": 0,
+          "total": 1855
+        },
+        {
+          "rank": 16,
+          "key": "Silecchia",
+          "name": "Ambrogio Silecchia",
+          "base_total": 1720,
+          "final_standings": 120,
+          "total": 1840
+        },
+        {
+          "rank": 17,
+          "key": "Martinoli",
+          "name": "Francesco Martinoli",
+          "base_total": 1810,
+          "final_standings": 0,
+          "total": 1810
+        },
+        {
+          "rank": 18,
+          "key": "Bechelli",
+          "name": "Lorenzo Bechelli",
+          "base_total": 1640,
+          "final_standings": 150,
+          "total": 1790
+        },
+        {
+          "rank": 19,
+          "key": "RaoT",
+          "name": "Tommaso Rao",
+          "base_total": 1765,
+          "final_standings": 0,
+          "total": 1765
+        },
+        {
+          "rank": 20,
+          "key": "Cairoli",
+          "name": "Alessandro Cairoli",
+          "base_total": 1610,
+          "final_standings": 150,
+          "total": 1760
+        },
+        {
+          "rank": 21,
+          "key": "DAmbra",
+          "name": "Francesco D'Ambra",
+          "base_total": 1755,
+          "final_standings": 0,
+          "total": 1755
+        },
+        {
+          "rank": 22,
+          "key": "Bonaffini",
+          "name": "Edoardo Bonaffini",
+          "base_total": 1710,
+          "final_standings": 0,
+          "total": 1710
+        },
+        {
+          "rank": 23,
+          "key": "Priandi",
+          "name": "Bobby Priandi",
+          "base_total": 1610,
+          "final_standings": 80,
+          "total": 1690
+        },
+        {
+          "rank": 23,
+          "key": "Roncaglia",
+          "name": "Gianluca Roncaglia",
+          "base_total": 1690,
+          "final_standings": 0,
+          "total": 1690
+        },
+        {
+          "rank": 25,
+          "key": "Piergallini",
+          "name": "Cecilia Trittoni",
+          "base_total": 1650,
+          "final_standings": 0,
+          "total": 1650
+        },
+        {
+          "rank": 26,
+          "key": "Bose",
+          "name": "Shatanik Bose",
+          "base_total": 1630,
+          "final_standings": 0,
+          "total": 1630
+        },
+        {
+          "rank": 27,
+          "key": "Reuters",
+          "name": "Franziska Reuter",
+          "base_total": 1540,
+          "final_standings": 60,
+          "total": 1600
+        },
+        {
+          "rank": 28,
+          "key": "Capriotti",
+          "name": "Alessandro Capriotti",
+          "base_total": 1355,
+          "final_standings": 150,
+          "total": 1505
+        },
+        {
+          "rank": 29,
+          "key": "Parravicini",
+          "name": "Pierpaolo Parravicini",
+          "base_total": 1245,
+          "final_standings": 150,
+          "total": 1395
+        }
+      ]
+    },
+    {
+      "outcome": {
+        "label": "SPAIN champion, ARGENTINA 2nd | ENGLAND 3rd, FRANCE 4th",
+        "1st": "SPAIN",
+        "2nd": "ARGENTINA",
+        "3rd": "ENGLAND",
+        "4th": "FRANCE"
+      },
+      "ranked": [
+        {
+          "rank": 1,
+          "key": "Stampone",
+          "name": "Valentino Stampone",
+          "base_total": 2040,
+          "final_standings": 330,
+          "total": 2370
+        },
+        {
+          "rank": 2,
+          "key": "Trabona",
+          "name": "Tommaso Trabona",
+          "base_total": 1970,
+          "final_standings": 330,
+          "total": 2300
+        },
+        {
+          "rank": 3,
+          "key": "Cernotto",
+          "name": "Giovanni Cernotto",
+          "base_total": 2010,
+          "final_standings": 210,
+          "total": 2220
+        },
+        {
+          "rank": 4,
+          "key": "Rotellini",
+          "name": "Giorgio Rotellini",
+          "base_total": 2065,
+          "final_standings": 150,
+          "total": 2215
+        },
+        {
+          "rank": 4,
+          "key": "Staderini",
+          "name": "Lorenzo Staderini",
+          "base_total": 2065,
+          "final_standings": 150,
+          "total": 2215
+        },
+        {
+          "rank": 6,
+          "key": "Marchini",
+          "name": "Saverio Marchini",
+          "base_total": 1980,
+          "final_standings": 150,
+          "total": 2130
+        },
+        {
+          "rank": 7,
+          "key": "Polletta",
+          "name": "Matteo Polletta",
+          "base_total": 1950,
+          "final_standings": 150,
+          "total": 2100
+        },
+        {
+          "rank": 8,
+          "key": "Rola",
+          "name": "Davide Rola",
+          "base_total": 1865,
+          "final_standings": 210,
+          "total": 2075
+        },
+        {
+          "rank": 9,
+          "key": "RaoR",
+          "name": "Riccardo Rao",
+          "base_total": 1945,
+          "final_standings": 120,
+          "total": 2065
+        },
+        {
+          "rank": 10,
+          "key": "Redaelli",
+          "name": "Daniele Redaelli",
+          "base_total": 1975,
+          "final_standings": 0,
+          "total": 1975
+        },
+        {
+          "rank": 11,
+          "key": "Lima",
+          "name": "Mayara Lima",
+          "base_total": 1855,
+          "final_standings": 60,
+          "total": 1915
+        },
+        {
+          "rank": 12,
+          "key": "Mastrorilli",
+          "name": "Marco Mastrorilli",
+          "base_total": 1910,
+          "final_standings": 0,
+          "total": 1910
+        },
+        {
+          "rank": 13,
+          "key": "Martinoli",
+          "name": "Francesco Martinoli",
+          "base_total": 1810,
+          "final_standings": 80,
+          "total": 1890
+        },
+        {
+          "rank": 14,
+          "key": "Castelli",
+          "name": "Giovanni Castelli",
+          "base_total": 1875,
+          "final_standings": 0,
+          "total": 1875
+        },
+        {
+          "rank": 15,
+          "key": "Antonini",
+          "name": "Stefano Antonini",
+          "base_total": 1705,
+          "final_standings": 150,
+          "total": 1855
+        },
+        {
+          "rank": 16,
+          "key": "Rigoni",
+          "name": "Alessandro Rigoni",
+          "base_total": 1850,
+          "final_standings": 0,
+          "total": 1850
+        },
+        {
+          "rank": 17,
+          "key": "Silecchia",
+          "name": "Ambrogio Silecchia",
+          "base_total": 1720,
+          "final_standings": 120,
+          "total": 1840
+        },
+        {
+          "rank": 18,
+          "key": "Bechelli",
+          "name": "Lorenzo Bechelli",
+          "base_total": 1640,
+          "final_standings": 150,
+          "total": 1790
+        },
+        {
+          "rank": 19,
+          "key": "RaoT",
+          "name": "Tommaso Rao",
+          "base_total": 1765,
+          "final_standings": 0,
+          "total": 1765
+        },
+        {
+          "rank": 20,
+          "key": "Cairoli",
+          "name": "Alessandro Cairoli",
+          "base_total": 1610,
+          "final_standings": 150,
+          "total": 1760
+        },
+        {
+          "rank": 21,
+          "key": "DAmbra",
+          "name": "Francesco D'Ambra",
+          "base_total": 1755,
+          "final_standings": 0,
+          "total": 1755
+        },
+        {
+          "rank": 22,
+          "key": "Bonaffini",
+          "name": "Edoardo Bonaffini",
+          "base_total": 1710,
+          "final_standings": 0,
+          "total": 1710
+        },
+        {
+          "rank": 23,
+          "key": "Roncaglia",
+          "name": "Gianluca Roncaglia",
+          "base_total": 1690,
+          "final_standings": 0,
+          "total": 1690
+        },
+        {
+          "rank": 24,
+          "key": "Piergallini",
+          "name": "Cecilia Trittoni",
+          "base_total": 1650,
+          "final_standings": 0,
+          "total": 1650
+        },
+        {
+          "rank": 25,
+          "key": "Bose",
+          "name": "Shatanik Bose",
+          "base_total": 1630,
+          "final_standings": 0,
+          "total": 1630
+        },
+        {
+          "rank": 26,
+          "key": "Priandi",
+          "name": "Bobby Priandi",
+          "base_total": 1610,
+          "final_standings": 0,
+          "total": 1610
+        },
+        {
+          "rank": 27,
+          "key": "Reuters",
+          "name": "Franziska Reuter",
+          "base_total": 1540,
+          "final_standings": 0,
+          "total": 1540
+        },
+        {
+          "rank": 28,
+          "key": "Capriotti",
+          "name": "Alessandro Capriotti",
+          "base_total": 1355,
+          "final_standings": 150,
+          "total": 1505
+        },
+        {
+          "rank": 29,
+          "key": "Parravicini",
+          "name": "Pierpaolo Parravicini",
+          "base_total": 1245,
+          "final_standings": 210,
+          "total": 1455
+        }
+      ]
+    },
+    {
+      "outcome": {
+        "label": "ARGENTINA champion, SPAIN 2nd | FRANCE 3rd, ENGLAND 4th",
+        "1st": "ARGENTINA",
+        "2nd": "SPAIN",
+        "3rd": "FRANCE",
+        "4th": "ENGLAND"
+      },
+      "ranked": [
+        {
+          "rank": 1,
+          "key": "Redaelli",
+          "name": "Daniele Redaelli",
+          "base_total": 1975,
+          "final_standings": 270,
+          "total": 2245
+        },
+        {
+          "rank": 2,
+          "key": "Rotellini",
+          "name": "Giorgio Rotellini",
+          "base_total": 2065,
+          "final_standings": 80,
+          "total": 2145
+        },
+        {
+          "rank": 2,
+          "key": "Castelli",
+          "name": "Giovanni Castelli",
+          "base_total": 1875,
+          "final_standings": 270,
+          "total": 2145
+        },
+        {
+          "rank": 2,
+          "key": "Staderini",
+          "name": "Lorenzo Staderini",
+          "base_total": 2065,
+          "final_standings": 80,
+          "total": 2145
+        },
+        {
+          "rank": 5,
+          "key": "Mastrorilli",
+          "name": "Marco Mastrorilli",
+          "base_total": 1910,
+          "final_standings": 200,
+          "total": 2110
+        },
+        {
+          "rank": 6,
+          "key": "Marchini",
+          "name": "Saverio Marchini",
+          "base_total": 1980,
+          "final_standings": 80,
+          "total": 2060
+        },
+        {
+          "rank": 7,
+          "key": "Stampone",
+          "name": "Valentino Stampone",
+          "base_total": 2040,
+          "final_standings": 0,
+          "total": 2040
+        },
+        {
+          "rank": 8,
+          "key": "Polletta",
+          "name": "Matteo Polletta",
+          "base_total": 1950,
+          "final_standings": 80,
+          "total": 2030
+        },
+        {
+          "rank": 9,
+          "key": "Cernotto",
+          "name": "Giovanni Cernotto",
+          "base_total": 2010,
+          "final_standings": 0,
+          "total": 2010
+        },
+        {
+          "rank": 10,
+          "key": "Lima",
+          "name": "Mayara Lima",
+          "base_total": 1855,
+          "final_standings": 120,
+          "total": 1975
+        },
+        {
+          "rank": 11,
+          "key": "Trabona",
+          "name": "Tommaso Trabona",
+          "base_total": 1970,
+          "final_standings": 0,
+          "total": 1970
+        },
+        {
+          "rank": 12,
+          "key": "RaoR",
+          "name": "Riccardo Rao",
+          "base_total": 1945,
+          "final_standings": 0,
+          "total": 1945
+        },
+        {
+          "rank": 13,
+          "key": "Rigoni",
+          "name": "Alessandro Rigoni",
+          "base_total": 1850,
+          "final_standings": 60,
+          "total": 1910
+        },
+        {
+          "rank": 14,
+          "key": "DAmbra",
+          "name": "Francesco D'Ambra",
+          "base_total": 1755,
+          "final_standings": 120,
+          "total": 1875
+        },
+        {
+          "rank": 15,
+          "key": "Rola",
+          "name": "Davide Rola",
+          "base_total": 1865,
+          "final_standings": 0,
+          "total": 1865
+        },
+        {
+          "rank": 16,
+          "key": "Martinoli",
+          "name": "Francesco Martinoli",
+          "base_total": 1810,
+          "final_standings": 0,
+          "total": 1810
+        },
+        {
+          "rank": 16,
+          "key": "Roncaglia",
+          "name": "Gianluca Roncaglia",
+          "base_total": 1690,
+          "final_standings": 120,
+          "total": 1810
+        },
+        {
+          "rank": 18,
+          "key": "Antonini",
+          "name": "Stefano Antonini",
+          "base_total": 1705,
+          "final_standings": 80,
+          "total": 1785
+        },
+        {
+          "rank": 19,
+          "key": "Piergallini",
+          "name": "Cecilia Trittoni",
+          "base_total": 1650,
+          "final_standings": 120,
+          "total": 1770
+        },
+        {
+          "rank": 20,
+          "key": "RaoT",
+          "name": "Tommaso Rao",
+          "base_total": 1765,
+          "final_standings": 0,
+          "total": 1765
+        },
+        {
+          "rank": 21,
+          "key": "Silecchia",
+          "name": "Ambrogio Silecchia",
+          "base_total": 1720,
+          "final_standings": 0,
+          "total": 1720
+        },
+        {
+          "rank": 21,
+          "key": "Reuters",
+          "name": "Franziska Reuter",
+          "base_total": 1540,
+          "final_standings": 180,
+          "total": 1720
+        },
+        {
+          "rank": 23,
+          "key": "Bonaffini",
+          "name": "Edoardo Bonaffini",
+          "base_total": 1710,
+          "final_standings": 0,
+          "total": 1710
+        },
+        {
+          "rank": 24,
+          "key": "Priandi",
+          "name": "Bobby Priandi",
+          "base_total": 1610,
+          "final_standings": 80,
+          "total": 1690
+        },
+        {
+          "rank": 25,
+          "key": "Bechelli",
+          "name": "Lorenzo Bechelli",
+          "base_total": 1640,
+          "final_standings": 0,
+          "total": 1640
+        },
+        {
+          "rank": 26,
+          "key": "Bose",
+          "name": "Shatanik Bose",
+          "base_total": 1630,
+          "final_standings": 0,
+          "total": 1630
+        },
+        {
+          "rank": 27,
+          "key": "Cairoli",
+          "name": "Alessandro Cairoli",
+          "base_total": 1610,
+          "final_standings": 0,
+          "total": 1610
+        },
+        {
+          "rank": 28,
+          "key": "Capriotti",
+          "name": "Alessandro Capriotti",
+          "base_total": 1355,
+          "final_standings": 0,
+          "total": 1355
+        },
+        {
+          "rank": 29,
+          "key": "Parravicini",
+          "name": "Pierpaolo Parravicini",
+          "base_total": 1245,
+          "final_standings": 0,
+          "total": 1245
+        }
+      ]
+    },
+    {
+      "outcome": {
+        "label": "ARGENTINA champion, SPAIN 2nd | ENGLAND 3rd, FRANCE 4th",
+        "1st": "ARGENTINA",
+        "2nd": "SPAIN",
+        "3rd": "ENGLAND",
+        "4th": "FRANCE"
+      },
+      "ranked": [
+        {
+          "rank": 1,
+          "key": "Redaelli",
+          "name": "Daniele Redaelli",
+          "base_total": 1975,
+          "final_standings": 270,
+          "total": 2245
+        },
+        {
+          "rank": 2,
+          "key": "Castelli",
+          "name": "Giovanni Castelli",
+          "base_total": 1875,
+          "final_standings": 270,
+          "total": 2145
+        },
+        {
+          "rank": 3,
+          "key": "Stampone",
+          "name": "Valentino Stampone",
+          "base_total": 2040,
+          "final_standings": 60,
+          "total": 2100
+        },
+        {
+          "rank": 4,
+          "key": "Cernotto",
+          "name": "Giovanni Cernotto",
+          "base_total": 2010,
+          "final_standings": 60,
+          "total": 2070
+        },
+        {
+          "rank": 5,
+          "key": "Rotellini",
+          "name": "Giorgio Rotellini",
+          "base_total": 2065,
+          "final_standings": 0,
+          "total": 2065
+        },
+        {
+          "rank": 5,
+          "key": "Staderini",
+          "name": "Lorenzo Staderini",
+          "base_total": 2065,
+          "final_standings": 0,
+          "total": 2065
+        },
+        {
+          "rank": 7,
+          "key": "Lima",
+          "name": "Mayara Lima",
+          "base_total": 1855,
+          "final_standings": 180,
+          "total": 2035
+        },
+        {
+          "rank": 8,
+          "key": "Mastrorilli",
+          "name": "Marco Mastrorilli",
+          "base_total": 1910,
+          "final_standings": 120,
+          "total": 2030
+        },
+        {
+          "rank": 8,
+          "key": "Trabona",
+          "name": "Tommaso Trabona",
+          "base_total": 1970,
+          "final_standings": 60,
+          "total": 2030
+        },
+        {
+          "rank": 10,
+          "key": "Marchini",
+          "name": "Saverio Marchini",
+          "base_total": 1980,
+          "final_standings": 0,
+          "total": 1980
+        },
+        {
+          "rank": 11,
+          "key": "Polletta",
+          "name": "Matteo Polletta",
+          "base_total": 1950,
+          "final_standings": 0,
+          "total": 1950
+        },
+        {
+          "rank": 12,
+          "key": "RaoR",
+          "name": "Riccardo Rao",
+          "base_total": 1945,
+          "final_standings": 0,
+          "total": 1945
+        },
+        {
+          "rank": 13,
+          "key": "Rola",
+          "name": "Davide Rola",
+          "base_total": 1865,
+          "final_standings": 60,
+          "total": 1925
+        },
+        {
+          "rank": 14,
+          "key": "Martinoli",
+          "name": "Francesco Martinoli",
+          "base_total": 1810,
+          "final_standings": 80,
+          "total": 1890
+        },
+        {
+          "rank": 15,
+          "key": "DAmbra",
+          "name": "Francesco D'Ambra",
+          "base_total": 1755,
+          "final_standings": 120,
+          "total": 1875
+        },
+        {
+          "rank": 16,
+          "key": "Rigoni",
+          "name": "Alessandro Rigoni",
+          "base_total": 1850,
+          "final_standings": 0,
+          "total": 1850
+        },
+        {
+          "rank": 17,
+          "key": "Roncaglia",
+          "name": "Gianluca Roncaglia",
+          "base_total": 1690,
+          "final_standings": 120,
+          "total": 1810
+        },
+        {
+          "rank": 18,
+          "key": "Piergallini",
+          "name": "Cecilia Trittoni",
+          "base_total": 1650,
+          "final_standings": 120,
+          "total": 1770
+        },
+        {
+          "rank": 19,
+          "key": "RaoT",
+          "name": "Tommaso Rao",
+          "base_total": 1765,
+          "final_standings": 0,
+          "total": 1765
+        },
+        {
+          "rank": 20,
+          "key": "Silecchia",
+          "name": "Ambrogio Silecchia",
+          "base_total": 1720,
+          "final_standings": 0,
+          "total": 1720
+        },
+        {
+          "rank": 21,
+          "key": "Bonaffini",
+          "name": "Edoardo Bonaffini",
+          "base_total": 1710,
+          "final_standings": 0,
+          "total": 1710
+        },
+        {
+          "rank": 22,
+          "key": "Antonini",
+          "name": "Stefano Antonini",
+          "base_total": 1705,
+          "final_standings": 0,
+          "total": 1705
+        },
+        {
+          "rank": 23,
+          "key": "Reuters",
+          "name": "Franziska Reuter",
+          "base_total": 1540,
+          "final_standings": 120,
+          "total": 1660
+        },
+        {
+          "rank": 24,
+          "key": "Bechelli",
+          "name": "Lorenzo Bechelli",
+          "base_total": 1640,
+          "final_standings": 0,
+          "total": 1640
+        },
+        {
+          "rank": 25,
+          "key": "Bose",
+          "name": "Shatanik Bose",
+          "base_total": 1630,
+          "final_standings": 0,
+          "total": 1630
+        },
+        {
+          "rank": 26,
+          "key": "Cairoli",
+          "name": "Alessandro Cairoli",
+          "base_total": 1610,
+          "final_standings": 0,
+          "total": 1610
+        },
+        {
+          "rank": 26,
+          "key": "Priandi",
+          "name": "Bobby Priandi",
+          "base_total": 1610,
+          "final_standings": 0,
+          "total": 1610
+        },
+        {
+          "rank": 28,
+          "key": "Capriotti",
+          "name": "Alessandro Capriotti",
+          "base_total": 1355,
+          "final_standings": 0,
+          "total": 1355
+        },
+        {
+          "rank": 29,
+          "key": "Parravicini",
+          "name": "Pierpaolo Parravicini",
+          "base_total": 1245,
+          "final_standings": 60,
+          "total": 1305
+        }
+      ]
+    }
+  ]
+}
