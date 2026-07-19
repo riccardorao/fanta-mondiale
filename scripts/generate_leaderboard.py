@@ -557,7 +557,13 @@ def read_truth(ws, wb=None):
                 standings_truth[37] = team_3rd_2
                 standings_truth[38] = team_3rd_1
                 
-        topscorer_player_truth = norm(ws.cell(44, ci("AJ")).value)
+        # Truth top-scorer name lives in AI44 (the anchor of the merged AI44:AJ44
+        # cell — the SAME column score_file reads each participant's prediction
+        # from). Reading AJ44 always returned None because it is the non-anchor
+        # half of that merge, so the +80 player points were never awarded.
+        topscorer_player_truth = norm(ws.cell(44, ci("AI")).value)
+        if topscorer_player_truth == "PLAYER NAME":   # unfilled template placeholder
+            topscorer_player_truth = None
         topscorer_goals_truth = ws.cell(44, ci("AK")).value
         if topscorer_goals_truth is not None and not is_num(topscorer_goals_truth):
             topscorer_goals_truth = None
@@ -1278,7 +1284,7 @@ function build(list){
     row.className='row'; row.style.animationDelay=(idx*0.02)+'s';
     const catsHtml = CATS.map((c,i)=>{
       const v=(d.bd&&d.bd[CAT_KEYS[i]])||0;
-      return `<div class="cat ${v===0?'zero':''}"><div class="cl">${c}</div>
+      return `<div class="cat"><div class="cl">${c}</div>
               <div class="cv">${v}</div></div>`;
     }).join('');
     const pctN = Math.round(100*d.total/maxT);
