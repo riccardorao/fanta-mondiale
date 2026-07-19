@@ -1598,17 +1598,10 @@
         pred.standings.forEach((team, idx) => {
           const actualTeam = OFFICIAL_RESULTS && OFFICIAL_RESULTS.standings ? OFFICIAL_RESULTS.standings[idx] : "";
           let stateClass = "";
-          let checkmark = "";
           if (actualTeam) {
             const actualRec = reconcileCountryName(actualTeam).toUpperCase();
             const predRec = reconcileCountryName(team).toUpperCase();
-            if (actualRec === predRec) {
-              stateClass = "standing-correct";
-              checkmark = "✓";
-            } else {
-              stateClass = "standing-wrong";
-              checkmark = "✗";
-            }
+            stateClass = (actualRec === predRec) ? "standing-correct" : "standing-wrong";
           }
           const displayTeam = reconcileCountryName(team);
           const rankHtml = idx < 3
@@ -1619,7 +1612,6 @@
               <div class="standing-rmain">
                 <div class="rank">${rankHtml}</div>
                 <div class="who ${stateClass === 'standing-correct' ? 'standing-correct' : ''}">${displayTeam || 'TBD'}</div>
-                <div class="pts ${stateClass}">${checkmark}</div>
               </div>
             </div>
           `;
@@ -1970,7 +1962,7 @@
           const pctN = Math.round(100 * d.total / maxBar);
           const cats = CATS.map(([k, label]) => {
             const v = d[k] || 0;
-            return `<div class="cat ${v === 0 ? 'zero' : ''}"><div class="cl">${label}</div><div class="cv">${v}</div></div>`;
+            return `<div class="cat"><div class="cl">${label}</div><div class="cv">${v}</div></div>`;
           }).join('');
           const rankHtml = d.rank <= 3
             ? `<span class="r${d.rank}">${RANK_LABEL[d.rank - 1]}</span>`

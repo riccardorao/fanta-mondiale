@@ -53,6 +53,26 @@ def team(v):
     return TEAM_ALIASES.get(s, s)
 
 
+def scorer_key(v):
+    """Independent top-scorer name matcher: uppercase, strip accents, drop a
+    leading initial (e.g. 'C. '), then key on the surname (last token, ignoring
+    'JR'/'JUNIOR'). Deliberately re-derived, not shared with the main engine's
+    alias table, so agreement is a genuine cross-check. Returns '' for the
+    unfilled template placeholder."""
+    import unicodedata
+    import re
+    if v in (None, ""):
+        return ""
+    s = str(v).strip().upper()
+    s = "".join(c for c in unicodedata.normalize("NFD", s) if unicodedata.category(c) != "Mn")
+    s = re.sub(r"^[A-Z]\.\s+", "", s)
+    s = re.sub(r"\s+", " ", s).strip()
+    if s in ("PLAYER NAME", ""):
+        return ""
+    tokens = [t for t in s.split(" ") if t not in ("JR", "JUNIOR")]
+    return tokens[-1] if tokens else ""
+
+
 def is_num(v):
     if v in (None, ""):
         return False
@@ -267,12 +287,19 @@ def resolve_bracket(ws, wb):
             order, _ = tables[g]
             positions[g] = {base + i + 1: order[i] for i in range(4)}
 
+    # Top-scorer truth: player name in AI44 (merge anchor), goals in AK44.
+    ts_player_key = scorer_key(ws.cell(44, ci("AI")).value)
+    ts_goals_raw = ws.cell(44, ci("AK")).value
+    ts_goals = float(ts_goals_raw) if is_num(ts_goals_raw) else None
+
     return {
         "group_stage_done": group_stage_done,
         "n_played": n_played,
         "positions": positions,
         "ko": {"r32": r32, "r16": r16, "qf": qf, "sf": sf, "final": final_},
         "standings": standings,
+        "topscorer_player_key": ts_player_key or None,
+        "topscorer_goals": ts_goals,
         "tables": tables,
     }
 
@@ -327,6 +354,15 @@ def score_participant(path, truth, group_matches):
         if pred == true_team:
             key = {35: "standing_1st", 36: "standing_2nd", 37: "standing_3rd", 38: "standing_4th"}[r]
             bd["Final Standings"] += POINTS[key]
+
+    # Top scorer: predicted player in AI44, predicted goals in AK44.
+    if truth.get("topscorer_player_key"):
+        if scorer_key(ws.cell(44, ci("AI")).value) == truth["topscorer_player_key"]:
+            bd["Top Scorer"] += POINTS["topscorer_player"]
+    if truth.get("topscorer_goals") is not None:
+        pg = ws.cell(44, ci("AK")).value
+        if is_num(pg) and float(pg) == truth["topscorer_goals"]:
+            bd["Top Scorer"] += POINTS["topscorer_goals"]
 
     total = sum(bd.values())
     return total, bd
